@@ -1,0 +1,16 @@
+<html ng-app="myApp">
+    <head>
+        <script src="lib/angular.js"></script>
+        <script src="script.js"></script>
+    </head>
+    <body ng-controller="MainController">
+        <h1>Hello {{myName}}</h1>
+        <form ng-submit="formSubmit()">
+            <input type="text" ng-model="myName">
+            <input type="submit">
+        </form>
+        <div ng-show="myName === 'viki'">
+            <h1>asd</h1>
+        </div>
+    </body>
+</html>
