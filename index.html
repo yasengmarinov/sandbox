@@ -1,16 +1,32 @@
 <html ng-app="myApp">
     <head>
         <script src="lib/angular.js"></script>
+        <script src="dao.js"></script>
         <script src="script.js"></script>
     </head>
     <body ng-controller="MainController">
-        <h1>Hello {{myName}}</h1>
+        <h1>Hello
+            {{myName}}</h1>
         <form ng-submit="formSubmit()">
             <input type="text" ng-model="myName">
             <input type="submit">
         </form>
-        <div ng-show="myName === 'viki'">
-            <h1>asd</h1>
+        <div>
+            <p>You name's lenth:
+                {{myName.length}}</p>
+        </div>
+        <div ng-show="usersList.length > 0">
+            <h3>List of users</h3>
+            <div ng-repeat="user in usersList">
+                <p>{{user}}
+                    <a href="#" ng-click="userDelete(user)">Delete</a>
+                </p>
+            </div>
+        </div>
+        <div>
+            <div ng-show="myName == 'kor'">
+                <p>Page1</p>
+            </div>
         </div>
     </body>
 </html>

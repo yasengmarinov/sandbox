@@ -1,11 +1,17 @@
-var myApp = angular.module('myApp', []);
+var myApp = angular.module('myApp', ['dao']);
 
-myApp.controller('MainController', ['$scope', function($scope) {
-    $scope.page1 = 'page1.html';
-    $scope.name = 'Yasen';
+myApp.controller('MainController', ['$scope', '$window', 'dao',
+    function($scope, $window, dao) {
 
-    $scope.myName;
-    $scope.submitForm = function() {
+        $scope.usersList = dao.getUsers();
+        $scope.myName = '';
+        $scope.formSubmit = function() {
+            dao.addUser($scope.myName);
+            $scope.myName = '';
+        }
+        $scope.userDelete = function(name) {
+            dao.removeUser(name);
+        }
+
     }
-    
-}]);
+]);
