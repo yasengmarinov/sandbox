@@ -1,0 +1,40 @@
+<html ng-app="myApp">
+    <head>
+      <link rel="stylesheet" href="css/bootstrap.min.css">
+      <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+      <script src="lib/angular.js"></script>
+      <!-- <script sec="lib/bootstrap.min.js"></script> -->
+      <script src="js/script.js"></script>
+      <script src="js/dao.js"></script>
+    </head>
+    <body ng-controller="MainController" ng-cloak>
+        <div class="container">
+            <h1 class="col-md-12">Hello
+                {{myName}}</h1>
+            <form ng-submit="formSubmit()">
+                <input type="text" ng-model="myName" autofocus="text"/>
+                <input class="btn btn-success" type="submit"/>
+            </form>
+            <div>
+                <p>You name's lenth:
+                    {{myName.length}}</p>
+            </div>
+            <div ng-show="usersList.length > 0">
+                <h3>List of users</h3>
+                <ul class="list-unstyled">
+                    <li class="row"ng-repeat="user in usersList">
+                        <strong class="col-md-3">{{user}}</strong>
+                        <button class="btn btn-danger" ng-click="userDelete(user)">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <div ng-show="myName == 'kor'">
+                    <p>Page1</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
