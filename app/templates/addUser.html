@@ -1,0 +1,32 @@
+<div class="container" id="main">
+    <form class="form-horizontal" ng-submit="formSubmit()">
+        <div class="form-group">
+            <label class="col-xs-4" for="userFirstName">First Name</label>
+            <input type="text" id="userFirstName" placeholder="Yasen" ng-model="user.firstName" autofocus="true"/>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-4" for="userlastName">Last Name</label>
+            <input type="text" id="userLastName" placeholder="Marinov" ng-model="user.lastName"/>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-4" for="userStreet">Street</label>
+            <input type="text" id="userStreet" placeholder="Todorini Kukli 5" ng-model="user.street"/>
+        </div>
+        <input class="btn btn-success" type="submit"/>
+    </form>
+    <div>
+        <p>You name's lenth:
+            {{myName.length}}</p>
+    </div>
+    <div ng-show="usersList.length > 0">
+        <h3>List of users</h3>
+        <ul class="list-unstyled">
+            <li ng-repeat="user in usersList">
+                <strong class="col-xs-4">{{user.firstName}}</strong>
+                <button class="btn btn-danger" ng-click="userDelete(user)">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </button>
+            </li>
+        </ul>
+    </div>
+</div>
