@@ -44,8 +44,8 @@ myApp.factory('dao', function($http) {
         addUser: function(user, callback) {
             addUser(user, callback);
         },
-        removeUser: function(name, scope) {
-            removeUser(name, scope);
+        removeUser: function(name, callback) {
+            removeUser(name, callback);
         },
         getUsers: function(callback) {
             return getUsers(callback);

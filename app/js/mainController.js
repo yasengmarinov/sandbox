@@ -7,24 +7,35 @@ var myApp = angular.module('myApp', ['ngRoute'])
             controller: 'MainController'
         });
         $routeProvider.when('/user/:userFirstName', {
-          templateUrl: 'templates/userDetails.html',
-          controller: 'MainController'
+            templateUrl: 'templates/userDetails.html',
+            controller: 'MainController'
         });
-        $routeProvider.otherwise({redirectTo: '/addUser'});
+        $routeProvider.otherwise({
+            redirectTo: '/addUser'
+        });
         $locationProvider.html5Mode(true);
     });
 
-myApp.controller('MainController', ['$scope', '$window', '$routeParams', 'dao',
-    function($scope, $window, $routeParams, dao) {
+myApp.controller('MainController', ['$scope', '$location', '$window', '$routeParams', 'dao',
+    function($scope, $location, $window, $routeParams, dao) {
 
         $scope.userFirstName = $routeParams.userFirstName;
-        dao.getUser($routeParams.userFirstName, function(data) {
-          $scope.currentuser = data;
-          $scope.$parent.currentuser = data;
-        });
+        if ($routeParams.userFirstName != undefined) {
+            dao.getUser($routeParams.userFirstName, function(data) {
+                $scope.currentuser = data;
+                $scope.$parent.currentuser = data;
+            });
+        };
+        
         var getUsersSuccess = function(data) {
             $scope.usersList = data;
             $scope.$parent.usersList = data;
+        };
+
+        $scope.getClass = function(path) {
+            return ($location.path().substr(0, path.length) === path) ? 'active' : '';
+            console.log($location.path().substr(0, path.length));
+            console.log(path);
         };
 
         dao.getUsers(getUsersSuccess);
