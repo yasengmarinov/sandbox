@@ -1,0 +1,10 @@
+Experian/FraudSolutions/Response/Products/PreciseIDServer/Error/ReportDate
+Experian/FraudSolutions/Response/Products/PreciseIDServer/Error/ReportTime
+Experian/FraudSolutions/Response/Products/PreciseIDServer/Error/TransactionID
+Experian/FraudSolutions/Response/Products/PreciseIDServer/Error/Surname
+Experian/FraudSolutions/Response/Products/PreciseIDServer/Error/FirstName
+Experian/FraudSolutions/Response/Products/PreciseIDServer/Error/ErrorCode
+Experian/FraudSolutions/Response/Products/PreciseIDServer/Error/ErrorDescription
+Experian/FraudSolutions/Response/Products/PreciseIDServer/Error/ActionIndicator
+Experian/FraudSolutions/Response/Products/PreciseIDServer/Error/ActionIndicator/@code
+Experian/FraudSolutions/Response/Products/PreciseIDServer/Error/ReferenceNumber

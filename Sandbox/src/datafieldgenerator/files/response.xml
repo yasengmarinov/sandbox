@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Experian xmlns="http://www.experian.com/NetConnectResponse">
+    <FraudSolutions>
+        <Response>
+            <Products>
+                <PreciseIDServer>
+                    <PIDXMLVersion>06.00</PIDXMLVersion>
+                    <SessionID>RZPFE1RSGJ8PJ2WSYLKSBOLL.pidd1v-1612151011170213391076642</SessionID>
+                    <Header>
+                        <ReportDate>12152016</ReportDate>
+                        <ReportTime>101118</ReportTime>
+                        <ProductOption>06</ProductOption>
+                        <Subcode>2639100</Subcode>
+                        <ReferenceNumber>10010120403C</ReferenceNumber>
+                    </Header>
+                    <Messages>
+                        <Message>
+                            <Number>57</Number>
+                            <Text>0150</Text>
+                            <AddrMismatch>Y</AddrMismatch>
+                        </Message>
+                    </Messages>
+                    <Summary>
+                        <TransactionID>16346853</TransactionID>
+                        <InitialDecision>ACC</InitialDecision>
+                        <FinalDecision>ACC</FinalDecision>
+                        <Scores>
+                            <PreciseIDScore>597</PreciseIDScore>
+                            <PreciseIDScorecard>UCS PR</PreciseIDScorecard>
+                            <ValidationScore>000773</ValidationScore>
+                            <ValidationScorecard>AC OPEN VAL V2</ValidationScorecard>
+                            <VerificationScore>000835</VerificationScore>
+                            <VerificationScorecard>AC OPEN ID THEFT V2</VerificationScorecard>
+                            <FPDScore>000102</FPDScore>
+                            <FPDScorecard>AC OPEN FPD V2</FPDScorecard>
+                            <ComplianceDescription>No Compliance Code</ComplianceDescription>
+                            <MostLikelyFraudType code="FPD">First Payment Default</MostLikelyFraudType>
+                            <Reasons count="5">
+                                <Reason1 code="UC12">No trades</Reason1>
+                                <Reason2 code="U405">No adverse factor observed</Reason2>
+                                <Reason3 code="U405">No adverse factor observed</Reason3>
+                                <Reason4 code="U405">No adverse factor observed</Reason4>
+                                <Reason5 code="UC00">Inquiry did not negatively impact the score</Reason5>
+                            </Reasons>
+                        </Scores>
+                    </Summary>
+                    <FCRADetail>
+                        <FraudShield>
+                            <Indicator code="07">N</Indicator>
+                        </FraudShield>
+                        <FCRARules>
+                            <FCRARule code="    "/>
+                        </FCRARules>
+                        <AdverseActions>
+                            <AdverseAction code=" "/>
+                        </AdverseActions>
+                    </FCRADetail>
+                    <GLBDetail>
+                        <FraudShield>
+                            <Indicator code="01">N</Indicator>
+                        </FraudShield>
+                        <GLBRules>
+                            <GLBRule code="1002">Invalid or Non-issued Social Security Number</GLBRule>
+                        </GLBRules>
+                    </GLBDetail>
+                    <PreciseMatch>
+                        <Version>02.00</Version>
+                        <ResponseStatusCode code="00">Data found for search request</ResponseStatusCode>
+                        <PreciseMatchTransactionID>f2465b8c-6516-466e-9</PreciseMatchTransactionID>
+                        <PreciseMatchScore>488</PreciseMatchScore>
+                        <PreciseMatchDecision code=" "/>
+                        <Addresses>
+                            <Address>
+                                <Summary>
+                                    <VerificationResult code="ZZ">Invalid/No match - Legacy</VerificationResult>
+                                    <Type code="N ">No information available</Type>
+                                    <UnitMismatchResult code="  "/>
+                                    <HighRiskResult code="N ">No address high risk information found</HighRiskResult>
+                                    <Counts>
+                                        <StandardizedAddressReturnCount>00</StandardizedAddressReturnCount>
+                                        <ResidentialAddressMatchCount>0000</ResidentialAddressMatchCount>
+                                        <ResidentialAddressReturnCount>00</ResidentialAddressReturnCount>
+                                        <HighRiskAddressReturnCount>00</HighRiskAddressReturnCount>
+                                        <BusinessAddressMatchCount>0000</BusinessAddressMatchCount>
+                                        <BusinessAddressReturnCount>00</BusinessAddressReturnCount>
+                                    </Counts>
+                                </Summary>
+                                <Detail>
+                                    <HighRiskAddressDescription>
+                                        <HighRiskDescription>No high risk business at address/phone</HighRiskDescription>
+                                    </HighRiskAddressDescription>
+                                </Detail>
+                            </Address>
+                        </Addresses>
+                        <Phones>
+                            <Phone>
+                                <Summary>
+                                    <VerificationResult code="IA">Invalid area code</VerificationResult>
+                                    <Classification code="X">No Phone Classification Found</Classification>
+                                    <HighRiskResult code="N">No phone high risk information found</HighRiskResult>
+                                    <Counts>
+                                        <ResidentialPhoneMatchCount>0000</ResidentialPhoneMatchCount>
+                                        <ResidentialPhoneReturnCount>00</ResidentialPhoneReturnCount>
+                                        <HighRiskPhoneReturnCount>00</HighRiskPhoneReturnCount>
+                                        <BusinessPhoneMatchCount>0000</BusinessPhoneMatchCount>
+                                        <BusinessPhoneReturnCount>00</BusinessPhoneReturnCount>
+                                    </Counts>
+                                </Summary>
+                            </Phone>
+                        </Phones>
+                        <ConsumerID>
+                            <Summary>
+                                <VerificationResult code="F ">SSN format is invalid</VerificationResult>
+                                <DeceasedResult code=" ">SSN not provided or validated</DeceasedResult>
+                                <FormatResult code="I">Invalid</FormatResult>
+                                <IssueResult code=" ">SSN not provided or validated</IssueResult>
+                                <Counts>
+                                    <ConsumerIDReturnCount>00</ConsumerIDReturnCount>
+                                </Counts>
+                            </Summary>
+                        </ConsumerID>
+                        <DateOfBirth>
+                            <Summary>
+                                <MatchResult code="5">SSN/SSN name and address not on file; verification cannot be done</MatchResult>
+                            </Summary>
+                        </DateOfBirth>
+                        <DriverLicense>
+                            <Summary>
+                                <VerificationResult code="M">Driver License number is missing</VerificationResult>
+                                <FormatValidation code=" ">Driver's license not provided or validated</FormatValidation>
+                            </Summary>
+                        </DriverLicense>
+                        <ChangeOfAddresses>
+                            <ChangeOfAddress>
+                                <Summary>
+                                    <VerificationResult code="N ">No change of address information found</VerificationResult>
+                                    <Counts>
+                                        <ChangeOfAddressReturnCount>00</ChangeOfAddressReturnCount>
+                                    </Counts>
+                                </Summary>
+                            </ChangeOfAddress>
+                        </ChangeOfAddresses>
+                        <OFAC>
+                            <Summary>
+                                <VerificationResult code="1 ">No match</VerificationResult>
+                                <Counts>
+                                    <OFACReturnCount>00</OFACReturnCount>
+                                </Counts>
+                            </Summary>
+                        </OFAC>
+                        <PreviousAddresses>
+                            <PreviousAddress>
+                                <Summary>
+                                    <Counts>
+                                        <PreviousAddressReturnCount>00</PreviousAddressReturnCount>
+                                    </Counts>
+                                </Summary>
+                            </PreviousAddress>
+                        </PreviousAddresses>
+                        <SSNFinder>
+                            <Summary>
+                                <Counts>
+                                    <SSNFinderReturnCount>00</SSNFinderReturnCount>
+                                </Counts>
+                            </Summary>
+                        </SSNFinder>
+                    </PreciseMatch>
+                </PreciseIDServer>
+            </Products>
+        </Response>
+    </FraudSolutions>
+</Experian>

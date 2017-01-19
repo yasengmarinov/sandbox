@@ -1,0 +1,22 @@
+<Experian xmlns="http://www.experian.com/NetConnectResponse">
+    <FraudSolutions>
+        <Response>
+            <Products>
+                <PreciseIDServer>
+                    <PIDXMLVersion>06.00</PIDXMLVersion>
+                    <Error>
+                        <ReportDate>12132016</ReportDate>
+                        <ReportTime>101744</ReportTime>
+                        <TransactionID>16319899</TransactionID>
+                        <ErrorCode>259</ErrorCode>
+                        <ErrorDescription>
+                            There has been an error processing your request. Please contact Experian Technical Support at 800-854-7201.
+                        </ErrorDescription>
+                        <ActionIndicator code="C"/>
+                        <ReferenceNumber>10010129764C</ReferenceNumber>
+                    </Error>
+                </PreciseIDServer>
+            </Products>
+        </Response>
+    </FraudSolutions>
+</Experian>

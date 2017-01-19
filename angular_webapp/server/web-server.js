@@ -63,7 +63,7 @@ app.post('/addUser', function(req, res) {
 })
 
 app.get('*', function(req, res) {
-   return res.redirect(rootPath + '/app/' + 'index.html');
+   return res.sendFile(rootPath + '/app/' + 'index.html');
 })
 app.listen(8000);
 
