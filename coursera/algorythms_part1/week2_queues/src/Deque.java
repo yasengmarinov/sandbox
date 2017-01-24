@@ -1,3 +1,4 @@
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
@@ -5,7 +6,7 @@ import java.util.NoSuchElementException;
  */
 public class Deque<Item> implements Iterable<Item> {
 
-    private Element first, last;
+    private Element<Item> first, last;
     private int size;
 
     // construct an empty deque
@@ -17,7 +18,7 @@ public class Deque<Item> implements Iterable<Item> {
 
     // is the deque empty?
     public boolean isEmpty() {
-        return first == null;
+        return size == 0;
     }
 
     // return the number of items on the deque
@@ -30,7 +31,7 @@ public class Deque<Item> implements Iterable<Item> {
         if (item == null) {
             throw new NullPointerException();
         }
-        Element toAdd = new Element(item);
+        Element<Item> toAdd = new Element<>(item);
         if (this.isEmpty()) {
             first = toAdd;
             last = toAdd;
@@ -48,7 +49,7 @@ public class Deque<Item> implements Iterable<Item> {
         if (item == null) {
             throw new NullPointerException();
         }
-        Element toAdd = new Element(item);
+        Element<Item> toAdd = new Element<>(item);
         if (this.isEmpty()) {
             first = toAdd;
             last = toAdd;
@@ -66,13 +67,18 @@ public class Deque<Item> implements Iterable<Item> {
         if (this.isEmpty()) {
             throw new NoSuchElementException();
         }
+
         Item toReturn = first.item;
         first = first.next;
         size--;
-        if (!this.isEmpty()) {
-            first.next.previous = first;
-        } else {
+        if (this.isEmpty()) {
             last = null;
+        } else if (first.next != null) {
+            first.next.previous = first;
+            first.previous = null;
+        } else {
+            last = first;
+            first.previous = null;
         }
         return toReturn;
     }
@@ -84,23 +90,26 @@ public class Deque<Item> implements Iterable<Item> {
         }
         Item toReturn = last.item;
         last = last.previous;
-        last.next = null;
         size--;
-        if (!this.isEmpty()) {
-            last.previous.next = last;
-        } else {
+        if (this.isEmpty()) {
             first = null;
+        } else if (last.previous != null){
+            last.previous.next = last;
+            last.next = null;
+        } else {
+            first = last;
+            last.next = null;
         }
         return  toReturn;
     }
     // return an iterator over items in order from front to end
     public Iterator<Item> iterator() {
-        return new Iterator<Item>();
+        return new DequeIterator();
     }
 
-    private class Iterator<Item> implements java.util.Iterator<Item> {
+    private class DequeIterator implements java.util.Iterator<Item> {
 
-        private Element current = first;
+        private Element<Item> current = first;
 
         @Override
         public boolean hasNext() {
@@ -119,10 +128,10 @@ public class Deque<Item> implements Iterable<Item> {
 
     }
 
-    private class Element {
+    private class Element<Item> {
         Item item;
-        Element next;
-        Element previous;
+        Element<Item> next;
+        Element<Item> previous;
 
         public Element (Item item) {
             this.item = item;
