@@ -58,8 +58,7 @@ public class PointSET {
     // a nearest neighbor in the set to point p; null if the set is empty
     public Point2D nearest(Point2D p) {
         if (p == null) throw new NullPointerException();
-
-        if (points == null)
+        if (isEmpty())
             return null;
         double minDistance = 0;
         Point2D nearest = null;
@@ -75,27 +74,10 @@ public class PointSET {
 
     // unit testing of the methods (optional)
     public static void main(String[] args) {
-        RectHV rect = new RectHV(0.0, 0.0, 1.0, 1.0);
-        StdDraw.enableDoubleBuffering();
-        PointSET kdtree = new PointSET();
-        while (true) {
-            if (StdDraw.mousePressed()) {
-                double x = StdDraw.mouseX();
-                double y = StdDraw.mouseY();
-                StdOut.printf("%8.6f %8.6f\n", x, y);
-                Point2D p = new Point2D(x, y);
-                if (rect.contains(p)) {
-                    StdOut.printf("%8.6f %8.6f\n", x, y);
-                    kdtree.insert(p);
-                    StdDraw.clear();
-                    kdtree.draw();
-                    StdDraw.show();
-//                    Point2D nearest = kdtree.nearest(new Point2D(0,0));
-//                    StdOut.printf("%8.6f %8.6f\n", nearest.x(), nearest.y());
-                }
-            }
-            StdDraw.pause(50);
-        }
+        PointSET set = new PointSET();
+        System.out.println(set.size());
+        System.out.println(set.isEmpty());
+        System.out.println(set.nearest(new Point2D(0.294, 0.879)));
 
     }
 
