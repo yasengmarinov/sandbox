@@ -7,7 +7,7 @@ public class PercolationStats {
 	private static final double CONF95 = 1.96;
 
 	private double[] result;
-	private int n;
+	private int n, t;
 	private double mean, stddev;
 
 	// test client (described below)
@@ -25,6 +25,7 @@ public class PercolationStats {
 	// perform trials independent experiments on an n-by-n grid
 	public PercolationStats(int n, int trials) {
 		this.n = n;
+		this.t = trials;
 		if (n <= 0 || trials <= 0) {
 			throw new IllegalArgumentException();
 		}
@@ -38,24 +39,26 @@ public class PercolationStats {
 
 	// sample mean of percolation threshold
 	public double mean() {
-		mean = StdStats.mean(result);
+        if (mean == 0)
+		    mean = StdStats.mean(result);
 		return mean;
 	}
 
 	// sample standard deviation of percolation threshold
 	public double stddev() {
-		stddev = StdStats.stddev(result);
+        if (stddev == 0)
+		    stddev = StdStats.stddev(result);
 		return stddev;
 	}
 
 	// low  endpoint of 95% confidence interval
 	public double confidenceLo() {
-		return mean - 1.96 * stddev / Math.sqrt(n);
+		return mean() - CONF95 * stddev() / Math.sqrt(t);
 	}
 
 	// high endpoint of 95% confidence interval
 	public double confidenceHi() {
-		return mean + CONF95 * stddev / Math.sqrt(n);
+		return mean() + CONF95 * stddev() / Math.sqrt(t);
 	}
 
 	private double calculatePercolationThreshold(int n) {

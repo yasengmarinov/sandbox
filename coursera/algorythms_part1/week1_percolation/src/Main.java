@@ -5,8 +5,9 @@ import java.util.*;
  */
 public class Main {
 	public static void main(String[] args) {
-		Scanner in = new Scanner(System.in);
-		String[] toPass = {String.valueOf(in.nextInt()), String.valueOf(in.nextInt())};
-		PercolationStats.main(toPass);
-	}
+		byte bt = 1;
+        System.out.println(bt);
+        bt = 0;
+        System.out.println(bt);
+    }
 }

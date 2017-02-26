@@ -2,12 +2,13 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
 
-	private static final int OPEN = 1;
+	private static final char OPEN = 1;
+	private static final char CLOSED = 0;
 
-	private int[][] grid;
+	private byte[][] grid;
 	private int openedSites;
 	private int quickUnionBeginRoot, quickUnionEndRoot;
-	private WeightedQuickUnionUF quickUnionUF;
+	private WeightedQuickUnionUF connectionUnionFull, connectionUnionPart;
 
 	// test client (optional)
 	public static void main(String[] args) throws Exception{
@@ -17,18 +18,20 @@ public class Percolation {
 		if (n <= 0) {
 			throw new IllegalArgumentException();
 		}
-		grid = new int[n][n];
+		grid = new byte[n][n];
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n; j++) {
-				grid[i][j] = 0;
+				grid[i][j] = CLOSED;
 			}
 		}
-		quickUnionUF = new WeightedQuickUnionUF(n * n + 2);
+		connectionUnionFull = new WeightedQuickUnionUF(n * n + 2);
+		connectionUnionPart = new WeightedQuickUnionUF(n * n + 1);
 		quickUnionBeginRoot = n * n;
 		quickUnionEndRoot = n * n + 1;
 		for (int i = 1; i <=n ; i++) {
-			quickUnionUF.union(quickUnionBeginRoot, coordsToConnectionIndex(1, i));
-			quickUnionUF.union(quickUnionEndRoot, coordsToConnectionIndex(n, i));
+			connectionUnionFull.union(quickUnionBeginRoot, coordsToConnectionIndex(1, i));
+			connectionUnionFull.union(quickUnionEndRoot, coordsToConnectionIndex(n, i));
+			connectionUnionPart.union(quickUnionBeginRoot, coordsToConnectionIndex(1, i));
 		}
 
 		openedSites = 0;
@@ -51,7 +54,7 @@ public class Percolation {
 
 	// is site (row, col) full?
 	public boolean isFull(int row, int col) {
-		return isOpen(row, col) && quickUnionUF.connected(quickUnionBeginRoot, coordsToConnectionIndex(row, col));
+		return isOpen(row, col) && connectionUnionPart.connected(quickUnionBeginRoot, coordsToConnectionIndex(row, col));
 	}
 
 	// number of open sites
@@ -60,7 +63,8 @@ public class Percolation {
 	}
 	// does the system percolate?
 	public boolean percolates() {
-		return quickUnionUF.connected(quickUnionBeginRoot, quickUnionEndRoot);
+		if (grid.length == 1 && grid[0][0] != OPEN) return false;
+		return connectionUnionFull.connected(quickUnionBeginRoot, quickUnionEndRoot);
 	}
 
 	private void validateCoordinates(int row, int col) throws IndexOutOfBoundsException{
@@ -85,7 +89,8 @@ public class Percolation {
 			return;
 		}
 		if (isOpen(row2, col2)) {
-			quickUnionUF.union(coordsToConnectionIndex(row, col), coordsToConnectionIndex(row2, col2));
+			connectionUnionFull.union(coordsToConnectionIndex(row, col), coordsToConnectionIndex(row2, col2));
+			connectionUnionPart.union(coordsToConnectionIndex(row, col), coordsToConnectionIndex(row2, col2));
 		}
 	}
 
