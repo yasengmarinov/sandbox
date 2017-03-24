@@ -52,8 +52,8 @@ public class Board {
 
     private int calculateManhattanDistance(int square, int currentI, int currentJ) {
         int distance = 0;
-        int desiredJ = square / dimension();
-        int desiredI = square - desiredJ * dimension() - 1;
+        int desiredI = (square - 1) / dimension();
+        int desiredJ = square - desiredI * dimension() - 1;
         distance+= (currentI >= desiredI)? currentI - desiredI : desiredI - currentI;
         distance+= (currentJ >= desiredJ)? currentJ - desiredJ : desiredJ - currentJ;
         return distance;
@@ -74,14 +74,15 @@ public class Board {
     public Board twin() {
         int randOne, randTwo;
         do {
-            randOne = StdRandom.uniform(0, dimension() * dimension() + 1);
-        } while (getNthBlock(randOne) != 0);
+            randOne = StdRandom.uniform(1, dimension() * dimension() + 1);
+        } while (getNthBlock(randOne) == 0);
 
         do {
-            randTwo = StdRandom.uniform(0, dimension() * dimension() + 1);
-        } while (randTwo != randOne && getNthBlock(randTwo) != 0);
-        Board twin = new Board(blocks);
-        twin.exch(randOne, randTwo);
+            randTwo = StdRandom.uniform(1, dimension() * dimension() + 1);
+        } while (randTwo == randOne || getNthBlock(randTwo) == 0);
+//        Board twin = new Board(blocks);
+//        twin.exch(randOne, randTwo);
+        Board twin = exch(randOne, randTwo);
         return twin;
     }
 
@@ -91,6 +92,7 @@ public class Board {
         if (y == null) return false;
         if (this.getClass() != y.getClass()) return false;
         Board that = (Board) y;
+        if (this.dimension() != that.dimension()) return false;
         for (int i = 0; i < dimension(); i++) {
             for (int j = 0; j < dimension(); j++) {
                 if (this.blocks[i][j] != that.blocks[i][j]) {
@@ -157,8 +159,8 @@ public class Board {
 
     private Board exch(int randOne, int randTwo) {
         int iOne, jOne, iTwo, jTwo;
-        iOne = randOne / dimension();
-        iTwo = randTwo / dimension();
+        iOne = (randOne -1 ) / dimension();
+        iTwo = (randTwo -1 )/ dimension();
         jOne = randOne - iOne * dimension() - 1;
         jTwo = randTwo - iTwo * dimension() - 1;
 
@@ -174,7 +176,7 @@ public class Board {
     }
 
     private int getNthBlock(int num) {
-        int i = num / dimension();
+        int i = (num - 1) / dimension();
         int j = num - i * dimension() - 1;
         return blocks[i][j];
     }
