@@ -9,7 +9,7 @@ function [J grad] = nnCostFunction(nn_params, ...
 %   X, y, lambda) computes the cost and gradient of the neural network. The
 %   parameters for the neural network are "unrolled" into the vector
 %   nn_params and need to be converted back into the weight matrices. 
-% 
+%  
 %   The returned parameter grad should be a "unrolled" vector of the
 %   partial derivatives of the neural network.
 %
@@ -62,7 +62,7 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
-yVec = ones(5000, 1) * [1 : num_labels] == y;
+yVec = ones(m, 1) * [1 : num_labels] == y;
 y = yVec;
 
 a1 = [ones(size(X)(1), 1), X];
@@ -75,23 +75,33 @@ h = sigmoid(z3);
 
 J = 1/m *sum(sum(-y .* log(h) - (1 - y) .* log(1 - h)));
 
+Theta1Reg = Theta1(:, 2:end);
+Theta2Reg = Theta2(:, 2:end);
 
+J = J + lambda/(2 * m) * (sum(sum(Theta1Reg .^ 2)) + sum(sum(Theta2Reg .^ 2)));
 
-for i = 1:m
-  a1 = [1; X(i, :)(:)];
+for t = 1:m
+  % Forward propagation
+  a1 = [1; X(t, :)(:)];
   z2 = Theta1 * a1;
   a2 = [1; sigmoid(z2)];
   z3 = Theta2 * a2;
-  h = a3 = [sigmoid(z3)];
+  h = [sigmoid(z3)];
   
-  d3 = a3 - y(i, :);
-  d2 = Theta2' * d3 .* a2 .*(1 - a2);
+  % Set layer 3 error
+  d3 = h - y(t, :)';
   
+  % Set layer 2 error
+  d2 = Theta2' * d3 .* sigmoidGradient([1; z2]);
+  
+  % Accumulate gradient
   Theta2_grad = Theta2_grad + d3 * a2';
-  Theta1_grad = Theta1_grad + d2 * a1';
+  Theta1_grad = Theta1_grad + d2(2:end) * a1';
 end
 
-
+% Add regularization
+Theta1_grad = 1/m * Theta1_grad + lambda / m * [zeros(size(Theta1)(1), 1), Theta1(:, 2:end)];
+Theta2_grad = 1/m * Theta2_grad + lambda / m * [zeros(size(Theta2)(1), 1), Theta2(:, 2:end)];
 
 % -------------------------------------------------------------
 
