@@ -21,11 +21,21 @@ idx = zeros(size(X,1), 1);
 % Note: You can use a for-loop over the examples to compute this.
 %
 
-for i = 1:size(X, 1)
-  x = X(i, :);
-  [dummy, idx(i)] = min(sqrt((x - centroids)(:, 1) .^ 2 + (x - centroids)(:, 2) .^ 2));
-end
+#for i = 1:size(X, 1)
+#  x = X(i, :);
+#  [dummy, idx(i)] = min((sqrt((x - centroids)(:, 1) .^ 2 + (x - centroids)(:, 2) .^ 2)) .^ 2 );
+#end
 
+distMatrix = zeros(size(X, 1), K);
+
+for i = 1:size(X, 1)
+  for j = 1:K
+    x = X(i, :);
+    m = centroids(j, :);
+    distMatrix(i, j) = norm(x - m);
+  end
+  [dummy, idx(i)] = min(distMatrix(i, :));
+end
 
 % =============================================================
 
