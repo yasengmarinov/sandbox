@@ -30,39 +30,50 @@ public class InversionsCounter {
         }
 
 
-        sort(intArray, 0, intArray.length, sorted);
+        System.out.println(sort(intArray, 0, intArray.length, sorted));
+        int a[] = {3, 2, 8, 6, 1, 4, 5, 7};
+        int b[] = {3, 2, 8, 6, 1, 4, 5, 7};
+        System.out.println(sort(a, 0, a.length, b));
 
-        for (int i = 0; i < intArray.length - 1; i++) {
-            if (intArray[i] > intArray[i + 1])
-                System.out.println("dejba");
-        }
+//        for (int i = 0; i < intArray.length - 1; i++) {
+//            if (intArray[i] > intArray[i + 1])
+//                System.out.println("dejba");
+//        }
+
 
     }
 
-    private static void sort(final int[] intArray, int start, int end, int[] sorted) {
+    private static long sort(final int[] intArray, int start, int end, int[] sorted) {
+        long lInv,rInv, mInv;
+
         if (end - start < 2) {
             sorted[start] = intArray[start];
-            return;
+            return 0;
         }
 
         int mid = (end + start) / 2;
-        sort(sorted, start, mid, intArray);
-        sort(sorted, mid, end, intArray);
+        lInv = sort(sorted, start, mid, intArray);
+        rInv = sort(sorted, mid, end, intArray);
 
-        merge(sorted, start, mid, end, intArray);
+        mInv = merge(sorted, start, mid, end, intArray);
 
+        return lInv + rInv + mInv;
     }
 
-    private static void merge(int[] intArray, int start, int mid, int end, int[] sorted) {
+    private static long merge(int[] intArray, int start, int mid, int end, int[] sorted) {
 
         int li = 0, ri = 0;
+        long inv = 0L;
 
         for (int i = start; i < end; i++) {
             if (ri >= end - mid || li < mid - start && intArray[start + li] <= intArray[mid + ri]) {
                 sorted[i] = intArray[start + li++];
             } else {
                 sorted[i] = intArray[mid + ri++];
+                inv += mid - start - li;
             }
         }
+
+        return inv;
     }
 }
