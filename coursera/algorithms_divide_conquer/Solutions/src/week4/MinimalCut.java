@@ -21,20 +21,20 @@ public class MinimalCut {
             e.printStackTrace();
         }
 
-        List<Vertex> verticles = new ArrayList<>(input.size());
+        List<Vertex> vertices = new ArrayList<>(input.size());
         for (int i = 1; i <= input.size(); i++) {
-            verticles.add(new Vertex(i));
+            vertices.add(new Vertex(i));
         }
         List<Edge> edges = new ArrayList<>(1000);
 
-        for (int j = 0; j < verticles.size(); j++) {
+        for (int j = 0; j < vertices.size(); j++) {
             String[] numbers = input.get(j).toString().split("\t");
             for (int i = 1; i < numbers.length; i++) {
                 if (Integer.valueOf(numbers[i]) > j + 1)
-                    edges.add(new Edge(verticles.get(j), verticles.get(Integer.valueOf(numbers[i]) - 1)));
+                    edges.add(new Edge(vertices.get(j), vertices.get(Integer.valueOf(numbers[i]) - 1)));
             }
         }
-        System.out.println(findMinCut(verticles, edges));
+        System.out.println(findMinCut(vertices, edges));
 
     }
 
@@ -58,25 +58,25 @@ public class MinimalCut {
         for (Edge edge : edges)
             edgesCopy.add(edge.clone(verticesCopy));
 
-        int verticlesCount = verticesCopy.size();
-        while (verticlesCount > 2) {
+        int verticesCount = verticesCopy.size();
+        while (verticesCount > 2) {
 
             int randomIndex = (int) Math.floor(Math.random() * edgesCopy.size());
             // Remove edge
             Edge removed = edgesCopy.remove(randomIndex);
-            // Merge verticles
-            mergeVerticles(verticesCopy, removed.getVer2().getId(), removed.getVer1().getId());
+            // Merge vertices
+            mergeVertices(verticesCopy, removed.getVer2().getId(), removed.getVer1().getId());
 
             // Remove self loops
             removeSelfLoops(edgesCopy);
 
-            verticlesCount--;
+            verticesCount--;
         }
 
         return edgesCopy.size();
     }
 
-    private static void mergeVerticles(List<Vertex> vertices, int id1, int id2) {
+    private static void mergeVertices(List<Vertex> vertices, int id1, int id2) {
         for (Vertex vertex: vertices) {
             if (vertex.getId() == id1)
                 vertex.setId(id2);
