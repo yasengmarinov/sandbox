@@ -25,44 +25,36 @@ public class SCCFinder {
         tCounter = verticesCount;
     }
 
-    private List<List<Integer>> reverseList(List<List<Integer>> graphList) {
-        List<List<Integer>> copy = new ArrayList<>(graphList.size());
-        for (int i = 0; i < graphList.size(); i++) {
-            copy.add(new LinkedList<>());
-        }
-        for (int i = 0; i < graphList.size(); i++) {
-            for (Object vertex : graphList.get(i)) {
-                copy.get(Integer.valueOf(vertex.toString()) - 1).add(i + 1);
-            }
-        }
-        return copy;
-    }
-
     public int[] find() {
+
+        // Perform first run
         for (int i = verticesCount; i > 0; i--) {
             if (!isVertexVisited(i)) {
                 exploreVertex(i, 0);
             }
         }
+
+        // Revert graph
         workingGraph = graphList;
-        int parentCount = 0;
         visited = new boolean[verticesCount];
 
+        // Perform second run
         for (int i = 0; i < t.length; i++) {
             if (!isVertexVisited(t[i])) {
                 exploreVertex(t[i], t[i]);
-                parentCount++;
             }
         }
-        int[] sccSize = new int[verticesCount];
 
+        // Collect the SCC sizes
+        int[] sccSizes = new int[verticesCount];
         for (int parent: parents)
-            sccSize[parent - 1]++;
+            sccSizes[parent - 1]++;
 
-        Arrays.sort(sccSize);
+        // Get the 5 largest SCCs
+        Arrays.sort(sccSizes);
         int[] result = new int[5];
         for (int i = 0; i < 5; i++) {
-            result [i] = sccSize[sccSize.length - 1 -i];
+            result [i] = sccSizes[sccSizes.length - 1 - i];
         }
         return result;
     }
@@ -77,9 +69,23 @@ public class SCCFinder {
             exploreVertex(Integer.valueOf(vertex.toString()), parent);
         }
 
+        // Parent == 0 in the first run only.
         if (parent == 0) setT(i);
         else setParent(i, parent);
 
+    }
+
+    private List<List<Integer>> reverseList(List<List<Integer>> graphList) {
+        List<List<Integer>> copy = new ArrayList<>(graphList.size());
+        for (int i = 0; i < graphList.size(); i++) {
+            copy.add(new LinkedList<>());
+        }
+        for (int i = 0; i < graphList.size(); i++) {
+            for (Object vertex : graphList.get(i)) {
+                copy.get(Integer.valueOf(vertex.toString()) - 1).add(i + 1);
+            }
+        }
+        return copy;
     }
 
     private void setParent(int vertex, int parent) {

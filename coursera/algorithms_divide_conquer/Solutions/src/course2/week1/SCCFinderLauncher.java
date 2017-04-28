@@ -27,7 +27,7 @@ public class SCCFinderLauncher {
             e.printStackTrace();
         }
 
-        List<List<Integer>> graphList = new ArrayList<>(857715);
+        List<List<Integer>> graphList = new ArrayList<>(520000);
 
         for (Object row: input) {
             String[] vertices = row.toString().split(" ");
