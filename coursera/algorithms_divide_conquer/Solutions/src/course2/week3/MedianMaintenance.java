@@ -1,5 +1,7 @@
 package course2.week3;
 
+import Common.Heap;
+
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;

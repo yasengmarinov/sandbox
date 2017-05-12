@@ -1,4 +1,4 @@
-package course2.week3;
+package Common;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by b06514a on 5/4/2017.
  */
-public class Heap<T extends Comparable> {
+public class Heap<T> {
 
     private List<T> array;
     private Comparator<T> comparator;
