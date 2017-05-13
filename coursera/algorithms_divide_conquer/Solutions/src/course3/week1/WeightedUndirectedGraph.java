@@ -45,6 +45,40 @@ public class WeightedUndirectedGraph {
         return vertices.get(vertex - 1);
     }
 
+    public long findMSPCost() {
+        long cost = 0;
+        List<Vertex> visitedVertices = new ArrayList<>(vertices.size());
+        Heap<Edge> availableEdges = new Heap<Edge>(Edge.weightComparator());
+
+        expandFront(vertices.get(0), visitedVertices, availableEdges);
+
+        while (visitedVertices.size() < vertices.size()) {
+            Edge candidate = availableEdges.removeFirst();
+            Vertex head = null;
+            if (!visitedVertices.contains(candidate.getTail())) {
+                head = candidate.getTail();
+            } else if (!visitedVertices.contains(candidate.getHead())) {
+                head = candidate.getHead();
+            }
+            if (head != null) {
+                cost+= candidate.getWeight();
+                expandFront(head, visitedVertices, availableEdges);
+            }
+        }
+
+        return cost;
+    }
+
+    private void expandFront(Vertex vertex, List<Vertex> visitedVertices, Heap<Edge> availableEdges) {
+        visitedVertices.add(vertex);
+        for (Edge edge: vertex.getEdges()) {
+            Vertex connected = edge.getHead().equals(vertex)? edge.getTail() : edge.getHead();
+            if (!visitedVertices.contains(connected)) {
+                availableEdges.put(edge);
+            }
+        }
+    }
+
     private static class Vertex {
         int id;
         List<Edge> edges;
@@ -62,6 +96,10 @@ public class WeightedUndirectedGraph {
             return String.valueOf(id);
         }
 
+        public List<Edge> getEdges() {
+            return edges;
+        }
+
     }
 
     private static class Edge {
@@ -74,17 +112,26 @@ public class WeightedUndirectedGraph {
             this.weight = weight;
         }
 
+        public Vertex getTail() {
+            return tail;
+        }
+
+        public Vertex getHead() {
+            return head;
+        }
+
+        public int getWeight() {
+            return weight;
+        }
+
+        public static Comparator<Edge> weightComparator() {
+            return (o1, o2) -> Integer.compare(o1.getWeight(), o2.getWeight());
+        }
+
         public String toString() {
             return tail + ", " + head;
         }
 
-    }
-
-    private long findMSPCost() {
-        List<Vertex> visitedVertices = new ArrayList<>(vertices.size());
-        visitedVertices.add(vertices.get(0));
-        
-        return 0;
     }
 
 }
