@@ -83,7 +83,7 @@ public class WeightedUndirectedGraph {
     private long findMSPCost() {
         List<Vertex> visitedVertices = new ArrayList<>(vertices.size());
         visitedVertices.add(vertices.get(0));
-        
+
         return 0;
     }
 
