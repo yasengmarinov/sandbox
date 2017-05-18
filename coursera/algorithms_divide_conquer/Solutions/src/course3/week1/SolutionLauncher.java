@@ -32,7 +32,7 @@ public class SolutionLauncher {
 
         WeightedUndirectedGraph graph = new WeightedUndirectedGraph(Integer.valueOf(input.get(0).split(" ")[0]),
                             Integer.valueOf(input.get(0).split(" ")[1]), input.subList(1, input.size() - 1));
-        System.out.println("kor");
+        System.out.println("MSP Cost: " + graph.findMSPCost());
 
     }
 

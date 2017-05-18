@@ -20,12 +20,12 @@ public class UnionFind {
     }
 
     public int find(int node) {
-        int nodeIndex = node;
-        while (nodeIndex != leaders[nodeIndex]) {
-            nodeIndex = leaders[nodeIndex];
+        int currentNode = node;
+        while (currentNode != leaders[currentNode]) {
+            currentNode = leaders[currentNode];
         }
-        compressPath(node, nodeIndex);
-        return nodeIndex;
+        compressPath(node, currentNode);
+        return currentNode;
     }
 
     private void compressPath(int node, int leader) {
