@@ -1,4 +1,4 @@
-package week4;
+package course1.week4;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,7 +13,7 @@ public class MinimalCut {
 
     public static void main(String[] args) {
 
-        Path inputFile = Paths.get("src", "week4", "kargerMinCut.txt");
+        Path inputFile = Paths.get("src", "course1/week4", "kargerMinCut.txt");
         List input = null;
         try {
             input = Files.readAllLines(inputFile);

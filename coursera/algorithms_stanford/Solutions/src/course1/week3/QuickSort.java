@@ -1,4 +1,4 @@
-package week3;
+package course1.week3;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -12,7 +12,7 @@ public class QuickSort {
 
     public static void main(String[] args) {
 
-        Path inputFile = Paths.get("src", "week3", "QuickSort.txt");
+        Path inputFile = Paths.get("src", "course1/week3", "QuickSort.txt");
         List input = null;
         try {
             input = Files.readAllLines(inputFile);

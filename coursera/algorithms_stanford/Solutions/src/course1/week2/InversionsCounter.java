@@ -1,4 +1,4 @@
-package week2;
+package course1.week2;
 
 
 import java.nio.file.Files;
@@ -13,7 +13,7 @@ public class InversionsCounter {
 
     public static void main(String[] args) {
 
-        Path inputFile = Paths.get("src", "week2", "IntegerArray.txt");
+        Path inputFile = Paths.get("src", "course1/week2", "IntegerArray.txt");
         List input = null;
         try {
             input = Files.readAllLines(inputFile);
