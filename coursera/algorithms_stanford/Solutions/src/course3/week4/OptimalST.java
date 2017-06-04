@@ -9,7 +9,7 @@ import java.util.TreeSet;
 public class OptimalST {
 
     public static void main(String[] args) {
-        double[] weights = {0.05, 0.4, 0.08, 0.04, 0.1, 0.1, 0.23};
+        double[] weights = {0.2, 0.05, 0.17, 0.1, 0.2, 0.03, 0.25};
         double[][] matrix = new double[weights.length][weights.length];
 
         for (int s = 0; s < weights.length; s++) {

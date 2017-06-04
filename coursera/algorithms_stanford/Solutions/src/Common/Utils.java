@@ -1,7 +1,5 @@
 package Common;
 
-import course3.week1.SolutionLauncher;
-
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
