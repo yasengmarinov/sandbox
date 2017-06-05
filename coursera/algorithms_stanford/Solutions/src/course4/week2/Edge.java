@@ -4,9 +4,10 @@ package course4.week2;
  * Created by yasen on 6/3/17.
  */
 public class Edge implements Comparable<Edge>{
-    int city1, city2, distance;
+    int city1, city2;
+    float distance;
 
-    public Edge(int city1, int city2, int distance) {
+    public Edge(int city1, int city2, float distance) {
         this.city1 = city1;
         this.city2 = city2;
         this.distance = distance;
@@ -20,13 +21,13 @@ public class Edge implements Comparable<Edge>{
         return city2;
     }
 
-    public int getDistance() {
+    public float getDistance() {
         return distance;
     }
 
     @Override
     public int compareTo(Edge edge) {
-        return Integer.compare(this.distance, edge.distance);
+        return Float.compare(this.distance, edge.distance);
     }
 
     @Override

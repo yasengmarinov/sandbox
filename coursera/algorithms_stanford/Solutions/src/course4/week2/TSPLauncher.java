@@ -25,29 +25,19 @@ public class TSPLauncher {
         List<Edge> edges = new ArrayList<>(numberOfCities * (numberOfCities - 1) / 2);
         for (int i = 0; i < cities.length - 1; i++) {
             for (int j = i + 1; j < cities.length; j++) {
-                edges.add(new Edge(i, j, eucledenDistance(cities[i].getCoordinates(), cities[j].getCoordinates())));
+                edges.add(new Edge(i, j, euclideanDistance(cities[i].getCoordinates(), cities[j].getCoordinates())));
             }
         }
 
-        List<Edge> testEdges = new ArrayList<>();
-        testEdges.add(new Edge(0, 1, 1));
-        testEdges.add(new Edge(0, 2, 2));
-        testEdges.add(new Edge(0, 3, 4));
-        testEdges.add(new Edge(1, 2, 3));
-        testEdges.add(new Edge(1, 3, 6));
-        testEdges.add(new Edge(2, 3, 5));
-
         Collections.sort(edges);
-        edges = edges.subList(0, (int)(edges.size() * 0.7));
 
         TSPFinder tspFinder = new TSPFinder(numberOfCities, edges);
-//        TSPFinder tspFinder = new TSPFinder(4, testEdges);
         System.out.println(tspFinder.find());
 
     }
 
-    private static int eucledenDistance(City.Coordinates coordinates1, City.Coordinates coordinates2) {
-        return (int)Math.sqrt(Math.pow(coordinates1.getX() - coordinates2.getX(), 2) +
+    private static float euclideanDistance(City.Coordinates coordinates1, City.Coordinates coordinates2) {
+        return (float)Math.sqrt(Math.pow(coordinates1.getX() - coordinates2.getX(), 2) +
                         Math.pow(coordinates1.getY() - coordinates2.getY(), 2));
     }
 
