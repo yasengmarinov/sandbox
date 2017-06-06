@@ -1,33 +1,25 @@
-package course4.week2;
+package common.tsp;
 
 /**
  * Created by yasen on 6/3/17.
  */
 public class Edge implements Comparable<Edge>{
     int city1, city2;
-    float distance;
+    double distance;
 
-    public Edge(int city1, int city2, float distance) {
+    public Edge(int city1, int city2, double distance) {
         this.city1 = city1;
         this.city2 = city2;
         this.distance = distance;
     }
 
-    public int getCity1() {
-        return city1;
-    }
-
-    public int getCity2() {
-        return city2;
-    }
-
-    public float getDistance() {
+    public double getDistance() {
         return distance;
     }
 
     @Override
     public int compareTo(Edge edge) {
-        return Float.compare(this.distance, edge.distance);
+        return Double.compare(this.distance, edge.distance);
     }
 
     @Override

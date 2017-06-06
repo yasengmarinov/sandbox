@@ -1,4 +1,4 @@
-package course4.week2;
+package common.tsp;
 
 /**
  * Created by yasen on 6/3/17.

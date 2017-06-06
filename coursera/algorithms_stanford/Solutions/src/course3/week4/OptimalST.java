@@ -5,6 +5,8 @@ import java.util.TreeSet;
 
 /**
  * Created by b06514a on 5/26/2017.
+ * Finds an Optimal Spanning Tree and prints its total weight
+ * input: weights of the elements in the tree
  */
 public class OptimalST {
 

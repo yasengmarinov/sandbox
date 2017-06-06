@@ -1,6 +1,6 @@
 package course2.week3;
 
-import Common.Heap;
+import common.Heap;
 
 import java.net.URISyntaxException;
 import java.nio.file.Files;

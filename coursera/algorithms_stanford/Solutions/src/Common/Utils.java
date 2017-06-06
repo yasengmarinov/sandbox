@@ -1,4 +1,4 @@
-package Common;
+package common;
 
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -30,5 +30,17 @@ public class Utils {
             input.set(i, input.get(i).toString());
         }
         return input;
+    }
+
+    public static int bitUp(int currentNumber, int position) {
+        int tmp = currentNumber;
+        tmp |= (1 << position);
+        return tmp;
+    }
+
+    public static int bitDown(int s, int position) {
+        int tmp = s;
+        tmp &= ~(1 << position);
+        return tmp;
     }
 }

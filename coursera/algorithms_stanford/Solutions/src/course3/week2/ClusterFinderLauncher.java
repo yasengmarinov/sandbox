@@ -1,12 +1,16 @@
 package course3.week2;
 
-import Common.Heap;
-import Common.Utils;
+import common.Heap;
+import common.Utils;
 
 import java.util.*;
 
 /**
  * Created by b06514a on 5/17/2017.
+ * Cluster data and finds the min distance between the clusters
+ * Input for problem 1: edges with distance
+ * Input for problem 2: bite array representing a vertex. Distance is
+ * calculated as number of different bits
  */
 public class ClusterFinderLauncher {
 

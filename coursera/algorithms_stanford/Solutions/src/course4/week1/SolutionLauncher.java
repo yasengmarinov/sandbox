@@ -1,11 +1,14 @@
 package course4.week1;
 
-import Common.Utils;
+import common.Utils;
 
 import java.util.List;
 
 /**
  * Created by b06514a on 6/1/2017.
+ * Solves the All-Pairs Shortest Path problem
+ * Takes as input directed weighted graph
+ * Prints the app-pars shortest path or NULL if negative cycle exists
  */
 public class SolutionLauncher {
 

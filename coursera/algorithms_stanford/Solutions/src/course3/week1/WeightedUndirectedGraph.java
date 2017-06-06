@@ -1,6 +1,6 @@
 package course3.week1;
 
-import Common.Heap;
+import common.Heap;
 
 import java.util.ArrayList;
 import java.util.Comparator;
