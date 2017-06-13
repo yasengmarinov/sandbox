@@ -10,7 +10,7 @@ public class ServerLauncher extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("views/home.fxml"));
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("views/home_admin.fxml"));
         primaryStage.setTitle("Cocktail Maker");
         primaryStage.setScene(new Scene(root, 800, 480));
         primaryStage.show();
