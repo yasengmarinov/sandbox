@@ -27,19 +27,23 @@ public class SCCFinderLauncher {
             e.printStackTrace();
         }
 
-        List<List<Integer>> graphList = new ArrayList<>(520000);
-
+        Map<Integer, List<Integer>> graphList = new HashMap();
+        Set<Integer> verticesSet = new HashSet<>();
         for (Object row: input) {
             String[] vertices = row.toString().split(" ");
-            int tail = Integer.valueOf(vertices[0]), head = Integer.valueOf(vertices[1]);
-            while (graphList.size() <= tail - 1)
-                graphList.add(new LinkedList<Integer>());
-            graphList.get(tail - 1).add(head);
+            int tail = Integer.valueOf(vertices[0]);
+            int head = Integer.valueOf(vertices[1]);
+            verticesSet.add(tail);
+            verticesSet.add(head);
+            if (!graphList.containsKey(tail)) {
+                graphList.put(tail, new LinkedList<>());
+            }
+            graphList.get(tail).add(head);
         }
 
         System.out.println("Parsed file");
 
-        SCCFinder sccFinder = new SCCFinder(graphList);
+        SCCFinder sccFinder = new SCCFinder(graphList, verticesSet);
         for (int size: sccFinder.find())
             System.out.println(size);
     }
