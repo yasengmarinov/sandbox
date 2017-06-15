@@ -1,7 +1,7 @@
 package course3.week1;
 
-import Common.Utils;
-import Common.Heap;
+import common.Utils;
+import common.Heap;
 
 import java.util.List;
 

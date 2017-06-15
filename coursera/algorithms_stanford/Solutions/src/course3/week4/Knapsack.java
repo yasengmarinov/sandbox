@@ -1,12 +1,15 @@
 package course3.week4;
 
-import Common.Utils;
+import common.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by b06514a on 5/26/2017.
+ * Finds a solution to the Knapsack problem
+ * How to fit maximum value with set weight
+ * input: items + knapsack weight
  */
 public class Knapsack {
 

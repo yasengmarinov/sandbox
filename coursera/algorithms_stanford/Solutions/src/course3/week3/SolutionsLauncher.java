@@ -1,7 +1,7 @@
 package course3.week3;
 
-import Common.Heap;
-import Common.Utils;
+import common.Heap;
+import common.Utils;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -10,6 +10,14 @@ import java.util.Set;
 
 /**
  * Created by b06514a on 5/23/2017.
+ * Huffman Encryption
+ * Creates an optimal alphabet for encrypting a given alphabet
+ * Input: list with symbols weight
+ * Output: Min and Max depth of the new alphabet tree
+ *
+ * Maximum Weighted Independent Set
+ * Finds a set of edges with max weight which do not share common vertex
+ * input: connected path of vertices. Each vertex has weight
  */
 public class SolutionsLauncher {
 
@@ -60,7 +68,6 @@ public class SolutionsLauncher {
 
     private static void huffmanCoding() {
         List<String> input = Utils.parseFile(new SolutionsLauncher().getClass(), "huffman.txt");
-        int numberOfSymbols = Integer.valueOf(input.get(0));
         Heap<SymbolNode> symbols = new Heap<SymbolNode>(Heap.getMinComparator());
         Heap<SymbolNode> combineNodes = new Heap<SymbolNode>(Heap.getMinComparator());
 

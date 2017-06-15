@@ -1,5 +1,7 @@
 package course4.week2;
 
+import common.tsp.Edge;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +11,7 @@ import java.util.Map;
  * Created by yasen on 6/3/17.
  */
 public class TSPFinder {
+    public static final float INFINITY_DISTANCE = 1000000F;
     private int numberOfCities;
     private List<Edge> edges;
 
@@ -17,29 +20,29 @@ public class TSPFinder {
         this.edges = edges;
     }
 
-    public long find() {
-        Map<Integer, Integer> edgeWeights = new HashMap<>(edges.size());
+    public double find() {
+        Map<Integer, Float> edgeWeights = new HashMap<>(edges.size());
         for (Edge edge : edges) {
-            edgeWeights.put(edge.hashCode(), edge.getDistance());
+            edgeWeights.put(edge.hashCode(), (float)edge.getDistance());
         }
 
-        Map<Integer, List<Integer>> solutions = new HashMap<>();
+        Map<Integer, List<Float>> solutions = new HashMap<>();
         initializeSolutions(solutions);
 
         for (int m = 2; m <= numberOfCities; m++) {
             System.out.println("Starting sets with size " + m);
             for (int s : subsets(m)) {
                 if (solutions.get(s) == null) {
-                    List<Integer> list = new ArrayList<>(numberOfCities);
+                    List<Float> list = new ArrayList<>(numberOfCities);
                     for (int i = 0; i < numberOfCities; i++) {
-                        list.add(1000000);
+                        list.add(INFINITY_DISTANCE);
                     }
                     solutions.put(s, list);
                 }
                 for (int j : citiesInSetExcept(s, 0)) {
                     for (int k : citiesInSetExcept(s, j)) {
                         if (edgeWeights.get(Edge.getHash(j, k)) != null) {
-                            int offerValue = solutions.get(downBit(s, j)).get(k) +
+                            float offerValue = solutions.get(common.Utils.bitDown(s, j)).get(k) +
                                     edgeWeights.get(Edge.getHash(j, k));
                             if (offerValue < solutions.get(s).get(j)) {
                                 solutions.get(s).set(j, offerValue);
@@ -53,12 +56,12 @@ public class TSPFinder {
             }
         }
 
-        long minCourse = Integer.MAX_VALUE;
+        double minCourse = INFINITY_DISTANCE;
         int fullSet = subsets(numberOfCities).get(0);
 
         for (int i = 1; i < numberOfCities; i++) {
             if (edgeWeights.get(Edge.getHash(0, i)) != null) {
-                long offer = solutions.get(fullSet).get(i) + edgeWeights.get(Edge.getHash(0, i));
+                double offer = solutions.get(fullSet).get(i) + edgeWeights.get(Edge.getHash(0, i));
                 if (offer < minCourse)
                     minCourse = offer;
             }
@@ -67,11 +70,11 @@ public class TSPFinder {
         return minCourse;
     }
 
-    private void initializeSolutions(Map<Integer, List<Integer>> solutions) {
-        List<Integer> list = new ArrayList<>(numberOfCities);
-        list.add(0);
+    private void initializeSolutions(Map<Integer, List<Float>> solutions) {
+        List<Float> list = new ArrayList<>(numberOfCities);
+        list.add(0.0F);
         for (int i = 1; i < numberOfCities; i++) {
-            list.add(10000);
+            list.add(INFINITY_DISTANCE);
         }
         solutions.put(1, list);
     }
@@ -99,29 +102,9 @@ public class TSPFinder {
             return;
         }
         for (int i = start; i < numberOfCities - m + 1; i++) {
-            int withBitUp = upBit(currentNumber, i);
+            int withBitUp = common.Utils.bitUp(currentNumber, i);
             subsetRecurse(i + 1, m - 1, subsets, withBitUp);
         }
     }
 
-    private static int upBit(int currentNumber, int position) {
-        int tmp = currentNumber;
-        tmp |= (1 << position);
-        if (tmp == currentNumber)
-            System.out.println("Ops, bit was already 1");
-        return tmp;
-    }
-
-    private Integer downBit(int s, int position) {
-        int tmp = s;
-        tmp &= ~(1 << position);
-        if (tmp == s)
-            System.out.println("Ops, bit was already 0");
-        return tmp;
-    }
-
-    public static void main(String[] args) {
-//        List<Integer> test = subsets(5, 2);
-//        System.out.println(citiesInSetExcept(25, 6));
-    }
 }
