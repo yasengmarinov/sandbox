@@ -1,5 +1,7 @@
 package controllers;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -19,6 +21,9 @@ public class LoginController {
     public Button login_button;
 
     public void initialize() {
+
+        BooleanBinding loginButtonEnabled = Bindings.and(username_field.textProperty().isNotEmpty(), password_field.textProperty().isNotEmpty());
+        login_button.disableProperty().bind(loginButtonEnabled.not());
 
         login_button.addEventHandler(ActionEvent.ACTION, event -> {
             ServerLauncher.navigateTo("home_admin");

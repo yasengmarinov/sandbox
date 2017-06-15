@@ -1,5 +1,7 @@
 package controllers;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -7,7 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import server.Beverage;
+import server.objects.Beverage;
 import server.db.DAO;
 
 /**
@@ -33,18 +35,8 @@ public class BeveragesConfig {
         beverages_list.setItems(beverages);
         newBeverageName.requestFocus();
 
-        remove_button.setDisable(true);
-
-        beverages_list.getFocusModel().focusedIndexProperty().addListener(((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                remove_button.setDisable(false);
-            }
-        }));
-        beverages_list.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue == false) {
-                remove_button.setDisable(true);
-            }
-        });
+        BooleanBinding removeButtonEnabled = Bindings.and(beverages_list.focusedProperty(), beverages_list.getFocusModel().focusedItemProperty().isNotNull());
+        remove_button.disableProperty().bind(removeButtonEnabled.not());
 
         add_button.addEventHandler(ActionEvent.ACTION, event -> {
             Beverage beverage = new Beverage(newBeverageName.getText());
