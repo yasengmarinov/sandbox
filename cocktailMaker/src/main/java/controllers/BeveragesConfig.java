@@ -9,7 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import server.objects.Beverage;
+import server.db.objects.Ingredient;
 import server.db.DAO;
 
 /**
@@ -18,7 +18,7 @@ import server.db.DAO;
 public class BeveragesConfig {
 
     @FXML
-    public ListView<Beverage> beverages_list;
+    public ListView<Ingredient> beverages_list;
 
     @FXML
     public TextField newBeverageName;
@@ -31,16 +31,16 @@ public class BeveragesConfig {
 
     public void initialize() {
 
-        ObservableList<Beverage> beverages = FXCollections.observableArrayList(DAO.getInstance().getBeverages());
-        beverages_list.setItems(beverages);
+        ObservableList<Ingredient> ingredients = FXCollections.observableArrayList(DAO.getInstance().getIngredients());
+        beverages_list.setItems(ingredients);
         newBeverageName.requestFocus();
 
         BooleanBinding removeButtonEnabled = Bindings.and(beverages_list.focusedProperty(), beverages_list.getFocusModel().focusedItemProperty().isNotNull());
         remove_button.disableProperty().bind(removeButtonEnabled.not());
 
         add_button.addEventHandler(ActionEvent.ACTION, event -> {
-            Beverage beverage = new Beverage(newBeverageName.getText());
-            DAO.getInstance().addBeverage(beverage);
+            Ingredient ingredient = new Ingredient(newBeverageName.getText());
+            DAO.getInstance().addBeverage(ingredient);
         });
     }
 

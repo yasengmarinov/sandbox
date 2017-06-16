@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="server.db.objects.Cocktail_Ingredient" table="COCKTAILS_INGREDIENTS">
+        <id name="id" type="int" column="ID">
+         <generator class="identity" />
+        </id>
+        <property name="millilitres" type="int" column="MILLILITRES" />
+        <many-to-one name="cocktail" column="COCKTAIL_ID" class="server.db.objects.Cocktail" />
+        <many-to-one name="ingredient" column="INGREDIENT_ID" class="server.db.objects.Ingredient" />
+    </class>
+
+</hibernate-mapping>
