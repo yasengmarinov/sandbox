@@ -14,7 +14,7 @@
         <!-- <property name="connection.password"/> -->
 
         <!-- DB schema will be updated if needed -->
-        <property name="hbm2ddl.auto">create</property>
+        <property name="hbm2ddl.auto">validate</property>
         <mapping class="server.db.entities.User"/>
         <mapping class="server.db.entities.Ingredient"/>
         <mapping class="server.db.entities.CocktailGroup"/>
