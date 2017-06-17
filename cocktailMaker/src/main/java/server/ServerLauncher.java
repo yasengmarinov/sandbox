@@ -39,7 +39,7 @@ public class ServerLauncher extends Application {
 
     public static void main(String[] args) {
         URL serverPropertiesURL = ServerLauncher.class.
-                getClassLoader().getResource("server_config.properties");
+                getClassLoader().getResource("config/server_config.properties");
         Properties serverProperties = new Properties();
         try {
             serverProperties.load(new FileReader(serverPropertiesURL.getFile()));
@@ -50,6 +50,6 @@ public class ServerLauncher extends Application {
         serverConfigurator.setProperties(serverProperties);
         serverConfigurator.configure();
 
-        launch(args);
+//        launch(args);
     }
 }

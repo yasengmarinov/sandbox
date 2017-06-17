@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="server.db.entities.User" table="USERS">
+        <id name="id" type="int">
+            <column name="ID" />
+            <generator class="identity" />
+        </id>
+        <property name="username" type="string" column="USERNAME" not-null="true" unique="true"/>
+        <property name="firstname" type="string" column="FIRSTNAME" />
+        <property name="lastname" type="string" column="LASTNAME" />
+        <property name="password" type="string" column="PASSWORD" />
+        <property name="magnetic_card" type="string" column="MAGNETIC_CARD" />
+        <property name="isAdmin" type="char" column="IS_ADMIN" />
+    </class>
+</hibernate-mapping>

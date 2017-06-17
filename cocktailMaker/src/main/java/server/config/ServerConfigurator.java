@@ -20,7 +20,8 @@ public class ServerConfigurator {
     }
 
     public void configure() {
-        DAO.initialize(properties);
+        DAO.createDb(properties);
+        DAO.getInstance();
     }
 
     public final Properties getProperties() {

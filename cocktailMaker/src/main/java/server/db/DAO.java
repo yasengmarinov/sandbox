@@ -1,13 +1,13 @@
 package server.db;
 
-import server.objects.Beverage;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import server.db.entities.*;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
@@ -20,7 +20,8 @@ public class DAO {
     public static final String DB_LOCATION_PROPERTY = "db.location";
 
     private static DAO instance;
-    private static Connection connection;
+
+    private static SessionFactory sessionFactory;
 
     public static DAO getInstance() {
         if (instance == null)
@@ -29,52 +30,75 @@ public class DAO {
     }
 
     private DAO() {
+        final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
+                .configure(DAO.class.getClassLoader().getResource("config/hibernate/hibernate.cfg.xml"))
+                .build();
+        sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
 
+        //TODO delete these
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+
+        Ingredient vodka = new Ingredient();
+        vodka.setName("vodka");
+
+        CocktailGroup cocktailGroup = new CocktailGroup();
+        cocktailGroup.setName("Group3");
+
+        Cocktail cocktail = new Cocktail();
+        cocktail.setName("New Cocktail with vodka");
+        cocktail.setCocktailGroup(cocktailGroup);
+
+        Cocktail_Ingredient cocktail_ingredient = new Cocktail_Ingredient();
+        cocktail_ingredient.setCocktail(cocktail);
+        cocktail_ingredient.setIngredient(vodka);
+        cocktail_ingredient.setMillilitres(30);
+
+        cocktail.getCocktailIngredients().add(cocktail_ingredient);
+
+        session.save(vodka);
+        session.save(cocktailGroup);
+        session.save(cocktail);
+        session.save(cocktail_ingredient);
+
+        transaction.commit();
+        session.close();
     }
 
-    List<Beverage> beverages = new LinkedList<Beverage>();
+    List<Ingredient> ingredients = new LinkedList<Ingredient>();
 
-    public static void initialize(Properties properties) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("jdbc:derby:");
-        builder.append(properties.getProperty(DB_LOCATION_PROPERTY));
-
-        boolean newDb = false;
-        if (!Files.exists(Paths.get(properties.getProperty(DB_LOCATION_PROPERTY)))) {
-            builder.append(";");
-            builder.append("create=true");
-            newDb = true;
-        }
-
-        try {
-            connection = DriverManager.getConnection(builder.toString());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        if (newDb) {
-            createDb();
-        }
-    }
-
-    private static void createDb() {
+    public static void createDb(Properties properties) {
+//        if (Files.exists(Paths.get(properties.getProperty(DB_LOCATION_PROPERTY)))) {
+//            System.out.println("DB Exists!");
+//            return;
+//        }
+//
+//        StringBuilder builder = new StringBuilder();
+//
+//        builder.append("jdbc:derby:");
+//        builder.append(properties.getProperty(DB_LOCATION_PROPERTY));
+//        builder.append(";");
+//        builder.append("create=true");
+//
+//
 //        try {
-//            connection.
+//            Connection connection = DriverManager.getConnection(builder.toString());
+//            connection.close();
 //        } catch (SQLException e) {
 //            e.printStackTrace();
 //        }
     }
 
-    public boolean addBeverage(Beverage beverage) {
+    public boolean addBeverage(Ingredient ingredient) {
 
-        instance.beverages.add(beverage);
-        System.out.println("Added beverage: " + beverage);
+        instance.ingredients.add(ingredient);
+        System.out.println("Added ingredient: " + ingredient);
         return true;
     }
 
-    public List<Beverage> getBeverages() {
+    public List<Ingredient> getIngredients() {
 
-        return beverages;
+        return ingredients;
     }
 
 }

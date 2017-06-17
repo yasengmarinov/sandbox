@@ -28,7 +28,7 @@
                           <items>
                               <MenuItem text="Calibrate" />
                               <MenuItem text="Set Pumps" />
-                              <MenuItem text="Add/Remove Beverages" />
+                              <MenuItem text="Add/Remove Ingredients" />
                           </items>
                       </Menu>
                       <Menu text="Users">
@@ -44,7 +44,7 @@
                       </Menu>
                   </menus>
               </MenuBar>
-              <fx:include source="beverages_config.fxml" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+              <fx:include source="ingredients.fxml" GridPane.rowIndex="1" GridPane.columnIndex="1" />
           </children>
       </GridPane>
    </children>

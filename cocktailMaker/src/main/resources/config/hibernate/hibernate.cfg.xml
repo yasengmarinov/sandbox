@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="connection.url">
+            jdbc:derby:C:/Users/b06514a/sandbox_project/cocktailMaker/src/main/db;create=true
+        </property>
+        <property name="connection.driver_class">org.apache.derby.jdbc.EmbeddedDriver</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.DerbyTenFiveDialect</property>
+        <property name="hibernate.default_schema">APP</property>
+        <!-- <property name="connection.username"/> -->
+        <!-- <property name="connection.password"/> -->
+
+        <!-- DB schema will be updated if needed -->
+        <property name="hbm2ddl.auto">create</property>
+        <mapping class="server.db.entities.User"/>
+        <mapping class="server.db.entities.Ingredient"/>
+        <mapping class="server.db.entities.CocktailGroup"/>
+        <mapping class="server.db.entities.Cocktail"/>
+        <mapping class="server.db.entities.Cocktail_Ingredient"/>
+    </session-factory>
+</hibernate-configuration>
