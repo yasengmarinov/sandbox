@@ -61,7 +61,6 @@ public class DAO {
     }
 
     public List<Ingredient> getIngredients() {
-
         return null;
     }
 
