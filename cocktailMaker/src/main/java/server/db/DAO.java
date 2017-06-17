@@ -6,6 +6,11 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import server.db.entities.Ingredient;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
 
@@ -34,25 +39,25 @@ public class DAO {
     }
 
     public static void createDb(Properties properties) {
-//        if (Files.exists(Paths.get(properties.getProperty(DB_LOCATION_PROPERTY)))) {
-//            System.out.println("DB Exists!");
-//            return;
-//        }
-//
-//        StringBuilder builder = new StringBuilder();
-//
-//        builder.append("jdbc:derby:");
-//        builder.append(properties.getProperty(DB_LOCATION_PROPERTY));
-//        builder.append(";");
-//        builder.append("create=true");
-//
-//
-//        try {
-//            Connection connection = DriverManager.getConnection(builder.toString());
-//            connection.close();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
+        if (Files.exists(Paths.get(properties.getProperty(DB_LOCATION_PROPERTY)))) {
+            System.out.println("DB Exists!");
+            return;
+        }
+
+        StringBuilder builder = new StringBuilder();
+
+        builder.append("jdbc:derby:");
+        builder.append(properties.getProperty(DB_LOCATION_PROPERTY));
+        builder.append(";");
+        builder.append("create=true");
+
+
+        try {
+            Connection connection = DriverManager.getConnection(builder.toString());
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean addBeverage(Ingredient ingredient) {
