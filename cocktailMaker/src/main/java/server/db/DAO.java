@@ -1,14 +1,11 @@
 package server.db;
 
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.registry.StandardServiceRegistry;
-import server.db.entities.*;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import server.db.entities.Ingredient;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
@@ -34,38 +31,7 @@ public class DAO {
                 .configure(DAO.class.getClassLoader().getResource("config/hibernate/hibernate.cfg.xml"))
                 .build();
         sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
-
-        //TODO delete these
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
-
-        Ingredient vodka = new Ingredient();
-        vodka.setName("vodka");
-
-        CocktailGroup cocktailGroup = new CocktailGroup();
-        cocktailGroup.setName("Group3");
-
-        Cocktail cocktail = new Cocktail();
-        cocktail.setName("New Cocktail with vodka");
-        cocktail.setCocktailGroup(cocktailGroup);
-
-        Cocktail_Ingredient cocktail_ingredient = new Cocktail_Ingredient();
-        cocktail_ingredient.setCocktail(cocktail);
-        cocktail_ingredient.setIngredient(vodka);
-        cocktail_ingredient.setMillilitres(30);
-
-        cocktail.getCocktailIngredients().add(cocktail_ingredient);
-
-        session.save(vodka);
-        session.save(cocktailGroup);
-        session.save(cocktail);
-        session.save(cocktail_ingredient);
-
-        transaction.commit();
-        session.close();
     }
-
-    List<Ingredient> ingredients = new LinkedList<Ingredient>();
 
     public static void createDb(Properties properties) {
 //        if (Files.exists(Paths.get(properties.getProperty(DB_LOCATION_PROPERTY)))) {
@@ -91,14 +57,12 @@ public class DAO {
 
     public boolean addBeverage(Ingredient ingredient) {
 
-        instance.ingredients.add(ingredient);
-        System.out.println("Added ingredient: " + ingredient);
         return true;
     }
 
     public List<Ingredient> getIngredients() {
 
-        return ingredients;
+        return null;
     }
 
 }
