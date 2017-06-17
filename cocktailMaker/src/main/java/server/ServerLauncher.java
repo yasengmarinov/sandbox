@@ -38,18 +38,13 @@ public class ServerLauncher extends Application {
 
 
     public static void main(String[] args) {
-        URL serverPropertiesURL = ServerLauncher.class.
-                getClassLoader().getResource("config/server_config.properties");
-        Properties serverProperties = new Properties();
-        try {
-            serverProperties.load(new FileReader(serverPropertiesURL.getFile()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        Properties serverProperties = Utils.loadPropertiesFile("server_config.properties");
+
         ServerConfigurator serverConfigurator = ServerConfigurator.getInstance();
         serverConfigurator.setProperties(serverProperties);
         serverConfigurator.configure();
 
-//        launch(args);
+        launch(args);
     }
 }

@@ -29,7 +29,7 @@ public class User {
     }
 
     @Basic
-    @Column(name = "USERNAME")
+    @Column(name = "USERNAME", unique = true)
     public String getUsername() {
         return username;
     }

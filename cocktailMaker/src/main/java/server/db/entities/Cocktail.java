@@ -1,5 +1,8 @@
 package server.db.entities;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import javax.persistence.*;
 import java.util.LinkedList;
 import java.util.List;
@@ -31,7 +34,7 @@ public class Cocktail {
     }
 
     @Basic
-    @Column(name = "NAME")
+    @Column(name = "NAME", unique = true)
     public String getName() {
         return name;
     }
@@ -71,6 +74,7 @@ public class Cocktail {
     }
 
     @OneToMany(mappedBy = "cocktail")
+    @Cascade(CascadeType.SAVE_UPDATE)
     public List<Cocktail_Ingredient> getCocktailIngredients() {
         return cocktailIngredients;
     }

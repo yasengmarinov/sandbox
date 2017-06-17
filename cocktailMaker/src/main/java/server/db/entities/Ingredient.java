@@ -12,6 +12,14 @@ public class Ingredient {
     private String name;
     private Double velocity;
 
+    public Ingredient() {
+
+    }
+
+    public Ingredient(String name) {
+        this.name = name;
+    }
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     public Integer getId() {
@@ -23,7 +31,7 @@ public class Ingredient {
     }
 
     @Basic
-    @Column(name = "NAME")
+    @Column(name = "NAME", unique = true)
     public String getName() {
         return name;
     }
@@ -62,5 +70,10 @@ public class Ingredient {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (velocity != null ? velocity.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }
