@@ -21,7 +21,7 @@ public class ServerLauncher extends Application {
         stage = primaryStage;
         PageNavigator.init(stage);
         primaryStage.setTitle("Cocktail Maker");
-        PageNavigator.navigateTo(PageNavigator.PAGE_LOGIN);
+        PageNavigator.navigateTo(PageNavigator.PAGE_CONFIGURE_INGREDIENTS);
         stage.show();
     }
 

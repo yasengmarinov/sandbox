@@ -2,6 +2,8 @@ package controllers;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
+import javafx.beans.binding.StringBinding;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -36,7 +38,14 @@ public class ConfigureIngredientsController {
     @FXML
     public Button remove_button;
 
+    @FXML
+    public Button edit_button;
+
+    @FXML
+    public Button cancel_button;
+
     ObservableList<Ingredient> ingredientObservableList = FXCollections.observableArrayList();
+    SimpleBooleanProperty editMode = new SimpleBooleanProperty(false);
 
     public void initialize() {
 
@@ -45,28 +54,52 @@ public class ConfigureIngredientsController {
 
         newIngredientName.requestFocus();
 
-        setButtonsDisableProperty();
+        setButtonsVisibility();
 
         addEventListeners();
     }
 
-    private void setButtonsDisableProperty() {
+    private void setButtonsVisibility() {
+        add_button.textProperty().bind(new StringBinding() {
+            {
+                super.bind(editMode);
+            }
+            @Override
+            protected String computeValue() {
+                return (editMode.getValue() ? "Save" : "Add");
+            }
+        });
+        cancel_button.visibleProperty().bind(editMode);
+        ingredients_list.disableProperty().bind(editMode);
+
         BooleanBinding removeButtonEnabled = Bindings.and(ingredients_list.focusedProperty(), ingredients_list.getFocusModel().focusedItemProperty().isNotNull());
         remove_button.disableProperty().bind(removeButtonEnabled.not());
 
         BooleanBinding addButtonEnabled = Bindings.isNotEmpty(newIngredientName.textProperty());
         add_button.disableProperty().bind(addButtonEnabled.not());
+
+        edit_button.disableProperty().bind(removeButtonEnabled.not());
+
     }
 
     private void addEventListeners() {
         add_button.addEventHandler(ActionEvent.ACTION, event -> {
-             if (DAO.Ingredients.addIngredient(new Ingredient(newIngredientName.getText()))) {
-                 newIngredientName.clear();
-                 refreshIngredientsList();
-                 newIngredientName.requestFocus();
-             } else {
-                 openAlert(Alert.AlertType.INFORMATION, Utils.Dialogs.TITLE_INCONSISTENT_DATE, "Please make sure the name is unique!");
-             }
+            boolean success;
+            if (editMode.getValue()) {
+                Ingredient ingredient = ingredients_list.getFocusModel().getFocusedItem();
+                ingredient.setName(newIngredientName.getText());
+                success = DAO.Ingredients.updateIngredient(ingredient);
+            } else {
+                success = DAO.Ingredients.addIngredient(new Ingredient(newIngredientName.getText()));
+            }
+            if (success) {
+                newIngredientName.clear();
+                refreshIngredientsList();
+                newIngredientName.requestFocus();
+                editMode.set(false);
+            } else {
+                openAlert(Alert.AlertType.INFORMATION, Utils.Dialogs.TITLE_INCONSISTENT_DATE, "Please make sure the name is unique!");
+            }
         });
 
         remove_button.addEventHandler(ActionEvent.ACTION, event -> {
@@ -76,6 +109,16 @@ public class ConfigureIngredientsController {
                 openAlert(Alert.AlertType.WARNING, Utils.Dialogs.TITLE_DELETE_FAILED,
                         "Please make sure the ingredient is not used in a pump or cocktail");
             }
+        });
+
+        edit_button.addEventHandler(ActionEvent.ACTION, event -> {
+            newIngredientName.setText(ingredients_list.getFocusModel().getFocusedItem().getName());
+            editMode.set(true);
+        });
+
+        cancel_button.addEventHandler(ActionEvent.ACTION, event -> {
+            newIngredientName.clear();
+            editMode.set(false);
         });
     }
 

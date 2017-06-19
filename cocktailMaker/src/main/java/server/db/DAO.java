@@ -8,7 +8,9 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.query.Query;
 import server.db.entities.Ingredient;
 import server.db.entities.Pump;
+import server.db.entities.User;
 
+import javax.jws.soap.SOAPBinding;
 import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 import java.util.logging.Logger;
@@ -89,6 +91,10 @@ public class DAO {
         public static boolean removeIngredient(Ingredient ingredient) {
             return delete(ingredient);
         }
+
+        public static boolean updateIngredient(Ingredient ingredient) {
+            return update(ingredient);
+        }
     }
 
     public static class Pumps {
@@ -104,6 +110,24 @@ public class DAO {
 
         public static boolean updatePump(Pump pump) {
             return update(pump);
+        }
+    }
+
+    public static class Users {
+        public static List<User> getUsers() {
+            Query<User> query = session.createQuery("from User ");
+            return query.list();
+        }
+        public static boolean addUser(User user) {
+            return persist(user);
+        }
+
+        public static boolean updateUser(User user) {
+            return update(user);
+        }
+
+        public static boolean removeUser(User user) {
+            return delete(user);
         }
     }
 }

@@ -45,15 +45,7 @@
                <HBox spacing="20.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
                   <TextField fx:id="selectedPumpId_field" editable="false" maxWidth="50.0" promptText="ID" />
                   <ComboBox fx:id="selectedPumpIngredient_box" minWidth="300.0" promptText="Ingredient" />
-                  <Label text="Enabled:">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="20.0" />
-                     </HBox.margin>
-                  </Label>
-                  <CheckBox fx:id="selectedPumpEnabled_check" minHeight="31.0" minWidth="31.0" />
+                  <CheckBox fx:id="selectedPumpEnabled_check" text="Enabled" minHeight="31.0" minWidth="31.0" />
                   <Button fx:id="save_button" minWidth="100" text="Save">
                      <HBox.margin>
                         <Insets left="100.0" />

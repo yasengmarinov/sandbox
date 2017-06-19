@@ -9,14 +9,14 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "USERS")
-public class User {
+public class User implements Comparable<User> {
     private Integer id;
     private String username;
     private String firstname;
     private String lastname;
     private String password;
     private String magneticCard;
-    private String isAdmin;
+    private Boolean isAdmin;
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
@@ -80,12 +80,11 @@ public class User {
 
     @Basic
     @Column(name = "IS_ADMIN")
-    @Type(type = "char")
-    public String getIsAdmin() {
+    public Boolean getIsAdmin() {
         return isAdmin;
     }
 
-    public void setIsAdmin(String isAdmin) {
+    public void setIsAdmin(Boolean isAdmin) {
         this.isAdmin = isAdmin;
     }
 
@@ -118,5 +117,10 @@ public class User {
         result = 31 * result + (magneticCard != null ? magneticCard.hashCode() : 0);
         result = 31 * result + (isAdmin != null ? isAdmin.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public int compareTo(User o) {
+        return this.username.compareTo(o.username);
     }
 }

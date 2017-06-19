@@ -20,7 +20,6 @@ public class ServerConfigurator {
     private static final String PUMP_PIN_GROUND_PROPERTY = "pump.%d.pin.ground";
     private static final String PUMP_PIN_IN_PROPERTY = "pump.%d.pin.in";
 
-    private static ServerConfigurator instance;
     private static Properties properties;
 
     public static void init(Properties properties) {
