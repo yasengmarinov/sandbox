@@ -1,19 +1,33 @@
 package server.db.entities;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by B06514A on 6/18/2017.
  */
 @Entity
-public class Pumps {
+@Table(name = "PUMPS")
+public class Pump implements Comparable<Pump> {
     private Integer id;
-    private Integer pinGround;
-    private Integer pinIn;
-    private String enabled;
+    private Ingredient ingredient;
+    private Integer millilitresLeft;
+    private Boolean enabled;
+
+    public Pump() {
+
+    }
+
+    public Pump(Integer id, Boolean enabled) {
+        this.id = id;
+        this.enabled = enabled;
+    }
+
+    public Pump(Integer id, Ingredient ingredient, Integer millilitresLeft, Boolean enabled) {
+        this.id = id;
+        this.ingredient = ingredient;
+        this.millilitresLeft = millilitresLeft;
+        this.enabled = enabled;
+    }
 
     @Id
     @Column(name = "ID")
@@ -26,32 +40,22 @@ public class Pumps {
     }
 
     @Basic
-    @Column(name = "PIN_GROUND")
-    public Integer getPinGround() {
-        return pinGround;
+    @Column(name = "MILLILITRES")
+    public Integer getMillilitresLeft() {
+        return millilitresLeft;
     }
 
-    public void setPinGround(Integer pinGround) {
-        this.pinGround = pinGround;
-    }
-
-    @Basic
-    @Column(name = "PIN_IN")
-    public Integer getPinIn() {
-        return pinIn;
-    }
-
-    public void setPinIn(Integer pinIn) {
-        this.pinIn = pinIn;
+    public void setMillilitresLeft(Integer millilitresLeft) {
+        this.millilitresLeft = millilitresLeft;
     }
 
     @Basic
     @Column(name = "ENABLED")
-    public String getEnabled() {
+    public Boolean getEnabled() {
         return enabled;
     }
 
-    public void setEnabled(String enabled) {
+    public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
 
@@ -60,12 +64,10 @@ public class Pumps {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Pumps pumps = (Pumps) o;
+        Pump pump = (Pump) o;
 
-        if (id != null ? !id.equals(pumps.id) : pumps.id != null) return false;
-        if (pinGround != null ? !pinGround.equals(pumps.pinGround) : pumps.pinGround != null) return false;
-        if (pinIn != null ? !pinIn.equals(pumps.pinIn) : pumps.pinIn != null) return false;
-        if (enabled != null ? !enabled.equals(pumps.enabled) : pumps.enabled != null) return false;
+        if (id != null ? !id.equals(pump.id) : pump.id != null) return false;
+        if (enabled != null ? !enabled == (pump.enabled) : pump.enabled != null) return false;
 
         return true;
     }
@@ -73,9 +75,23 @@ public class Pumps {
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (pinGround != null ? pinGround.hashCode() : 0);
-        result = 31 * result + (pinIn != null ? pinIn.hashCode() : 0);
         result = 31 * result + (enabled != null ? enabled.hashCode() : 0);
         return result;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "INGREDIENT_ID", referencedColumnName = "ID")
+    public Ingredient getIngredient() {
+        return ingredient;
+    }
+
+    public void setIngredient(Ingredient ingredient) {
+        this.ingredient = ingredient;
+    }
+
+
+    @Override
+    public int compareTo(Pump o) {
+        return Integer.compare(this.getId(), o.getId());
     }
 }

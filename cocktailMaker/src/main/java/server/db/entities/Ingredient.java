@@ -7,7 +7,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "INGREDIENTS")
-public class Ingredient {
+public class Ingredient implements Comparable<Ingredient> {
     private Integer id;
     private String name;
     private Double velocity;
@@ -75,5 +75,10 @@ public class Ingredient {
     @Override
     public String toString() {
         return name;
+    }
+
+    @Override
+    public int compareTo(Ingredient o) {
+        return this.name.compareTo(o.getName());
     }
 }

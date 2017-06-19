@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.112"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.IngredientsController">
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ConfigureIngredientsController">
     <VBox>
         <children>
             <fx:include source="menu.fxml"/>

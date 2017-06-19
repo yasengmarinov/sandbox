@@ -7,44 +7,36 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import server.config.ServerConfigurator;
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.net.URL;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 public class ServerLauncher extends Application {
+
+    private static final Logger logger = Logger.getLogger(ServerLauncher.class.getName());
 
     private static Stage stage;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         stage = primaryStage;
-        Parent root = FXMLLoader.load(getClass().
-                getClassLoader().getResource("views/login.fxml"));
+        PageNavigator.init(stage);
         primaryStage.setTitle("Cocktail Maker");
-        primaryStage.setScene(new Scene(root, 800, 480));
-        primaryStage.show();
-    }
-
-    public static void navigateTo(String page) {
-        try {
-            String url = "views/" + page + ".fxml";
-            Parent root = FXMLLoader.load(ServerLauncher.class.getClassLoader().getResource(url));
-            stage.setScene(new Scene(root, 800, 480));
-        } catch (Exception ex) {
-            System.err.println(ex);
-        }
+        PageNavigator.navigateTo(PageNavigator.PAGE_LOGIN);
+        stage.show();
     }
 
 
     public static void main(String[] args) {
 
+        logger.info("Starting application");
         Properties serverProperties = Utils.loadPropertiesFile("server_config.properties");
 
-        ServerConfigurator serverConfigurator = ServerConfigurator.getInstance();
-        serverConfigurator.setProperties(serverProperties);
-        serverConfigurator.configure();
+        logger.info("Starting initial configuration");
 
+        ServerConfigurator.init(serverProperties);
+        ServerConfigurator.configure();
+
+        logger.info( "Launching application");
         launch(args);
     }
 }

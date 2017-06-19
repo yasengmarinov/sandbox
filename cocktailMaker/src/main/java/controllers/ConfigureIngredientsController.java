@@ -22,7 +22,7 @@ import static server.Utils.Dialogs.openAlert;
 /**
  * Created by b06514a on 6/10/2017.
  */
-public class IngredientsController {
+public class ConfigureIngredientsController {
 
     @FXML
     public ListView<Ingredient> ingredients_list;

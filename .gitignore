@@ -4,3 +4,5 @@
 **/SCC.txt
 **/main/db/
 **/target/
+*.log
+*.log.*

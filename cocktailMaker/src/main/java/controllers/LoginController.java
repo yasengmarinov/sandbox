@@ -7,7 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import server.ServerLauncher;
+import server.PageNavigator;
 
 public class LoginController {
 
@@ -22,11 +22,12 @@ public class LoginController {
 
     public void initialize() {
 
-        BooleanBinding loginButtonEnabled = Bindings.and(username_field.textProperty().isNotEmpty(), password_field.textProperty().isNotEmpty());
+        BooleanBinding loginButtonEnabled = Bindings.and(username_field.textProperty().isNotEmpty(),
+                password_field.textProperty().isNotEmpty());
         login_button.disableProperty().bind(loginButtonEnabled.not());
 
         login_button.addEventHandler(ActionEvent.ACTION, event -> {
-            ServerLauncher.navigateTo("home_admin");
+            PageNavigator.navigateTo(PageNavigator.PAGE_HOME_ADMIN);
         });
 
     }
