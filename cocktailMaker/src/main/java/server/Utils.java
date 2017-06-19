@@ -1,10 +1,15 @@
 package server;
 
+import javafx.beans.binding.StringBinding;
 import javafx.scene.control.Alert;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.Properties;
 
 /**
@@ -25,9 +30,22 @@ public class Utils {
         return properties;
     }
 
+    public static String generateMd5(String string) {
+        String hash;
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            BigInteger bigInteger = new BigInteger(1, md.digest(string.getBytes()));
+            hash = bigInteger.toString(16);
+        } catch (NoSuchAlgorithmException e) {
+            hash = "";
+            e.printStackTrace();
+        }
+        return hash;
+    }
+
     public static class Dialogs {
 
-        public static final String TITLE_INCONSISTENT_DATE = "Inconsistent Data";
+        public static final String TITLE_INCONSISTENT_DATA = "Inconsistent Data";
         public static final String TITLE_DELETE_FAILED = "Delete Failed";
 
         public static void openAlert(Alert.AlertType alertType, String title, String content) {

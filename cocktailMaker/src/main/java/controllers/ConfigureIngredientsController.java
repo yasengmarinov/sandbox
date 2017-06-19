@@ -98,7 +98,7 @@ public class ConfigureIngredientsController {
                 newIngredientName.requestFocus();
                 editMode.set(false);
             } else {
-                openAlert(Alert.AlertType.INFORMATION, Utils.Dialogs.TITLE_INCONSISTENT_DATE, "Please make sure the name is unique!");
+                openAlert(Alert.AlertType.INFORMATION, Utils.Dialogs.TITLE_INCONSISTENT_DATA, "Please make sure the name is unique!");
             }
         });
 

@@ -40,7 +40,7 @@
                             <TableColumn fx:id="firstname_column" prefWidth="242.0" text="First Name" />
                             <TableColumn fx:id="lastname_column" prefWidth="218.0" text="Last Name" />
                             <TableColumn fx:id="card_column" prefWidth="139.0" style="-fx-alignment: CENTER;" text="Magnetic Card Set" />
-                            <TableColumn fx:id="admin_column" prefWidth="65.0" style="-fx-alignment: CENTER;" text="Admin" />
+                            <TableColumn fx:id="admin_column" prefWidth="64.0" style="-fx-alignment: CENTER;" text="Admin" />
                         </columns>
                     </TableView>
                     <FlowPane hgap="5.0" prefHeight="92.0" prefWidth="694.0" vgap="5.0" GridPane.columnSpan="2" GridPane.rowIndex="1">

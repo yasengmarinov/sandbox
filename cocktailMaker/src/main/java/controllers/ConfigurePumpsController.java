@@ -68,7 +68,7 @@ public class ConfigurePumpsController {
 
             if (selectedPumpEnabled_check.isSelected() && selectedPumpIngredient_box.getValue() == null) {
                 String content = "Please select Ingredient before enabling a Pump";
-                Utils.Dialogs.openAlert(Alert.AlertType.INFORMATION, Utils.Dialogs.TITLE_INCONSISTENT_DATE, content);
+                Utils.Dialogs.openAlert(Alert.AlertType.INFORMATION, Utils.Dialogs.TITLE_INCONSISTENT_DATA, content);
             } else {
                 int focusedPosition = pumps_table.getFocusModel().getFocusedIndex();
                 pump.setEnabled(selectedPumpEnabled_check.isSelected());
@@ -102,6 +102,7 @@ public class ConfigurePumpsController {
                     "Not Configured" : param.getValue().getIngredient().toString());
             return simpleStringProperty;
         });
+
         enabled_column.setCellValueFactory(param -> {
             SimpleBooleanProperty simpleBooleanProperty = new SimpleBooleanProperty(param.getValue().getEnabled());
             return simpleBooleanProperty;

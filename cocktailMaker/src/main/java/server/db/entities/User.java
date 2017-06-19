@@ -18,6 +18,19 @@ public class User implements Comparable<User> {
     private String magneticCard;
     private Boolean isAdmin;
 
+
+    public User() {
+
+    }
+
+    public User(String username, String firstname, String lastname, String password, Boolean isAdmin) {
+        this.username = username;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.password = password;
+        this.isAdmin = isAdmin;
+    }
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     public Integer getId() {
