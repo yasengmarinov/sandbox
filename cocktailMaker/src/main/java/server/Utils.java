@@ -30,7 +30,7 @@ public class Utils {
         return properties;
     }
 
-    public static String generateMd5(String string) {
+    public static String md5(String string) {
         String hash;
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
@@ -47,6 +47,11 @@ public class Utils {
 
         public static final String TITLE_INCONSISTENT_DATA = "Inconsistent Data";
         public static final String TITLE_DELETE_FAILED = "Delete Failed";
+        public static final String TITLE_PASSWORD_DO_NOT_MATCH = "Passwords do not match";
+        public static final String TITLE_LOGIN_FAILED = "Login failed";
+
+        public static final String CONTENT_PASSWORDS_DO_NOT_MATCH = "The Password is different from the Confirm Password";
+        public static final String CONTENT_LOGIN_FAILED = "Username or password are incorrect";
 
         public static void openAlert(Alert.AlertType alertType, String title, String content) {
            openAlert(alertType, title, null, content);

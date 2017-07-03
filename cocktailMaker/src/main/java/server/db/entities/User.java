@@ -31,6 +31,12 @@ public class User implements Comparable<User> {
         this.isAdmin = isAdmin;
     }
 
+    public User(String username, String password, Boolean isAdmin) {
+        this.username = username;
+        this.password = password;
+        this.isAdmin = isAdmin;
+    }
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     public Integer getId() {

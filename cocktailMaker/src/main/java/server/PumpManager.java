@@ -20,9 +20,4 @@ public class PumpManager {
         PumpManager.pumpMap = pumpMap;
     }
 
-    public Set<Integer> getPumpIDs() {
-        Set<Integer> mapKeys = new HashSet<>(pumpMap.size());
-        mapKeys.addAll(pumpMap.keySet());
-        return mapKeys;
-    }
 }

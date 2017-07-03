@@ -1,9 +1,14 @@
 package server;
 
+import interfaces.PropertiesController;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+
+import java.util.Map;
 
 /**
  * Created by B06514A on 6/19/2017.
@@ -14,6 +19,7 @@ public class PageNavigator {
     public static final String PAGE_CONFIGURE_USERS = "views/configureUsers.fxml";
     public static final String PAGE_CONFIGURE_INGREDIENTS = "views/configureIngredients.fxml";
 
+    public static final String PAGE_LOG = "views/log.fxml";
     public static final String PAGE_HOME_ADMIN = "views/home_admin.fxml";
     public static final String PAGE_LOGIN = "views/login.fxml";
 
@@ -26,9 +32,14 @@ public class PageNavigator {
     public static void navigateTo(String page) {
         try {
             Parent root = FXMLLoader.load(ServerLauncher.class.getClassLoader().getResource(page));
-            stage.setScene(new Scene(root, 800, 480));
+            Scene scene = new Scene(root, 800, 480);
+            stage.setScene(scene);
         } catch (Exception ex) {
             System.err.println(ex);
         }
+    }
+
+    public static Stage getStage() {
+        return stage;
     }
 }

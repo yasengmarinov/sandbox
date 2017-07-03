@@ -9,8 +9,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import server.LogType;
 import server.Utils;
-import server.db.DAO;
+import server.db.DAL;
 import server.db.entities.Ingredient;
 import server.db.entities.Pump;
 
@@ -52,7 +53,7 @@ public class ConfigurePumpsController {
 
         configureTableColumns();
 
-        pumpsObservableList.addAll(DAO.Pumps.getPumps());
+        pumpsObservableList.addAll(DAL.Pumps.getPumps());
         pumps_table.setItems(pumpsObservableList);
 
         populateIngredientsDropdown();
@@ -74,10 +75,13 @@ public class ConfigurePumpsController {
                 pump.setEnabled(selectedPumpEnabled_check.isSelected());
                 pump.setIngredient(selectedPumpIngredient_box.getValue());
 
-                DAO.Pumps.updatePump(pump);
+                DAL.Pumps.updatePump(pump);
 
                 pumpsObservableList.set(pumps_table.getFocusModel().getFocusedIndex(), pump);
                 FXCollections.sort(pumpsObservableList);
+
+                DAL.Log.addEntry(LogType.TYPE_CONFIGURE_PUMP,
+                        String.format("Pump %d configured with ingredient %s. ", pump.getId(), pump.getIngredient()));
 
                 pumps_table.refresh();
                 pumps_table.getFocusModel().focus(focusedPosition);
@@ -111,7 +115,7 @@ public class ConfigurePumpsController {
     }
 
     private void populateIngredientsDropdown() {
-        List<Ingredient> list = DAO.Ingredients.getIngredients();
+        List<Ingredient> list = DAL.Ingredients.getIngredients();
         Collections.sort(list);
         selectedPumpIngredient_box.setItems(FXCollections.observableArrayList(list));
     }

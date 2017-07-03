@@ -23,5 +23,6 @@
         <mapping class="server.db.entities.Cocktail_Ingredient"/>
         <mapping class="server.db.entities.Pump"/>
         <mapping class="server.db.entities.Pump"/>
+        <mapping class="server.db.entities.HistoryLog"/>
     </session-factory>
 </hibernate-configuration>

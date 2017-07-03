@@ -50,3 +50,25 @@ CREATE TABLE COCKTAILS_INGREDIENTS
   FOREIGN KEY (ingredient_id) REFERENCES INGREDIENTS (id)
     ON DELETE CASCADE
 );
+
+CREATE TABLE PUMPS
+(
+  id            INT  NOT NULL,
+  pin_ground    INT  NOT NULL,
+  pin_in        INT  NOT NULL,
+  ingredient_id INT,
+  enabled       CHAR NOT NULL DEFAULT 'N',
+  CONSTRAINT PUMPS_key PRIMARY KEY (id),
+  CONSTRAINT PUMPS_INGREDIENTS_fk
+  FOREIGN KEY (ingredient_id) REFERENCES INGREDIENTS (id)
+);
+
+CREATE TABLE HISTORY_LOG
+(
+  id         INT          NOT NULL GENERATED ALWAYS AS IDENTITY ( START WITH 1, INCREMENT BY 1),
+  type       INT          NOT NULL,
+  messgage   VARCHAR(255) NOT NULL,
+  username   VARCHAR(50),
+  event_date DATE                  DEFAULT current date,
+  CONSTRAINT HISTORY_LOG_key PRIMARY KEY (id)
+);

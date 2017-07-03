@@ -1,9 +1,7 @@
 package server.config;
 
-import javafx.stage.Stage;
-import server.PageNavigator;
 import server.PumpManager;
-import server.db.DAO;
+import server.db.DAL;
 import server.db.entities.Pump;
 
 import java.util.*;
@@ -28,7 +26,7 @@ public class ServerConfigurator {
     public static void configure() {
         logger.info("Initialize server configuration");
 
-        DAO.init();
+        DAL.init();
 
         Map<Integer, PumpConfig> pumpMap = initPumpMap();
         PumpManager.init(pumpMap);
@@ -38,11 +36,11 @@ public class ServerConfigurator {
 
     private static void createInitialData(Map<Integer, PumpConfig> pumpMap) {
         Set<Integer> presentPumpsIDs = new HashSet<>();
-        presentPumpsIDs.addAll(DAO.Pumps.getPumps().stream().map(Pump::getId).collect(Collectors.toList()));
+        presentPumpsIDs.addAll(DAL.Pumps.getPumps().stream().map(Pump::getId).collect(Collectors.toList()));
 
         for (PumpConfig pumpConfig : pumpMap.values()) {
             if (!presentPumpsIDs.contains(pumpConfig.getId())) {
-                DAO.Pumps.addPump(new Pump(pumpConfig.getId(), false));
+                DAL.Pumps.addPump(new Pump(pumpConfig.getId(), false));
             }
         }
 

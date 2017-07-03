@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
+<?import javafx.scene.layout.AnchorPane?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="controllers.MenuController"
@@ -28,6 +24,16 @@
                 <items>
                     <MenuItem text="Add/Remove Groups" />
                     <MenuItem text="Add/Remove Cocktails" />
+                </items>
+            </Menu>
+            <Menu text="Log">
+                <items>
+                    <MenuItem fx:id="log_item" text="History Log" />
+                </items>
+            </Menu>
+            <Menu text="Log Off" >
+                <items>
+                    <MenuItem fx:id="logoff_item" text="Log Off" />
                 </items>
             </Menu>
         </menus>

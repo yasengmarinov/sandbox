@@ -2,6 +2,7 @@ package controllers;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
+import javafx.beans.binding.StringBinding;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,8 +11,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import server.LogType;
 import server.Utils;
-import server.db.DAO;
+import server.db.DAL;
+import server.db.entities.HistoryLog;
 import server.db.entities.User;
 
 import java.util.Collections;
@@ -23,7 +26,7 @@ import java.util.List;
 public class ConfigureUsersController {
 
     @FXML
-    public TableView users_table;
+    public TableView<User> users_table;
 
     @FXML
     public TableColumn<User, String> username_column;
@@ -53,10 +56,10 @@ public class ConfigureUsersController {
     public PasswordField password_field;
 
     @FXML
-    public CheckBox admin_checkbox;
+    public PasswordField confirmPassword_field;
 
     @FXML
-    public CheckBox card_checkbox;
+    public CheckBox admin_checkbox;
 
     @FXML
     public Button setCard_button;
@@ -82,7 +85,7 @@ public class ConfigureUsersController {
 
         refreshUsersList();
         
-        setButtonsVisibility();
+        setObjectsVisibility();
         addEventHandlers();
     }
 
@@ -104,54 +107,138 @@ public class ConfigureUsersController {
         admin_column.setCellFactory(CheckBoxTableCell.forTableColumn(admin_column));
     }
 
-    private void setButtonsVisibility() {
-        BooleanBinding removeEditButtonsEnabled = Bindings.and(users_table.focusedProperty(), users_table.getFocusModel().focusedItemProperty().isNotNull());
-        remove_button.disableProperty().bind(removeEditButtonsEnabled.not());
-        edit_button.disableProperty().bind(removeEditButtonsEnabled.not());
+    private void setObjectsVisibility() {
 
-        BooleanBinding addButtonEnabled = Bindings.and(username_field.textProperty().isNotEmpty(), password_field.textProperty().isNotEmpty());
+        //Add button
+        add_button.textProperty().bind(new StringBinding() {
+            {
+                super.bind(editMode);
+            }
+            @Override
+            protected String computeValue() {
+                return (editMode.getValue() ? "Save" : "Add");
+            }
+        });
+        BooleanBinding addButtonEnabled = Bindings.and
+                (username_field.textProperty().isNotEmpty(), confirmPassword_field.textProperty().isNotEmpty()).and(password_field.textProperty().isNotEmpty()).
+                or(editMode);
         add_button.disableProperty().bind(addButtonEnabled.not());
 
+        //Remove and Edit buttons
+        BooleanBinding removeEditButtonsEnabled = Bindings.and(users_table.focusedProperty(), users_table.getFocusModel().focusedItemProperty().isNotNull()).and(editMode.not());
+        remove_button.disableProperty().bind(removeEditButtonsEnabled.not());
+
+        //Edit button
+        edit_button.disableProperty().bind(removeEditButtonsEnabled.not());
+
+        //Cancel button
         cancel_button.visibleProperty().bind(editMode);
+
+        //Set Card button
+        setCard_button.disableProperty().bind(removeEditButtonsEnabled.not());
+
+        //Username field
+        username_field.disableProperty().bind(editMode);
+
+        //Confirm password field
+        confirmPassword_field.disableProperty().bind(password_field.textProperty().isEmpty());
     }
 
     private void addEventHandlers() {
         add_button.addEventHandler(ActionEvent.ACTION, event -> {
+            if (!passwordsMatch()) {
+                Utils.Dialogs.openAlert(Alert.AlertType.WARNING, Utils.Dialogs.TITLE_PASSWORD_DO_NOT_MATCH, Utils.Dialogs.CONTENT_PASSWORDS_DO_NOT_MATCH);
+                password_field.clear();
+                confirmPassword_field.clear();
+                return;
+            }
             boolean success;
             if (editMode.getValue()) {
-                User user = (User) users_table.getFocusModel().getFocusedItem();
-                user.setFirstname(firstname_field.getText());
-                user.setLastname(lastname_field.getText());
-                user.setIsAdmin(admin_checkbox.isSelected());
-                user.setPassword(Utils.generateMd5(password_field.getText()));
-
-                success = DAO.Users.updateUser(user);
+                success = updateUser();
             } else {
-                success = DAO.Users.addUser(new User(username_field.getText(), firstname_field.getText(),
-                        lastname_field.getText(), Utils.generateMd5(password_field.getText()), admin_checkbox.isSelected()));
+                success = createUser();
             }
 
             if (success) {
                 clearFields();
+                editMode.setValue(false);
                 refreshUsersList();
             } else {
                 Utils.Dialogs.openAlert(Alert.AlertType.INFORMATION, Utils.Dialogs.TITLE_INCONSISTENT_DATA,
                         "Please make sure the UserID is unique");
             }
         });
+
+        remove_button.addEventHandler(ActionEvent.ACTION, event -> {
+            if (DAL.Users.removeUser(users_table.getFocusModel().getFocusedItem())) {
+                refreshUsersList();
+            } else {
+                Utils.Dialogs.openAlert(Alert.AlertType.WARNING, Utils.Dialogs.TITLE_DELETE_FAILED, "Delete of user failed");
+            }
+        });
+
+        edit_button.addEventHandler(ActionEvent.ACTION, event -> {
+            populateFields();
+            editMode.setValue(true);
+        });
+
+        cancel_button.addEventHandler(ActionEvent.ACTION, event -> {
+            editMode.setValue(false);
+            clearFields();
+        });
+    }
+
+    private boolean createUser() {
+        boolean success;
+        success = DAL.Users.addUser(new User(username_field.getText(), firstname_field.getText(),
+                lastname_field.getText(), Utils.md5(password_field.getText()), admin_checkbox.isSelected()));
+        if (success)
+            DAL.Log.addEntry(new HistoryLog(LogType.TYPE_CREATE_USER,
+                    "New user created: " + username_field.getText()));
+        return success;
+    }
+
+    private boolean updateUser() {
+        boolean success;
+
+        User user = users_table.getFocusModel().getFocusedItem();
+        user.setFirstname(firstname_field.getText());
+        user.setLastname(lastname_field.getText());
+        user.setIsAdmin(admin_checkbox.isSelected());
+        if (!password_field.getText().isEmpty()) {
+            user.setPassword(Utils.md5(password_field.getText()));
+        }
+
+        success = DAL.Users.updateUser(user);
+
+        if (success)
+            DAL.Log.addEntry(new HistoryLog(LogType.TYPE_UPDATE_USER, "User updated: " + user.getUsername()));
+        return success;
+    }
+
+    private void populateFields() {
+        User user = users_table.getFocusModel().getFocusedItem();
+        username_field.setText(user.getUsername());
+        firstname_field.setText(user.getFirstname());
+        lastname_field.setText(user.getLastname());
+        admin_checkbox.setSelected(user.getIsAdmin());
+    }
+
+    private boolean passwordsMatch() {
+        return password_field.getText().equals(confirmPassword_field.getText());
     }
 
     private void clearFields() {
         firstname_field.clear();
         lastname_field.clear();
         password_field.clear();
+        confirmPassword_field.clear();
         username_field.clear();
         admin_checkbox.setSelected(false);
-        card_checkbox.setSelected(false);
     }
 
     private void refreshUsersList() {
-        List<User> list = DAO.Users.getUsers();
+        List<User> list = DAL.Users.getUsers();
         Collections.sort(list);
         usersObservableList.clear();
         usersObservableList.addAll(list);

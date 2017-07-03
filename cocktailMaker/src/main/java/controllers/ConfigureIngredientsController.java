@@ -12,8 +12,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import server.LogType;
 import server.Utils;
-import server.db.DAO;
+import server.db.DAL;
 import server.db.entities.Ingredient;
 
 import java.util.Collections;
@@ -88,14 +89,14 @@ public class ConfigureIngredientsController {
             if (editMode.getValue()) {
                 Ingredient ingredient = ingredients_list.getFocusModel().getFocusedItem();
                 ingredient.setName(newIngredientName.getText());
-                success = DAO.Ingredients.updateIngredient(ingredient);
+                success = DAL.Ingredients.updateIngredient(ingredient);
             } else {
-                success = DAO.Ingredients.addIngredient(new Ingredient(newIngredientName.getText()));
+                success = DAL.Ingredients.addIngredient(new Ingredient(newIngredientName.getText()));
             }
             if (success) {
+                DAL.Log.addEntry(LogType.TYPE_CREATE_INGREDIENT, "New ingredient added: " + newIngredientName.getText());
                 newIngredientName.clear();
                 refreshIngredientsList();
-                newIngredientName.requestFocus();
                 editMode.set(false);
             } else {
                 openAlert(Alert.AlertType.INFORMATION, Utils.Dialogs.TITLE_INCONSISTENT_DATA, "Please make sure the name is unique!");
@@ -103,7 +104,9 @@ public class ConfigureIngredientsController {
         });
 
         remove_button.addEventHandler(ActionEvent.ACTION, event -> {
-            if (DAO.Ingredients.removeIngredient(ingredients_list.getFocusModel().getFocusedItem())) {
+            if (DAL.Ingredients.removeIngredient(ingredients_list.getFocusModel().getFocusedItem())) {
+                DAL.Log.addEntry(LogType.TYPE_REMOVE_INGREDIENT,
+                        "Removed ingredient: " + ingredients_list.getFocusModel().getFocusedItem().getName());
                 refreshIngredientsList();
             } else {
                 openAlert(Alert.AlertType.WARNING, Utils.Dialogs.TITLE_DELETE_FAILED,
@@ -123,7 +126,7 @@ public class ConfigureIngredientsController {
     }
 
     private void refreshIngredientsList() {
-        List<Ingredient> list = DAO.Ingredients.getIngredients();
+        List<Ingredient> list = DAL.Ingredients.getIngredients();
         Collections.sort(list);
         ingredientObservableList.clear();
         ingredientObservableList.addAll(list);

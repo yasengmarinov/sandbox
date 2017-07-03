@@ -1,44 +1,60 @@
 package server.db;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
+import server.LogType;
+import server.Utils;
+import server.db.entities.HistoryLog;
 import server.db.entities.Ingredient;
 import server.db.entities.Pump;
 import server.db.entities.User;
 
-import javax.jws.soap.SOAPBinding;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.logging.Logger;
 
 /**
  * Created by b06514a on 6/10/2017.
  */
-public class DAO {
+public class DAL {
 
-    public static final Logger logger = Logger.getLogger(DAO.class.getName());
+    public static final Logger logger = Logger.getLogger(DAL.class.getName());
 
     private static SessionFactory sessionFactory;
     private static Session session;
     private static CriteriaBuilder criteriaBuilder;
 
     public static void init() {
-        logger.info("Initializing DAO");
+        logger.info("Initializing DAL");
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
-                .configure(DAO.class.getClassLoader().getResource("config/hibernate/hibernate.cfg.xml"))
+                .configure(DAL.class.getClassLoader().getResource("config/hibernate/hibernate.cfg.xml"))
                 .build();
         sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
         session = sessionFactory.openSession();
         criteriaBuilder = session.getCriteriaBuilder();
+        prepopulateData();
+    }
+
+    private DAL() {
 
     }
 
-    private DAO() {
+    private static <T> List<T> getAll(Class clazz) {
+        Criteria criteria = session.createCriteria(clazz);
+        return criteria.list();
+    }
 
+    private static void prepopulateData() {
+        if (DAL.Users.getUsers().size() == 0)
+            DAL.Users.addUser(new User("admin", Utils.md5("admin"), true));
     }
 
     private static boolean persist(Object object) {
@@ -118,6 +134,14 @@ public class DAO {
             Query<User> query = session.createQuery("from User ");
             return query.list();
         }
+
+        public static User getUser(String username, String password) {
+            Criteria criteria = session.createCriteria(User.class);
+            criteria.add(Restrictions.eq("username", username));
+            criteria.add(Restrictions.eq("password", Utils.md5(password)));
+            return criteria.list().isEmpty() ? null : (User) criteria.list().get(0);
+        }
+
         public static boolean addUser(User user) {
             return persist(user);
         }
@@ -130,4 +154,32 @@ public class DAO {
             return delete(user);
         }
     }
+
+    public static class Log {
+        public static List<HistoryLog> getLog() {
+            Query<HistoryLog> query = session.createQuery("from HistoryLog ");
+            return query.list();
+        }
+
+        public static List<HistoryLog> getConfigLog() {
+            Criteria criteria = session.createCriteria(HistoryLog.class);
+            criteria.add(Restrictions.not(Restrictions.in("type", LogType.cocktailEvents())));
+            return criteria.list();
+        }
+
+        public static List<HistoryLog> getCocktailLog() {
+            Criteria criteria = session.createCriteria(HistoryLog.class);
+            criteria.add(Restrictions.in("type", LogType.cocktailEvents()));
+            return criteria.list();
+        }
+
+        public static boolean addEntry(HistoryLog historyLog) {
+            return persist(historyLog);
+        }
+
+        public static boolean addEntry(int type, String message) {
+            return persist(new HistoryLog(type, message));
+        }
+    }
+
 }
