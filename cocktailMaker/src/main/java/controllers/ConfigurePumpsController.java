@@ -53,14 +53,18 @@ public class ConfigurePumpsController {
 
         configureTableColumns();
 
-        pumpsObservableList.addAll(DAL.Pumps.getPumps());
+        pumpsObservableList.addAll(DAL.getAll(Pump.class));
         pumps_table.setItems(pumpsObservableList);
 
+        setObjectsVisibility();
         populateIngredientsDropdown();
-
         linkSelectedPumpFieldsToPumpsTable();
-
         addEventListeners();
+    }
+
+    private void setObjectsVisibility() {
+        selectedPumpIngredient_box.setDisable(true);
+        selectedPumpEnabled_check.setDisable(true);
     }
 
     private void addEventListeners() {
@@ -73,14 +77,18 @@ public class ConfigurePumpsController {
             } else {
                 int focusedPosition = pumps_table.getFocusModel().getFocusedIndex();
                 pump.setEnabled(selectedPumpEnabled_check.isSelected());
-                pump.setIngredient(selectedPumpIngredient_box.getValue());
+                if (!selectedPumpEnabled_check.isSelected()) {
+                    pump.setIngredient(null);
+                } else {
+                    pump.setIngredient(selectedPumpIngredient_box.getValue());
+                }
 
-                DAL.Pumps.updatePump(pump);
+                DAL.update(pump);
 
                 pumpsObservableList.set(pumps_table.getFocusModel().getFocusedIndex(), pump);
                 FXCollections.sort(pumpsObservableList);
 
-                DAL.Log.addEntry(LogType.TYPE_CONFIGURE_PUMP,
+                DAL.addHistoryEntry(LogType.TYPE_CONFIGURE_PUMP,
                         String.format("Pump %d configured with ingredient %s. ", pump.getId(), pump.getIngredient()));
 
                 pumps_table.refresh();
@@ -95,6 +103,8 @@ public class ConfigurePumpsController {
                 selectedPumpId_field.setText(newValue.getId().toString());
                 selectedPumpIngredient_box.setValue(newValue.getIngredient());
                 selectedPumpEnabled_check.setSelected(newValue.getEnabled());
+                selectedPumpIngredient_box.setDisable(false);
+                selectedPumpEnabled_check.setDisable(false);
             }
         });
     }
@@ -115,7 +125,7 @@ public class ConfigurePumpsController {
     }
 
     private void populateIngredientsDropdown() {
-        List<Ingredient> list = DAL.Ingredients.getIngredients();
+        List<Ingredient> list = DAL.getAll(Ingredient.class);
         Collections.sort(list);
         selectedPumpIngredient_box.setItems(FXCollections.observableArrayList(list));
     }

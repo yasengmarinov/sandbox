@@ -10,10 +10,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 import server.LogType;
 import server.Utils;
-import server.db.entities.HistoryLog;
-import server.db.entities.Ingredient;
-import server.db.entities.Pump;
-import server.db.entities.User;
+import server.db.entities.*;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -47,17 +44,17 @@ public class DAL {
 
     }
 
-    private static <T> List<T> getAll(Class clazz) {
+    public static <T> List<T> getAll(Class<T> clazz) {
         Criteria criteria = session.createCriteria(clazz);
         return criteria.list();
     }
 
     private static void prepopulateData() {
-        if (DAL.Users.getUsers().size() == 0)
-            DAL.Users.addUser(new User("admin", Utils.md5("admin"), true));
+        if (DAL.getAll(User.class).size() == 0)
+            DAL.persist(new User("admin", Utils.md5("admin"), true));
     }
 
-    private static boolean persist(Object object) {
+    public static boolean persist(Object object) {
         try {
             session.beginTransaction();
             session.save(object);
@@ -69,7 +66,7 @@ public class DAL {
         }
     }
 
-    private static boolean update(Object object) {
+    public static boolean update(Object object) {
         try {
             session.beginTransaction();
             session.update(object);
@@ -81,7 +78,7 @@ public class DAL {
         }
     }
 
-    private static boolean delete(Object object) {
+    public static boolean delete(Object object) {
         try {
             session.beginTransaction();
             session.delete(object);
@@ -93,93 +90,21 @@ public class DAL {
         }
     }
 
-    public static class Ingredients {
-
-        public static List<Ingredient> getIngredients() {
-            Query<Ingredient> query = session.createQuery("from Ingredient ");
-            return query.list();
-        }
-
-        public static boolean addIngredient(Ingredient ingredient) {
-            return persist(ingredient);
-        }
-
-        public static boolean removeIngredient(Ingredient ingredient) {
-            return delete(ingredient);
-        }
-
-        public static boolean updateIngredient(Ingredient ingredient) {
-            return update(ingredient);
-        }
+    public static User getUser(String username, String password) {
+        Criteria criteria = session.createCriteria(User.class);
+        criteria.add(Restrictions.eq("username", username.toLowerCase()));
+        criteria.add(Restrictions.eq("password", Utils.md5(password)));
+        return criteria.list().isEmpty() ? null : (User) criteria.list().get(0);
     }
 
-    public static class Pumps {
-
-        public static List<Pump> getPumps() {
-            Query<Pump> query = session.createQuery("from Pump ");
-            return query.list();
-        }
-
-        public static boolean addPump(Pump pump) {
-            return persist(pump);
-        }
-
-        public static boolean updatePump(Pump pump) {
-            return update(pump);
-        }
+    public static boolean addHistoryEntry(int type, String message) {
+        return persist(new HistoryLog(type, message));
     }
 
-    public static class Users {
-        public static List<User> getUsers() {
-            Query<User> query = session.createQuery("from User ");
-            return query.list();
-        }
-
-        public static User getUser(String username, String password) {
-            Criteria criteria = session.createCriteria(User.class);
-            criteria.add(Restrictions.eq("username", username));
-            criteria.add(Restrictions.eq("password", Utils.md5(password)));
-            return criteria.list().isEmpty() ? null : (User) criteria.list().get(0);
-        }
-
-        public static boolean addUser(User user) {
-            return persist(user);
-        }
-
-        public static boolean updateUser(User user) {
-            return update(user);
-        }
-
-        public static boolean removeUser(User user) {
-            return delete(user);
-        }
-    }
-
-    public static class Log {
-        public static List<HistoryLog> getLog() {
-            Query<HistoryLog> query = session.createQuery("from HistoryLog ");
-            return query.list();
-        }
-
-        public static List<HistoryLog> getConfigLog() {
-            Criteria criteria = session.createCriteria(HistoryLog.class);
-            criteria.add(Restrictions.not(Restrictions.in("type", LogType.cocktailEvents())));
-            return criteria.list();
-        }
-
-        public static List<HistoryLog> getCocktailLog() {
-            Criteria criteria = session.createCriteria(HistoryLog.class);
-            criteria.add(Restrictions.in("type", LogType.cocktailEvents()));
-            return criteria.list();
-        }
-
-        public static boolean addEntry(HistoryLog historyLog) {
-            return persist(historyLog);
-        }
-
-        public static boolean addEntry(int type, String message) {
-            return persist(new HistoryLog(type, message));
-        }
+    public static List<Cocktail_Ingredient> getCocktailIngredients(Cocktail cocktail) {
+        Criteria criteria = session.createCriteria(Cocktail_Ingredient.class);
+        criteria.add(Restrictions.eq("cocktail", cocktail));
+        return criteria.list().isEmpty() ? null : criteria.list();
     }
 
 }

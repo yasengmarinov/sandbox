@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ConfigureIngredientsController">
+<AnchorPane prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ConfigureCocktailGroupController">
     <VBox>
         <children>
             <fx:include source="menu.fxml" />
@@ -34,15 +34,13 @@
                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                 </padding>
                 <children>
-                    <TableView fx:id="object_table" prefHeight="200.0" prefWidth="760.0" GridPane.rowIndex="0" GridPane.rowSpan="2">
+                    <TableView fx:id="object_table" prefHeight="200.0" prefWidth="380.0" GridPane.rowIndex="0" GridPane.rowSpan="2">
                         <columns>
-                            <TableColumn fx:id="ingredient_column" prefWidth="311.0" text="Ingredient" />
-                            <TableColumn fx:id="calibrated_column" prefWidth="87.0" style="-fx-alignment: CENTER;" text="Calibrated" />
-
+                            <TableColumn fx:id="cocktailGroup_column" prefWidth="398.0" text="Group" />
                         </columns></TableView>
                     <VBox GridPane.columnIndex="1" GridPane.rowIndex="0">
                         <children>
-                            <Label text="Add New Ingredient">
+                            <Label text="Add New Cocktail Group">
                                 <font>
                                     <Font size="23.0" />
                                 </font>

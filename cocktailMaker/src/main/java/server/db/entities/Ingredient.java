@@ -1,5 +1,7 @@
 package server.db.entities;
 
+import server.db.entities.interfaces.NamedEntity;
+
 import javax.persistence.*;
 
 /**
@@ -7,7 +9,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "INGREDIENTS")
-public class Ingredient implements Comparable<Ingredient> {
+public class Ingredient implements NamedEntity, Comparable<Ingredient> {
     private Integer id;
     private String name;
     private Double velocity;

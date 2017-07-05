@@ -1,6 +1,5 @@
 package controllers;
 
-import interfaces.PropertiesController;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,7 +15,7 @@ import java.text.SimpleDateFormat;
 /**
  * Created by B06514A on 6/22/2017.
  */
-public class LogController extends PropertiesController {
+public class LogController {
 
     public static final String DATE_FORMAT = "dd/MM/yy hh:mm";
 
@@ -57,7 +56,7 @@ public class LogController extends PropertiesController {
     }
 
     public void setObservableList() {
-        historyLogObservableList = FXCollections.observableArrayList(DAL.Log.getLog());
+        historyLogObservableList = FXCollections.observableArrayList(DAL.getAll(HistoryLog.class));
     }
 
 }

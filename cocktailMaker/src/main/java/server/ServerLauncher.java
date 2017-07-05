@@ -1,6 +1,7 @@
 package server;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 import server.config.ServerConfigurator;
 
@@ -20,6 +21,12 @@ public class ServerLauncher extends Application {
         primaryStage.setTitle("Cocktail Maker");
         PageNavigator.navigateTo(PageNavigator.PAGE_LOGIN);
         stage.show();
+    }
+
+    @Override
+    public void stop() {
+        Platform.exit();
+        System.exit(0);
     }
 
 

@@ -1,14 +1,9 @@
 package server;
 
-import interfaces.PropertiesController;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-
-import java.util.Map;
 
 /**
  * Created by B06514A on 6/19/2017.
@@ -18,6 +13,9 @@ public class PageNavigator {
     public static final String PAGE_CONFIGURE_PUMPS = "views/configurePumps.fxml";
     public static final String PAGE_CONFIGURE_USERS = "views/configureUsers.fxml";
     public static final String PAGE_CONFIGURE_INGREDIENTS = "views/configureIngredients.fxml";
+    public static final String PAGE_CONFIGURE_COCKTAIL_GROUPS = "views/configureCocktailGroups.fxml";
+    public static final String PAGE_CONFIGURE_COCKTAILS = "views/configureCocktails.fxml";
+
 
     public static final String PAGE_LOG = "views/log.fxml";
     public static final String PAGE_HOME_ADMIN = "views/home_admin.fxml";

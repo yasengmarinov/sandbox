@@ -5,10 +5,8 @@ package server;
  */
 public class LogType {
 
-    public static final int TYPE_CREATE_COCKTAIL = 1;
-    public static final int TYPE_CREATE_COCKTAIL_GROUP = 2;
-    public static final int TYPE_CREATE_INGREDIENT = 3;
-    public static final int TYPE_REMOVE_INGREDIENT = 4;
+    public static final int TYPE_CREATE_OBJECT = 3;
+    public static final int TYPE_REMOVE_OBJECT = 4;
     public static final int TYPE_CREATE_USER = 5;
     public static final int TYPE_UPDATE_USER = 6;
     public static final int TYPE_REMOVE_USER = 7;

@@ -2,6 +2,7 @@ package server.db.entities;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import server.db.entities.interfaces.NamedEntity;
 
 import javax.persistence.*;
 import java.util.LinkedList;
@@ -12,7 +13,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "COCKTAILS")
-public class Cocktail {
+public class Cocktail implements NamedEntity, Comparable<Cocktail> {
     private Integer id;
     private String name;
     private CocktailGroup cocktailGroup;
@@ -20,6 +21,13 @@ public class Cocktail {
 
     public Cocktail() {
         cocktailIngredients = new LinkedList<>();
+    }
+
+    public Cocktail(String name, CocktailGroup cocktailGroup) {
+        this();
+
+        this.name = name;
+        this.cocktailGroup = cocktailGroup;
     }
 
     @Id
@@ -81,5 +89,15 @@ public class Cocktail {
 
     public void setCocktailIngredients(List<Cocktail_Ingredient> cocktailIngredientById) {
         this.cocktailIngredients = cocktailIngredientById;
+    }
+
+    @Override
+    public int compareTo(Cocktail o) {
+        return this.name.compareTo(o.getName());
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

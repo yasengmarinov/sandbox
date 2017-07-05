@@ -3,6 +3,7 @@ package controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
+import org.apache.derby.iapi.store.raw.Page;
 import server.PageNavigator;
 import server.session.SessionManager;
 
@@ -25,6 +26,11 @@ public class MenuController {
     @FXML
     public MenuItem log_item;
 
+    @FXML
+    public MenuItem cocktailGroup_item;
+
+    @FXML
+    public MenuItem cocktail_item;
 
     public void initialize() {
 
@@ -32,6 +38,8 @@ public class MenuController {
         configureNavigation(ingredients_item, PageNavigator.PAGE_CONFIGURE_INGREDIENTS);
         configureNavigation(users_item, PageNavigator.PAGE_CONFIGURE_USERS);
         configureNavigation(log_item, PageNavigator.PAGE_LOG);
+        configureNavigation(cocktailGroup_item, PageNavigator.PAGE_CONFIGURE_COCKTAIL_GROUPS);
+        configureNavigation(cocktail_item, PageNavigator.PAGE_CONFIGURE_COCKTAILS);
 
         logoff_item.addEventHandler(ActionEvent.ACTION, event -> {
             SessionManager.sessionInvalidate();

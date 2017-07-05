@@ -14,7 +14,7 @@ public class SessionManager {
 
         if (username.isEmpty() || password.isEmpty())
             return null;
-        User user = DAL.Users.getUser(username, password);
+        User user = DAL.getUser(username, password);
 
         if (user != null) {
             session = new Session(user);

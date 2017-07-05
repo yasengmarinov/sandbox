@@ -22,8 +22,8 @@
             </Menu>
             <Menu text="Cocktails">
                 <items>
-                    <MenuItem text="Add/Remove Groups" />
-                    <MenuItem text="Add/Remove Cocktails" />
+                    <MenuItem fx:id="cocktailGroup_item" text="Add/Remove Groups" />
+                    <MenuItem fx:id="cocktail_item" text="Add/Remove Cocktails" />
                 </items>
             </Menu>
             <Menu text="Log">

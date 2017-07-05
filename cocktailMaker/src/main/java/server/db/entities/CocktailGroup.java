@@ -1,5 +1,7 @@
 package server.db.entities;
 
+import server.db.entities.interfaces.NamedEntity;
+
 import javax.persistence.*;
 
 /**
@@ -7,9 +9,16 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "COCKTAIL_GROUPS")
-public class CocktailGroup {
+public class CocktailGroup implements NamedEntity, Comparable<CocktailGroup> {
     private Integer id;
     private String name;
+
+    public CocktailGroup() {
+    }
+
+    public CocktailGroup(String name) {
+        this.name = name;
+    }
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
@@ -51,4 +60,13 @@ public class CocktailGroup {
         return result;
     }
 
+    @Override
+    public int compareTo(CocktailGroup o) {
+        return this.name.compareTo(o.getName());
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

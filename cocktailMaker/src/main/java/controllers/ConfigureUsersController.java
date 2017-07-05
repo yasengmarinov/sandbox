@@ -170,7 +170,7 @@ public class ConfigureUsersController {
         });
 
         remove_button.addEventHandler(ActionEvent.ACTION, event -> {
-            if (DAL.Users.removeUser(users_table.getFocusModel().getFocusedItem())) {
+            if (DAL.delete(users_table.getFocusModel().getFocusedItem())) {
                 refreshUsersList();
             } else {
                 Utils.Dialogs.openAlert(Alert.AlertType.WARNING, Utils.Dialogs.TITLE_DELETE_FAILED, "Delete of user failed");
@@ -190,10 +190,10 @@ public class ConfigureUsersController {
 
     private boolean createUser() {
         boolean success;
-        success = DAL.Users.addUser(new User(username_field.getText(), firstname_field.getText(),
+        success = DAL.persist(new User(username_field.getText().toLowerCase(), firstname_field.getText(),
                 lastname_field.getText(), Utils.md5(password_field.getText()), admin_checkbox.isSelected()));
         if (success)
-            DAL.Log.addEntry(new HistoryLog(LogType.TYPE_CREATE_USER,
+            DAL.persist(new HistoryLog(LogType.TYPE_CREATE_USER,
                     "New user created: " + username_field.getText()));
         return success;
     }
@@ -209,10 +209,10 @@ public class ConfigureUsersController {
             user.setPassword(Utils.md5(password_field.getText()));
         }
 
-        success = DAL.Users.updateUser(user);
+        success = DAL.update(user);
 
         if (success)
-            DAL.Log.addEntry(new HistoryLog(LogType.TYPE_UPDATE_USER, "User updated: " + user.getUsername()));
+            DAL.persist(new HistoryLog(LogType.TYPE_UPDATE_USER, "User updated: " + user.getUsername()));
         return success;
     }
 
@@ -238,7 +238,7 @@ public class ConfigureUsersController {
     }
 
     private void refreshUsersList() {
-        List<User> list = DAL.Users.getUsers();
+        List<User> list = DAL.getAll(User.class);
         Collections.sort(list);
         usersObservableList.clear();
         usersObservableList.addAll(list);

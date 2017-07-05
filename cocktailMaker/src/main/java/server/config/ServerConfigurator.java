@@ -36,11 +36,11 @@ public class ServerConfigurator {
 
     private static void createInitialData(Map<Integer, PumpConfig> pumpMap) {
         Set<Integer> presentPumpsIDs = new HashSet<>();
-        presentPumpsIDs.addAll(DAL.Pumps.getPumps().stream().map(Pump::getId).collect(Collectors.toList()));
+        presentPumpsIDs.addAll(DAL.getAll(Pump.class).stream().map(Pump::getId).collect(Collectors.toList()));
 
         for (PumpConfig pumpConfig : pumpMap.values()) {
             if (!presentPumpsIDs.contains(pumpConfig.getId())) {
-                DAL.Pumps.addPump(new Pump(pumpConfig.getId(), false));
+                DAL.persist(new Pump(pumpConfig.getId(), false));
             }
         }
 
