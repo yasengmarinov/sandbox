@@ -17,6 +17,7 @@ public class ServerLauncher extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         stage = primaryStage;
+        stage.setFullScreen(true);
         PageNavigator.init(stage);
         primaryStage.setTitle("Cocktail Maker");
         PageNavigator.navigateTo(PageNavigator.PAGE_LOGIN);

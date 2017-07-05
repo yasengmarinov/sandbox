@@ -5,16 +5,8 @@
 <hibernate-configuration>
     <session-factory>
 
-        <!--<property name="connection.url"/>-->
-        <!--<property name="connection.driver_class"/>-->
-        <!--<property name="hibernate.dialect"/>-->
-        <!--<property name="hibernate.default_schema"/>-->
-        <!--<property name="connection.username"/>-->
-        <!--<property name="connection.password"/>-->
-
         <!-- DB schema will be updated if needed -->
         <property name="hbm2ddl.auto">update</property>
-        <property name="connection.url">jdbc:derby:C:/Users/b06514a/sandbox_project/cocktailMaker/src/main/db;create=true</property>
         <property name="connection.driver_class">org.apache.derby.jdbc.EmbeddedDriver</property>
         <mapping class="server.db.entities.User"/>
         <mapping class="server.db.entities.Ingredient"/>

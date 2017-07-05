@@ -30,14 +30,15 @@ public class PageNavigator {
     public static void navigateTo(String page) {
         try {
             Parent root = FXMLLoader.load(ServerLauncher.class.getClassLoader().getResource(page));
-            Scene scene = new Scene(root, 800, 480);
-            stage.setScene(scene);
+            if (stage.getScene() == null) {
+                Scene scene = new Scene(root, 800, 480);
+                stage.setScene(scene);
+            } else {
+                stage.getScene().setRoot(root);
+            }
         } catch (Exception ex) {
             System.err.println(ex);
         }
     }
 
-    public static Stage getStage() {
-        return stage;
-    }
 }
