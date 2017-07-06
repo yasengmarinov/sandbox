@@ -81,13 +81,17 @@ public abstract class SimpleAddRemovePage<T extends NamedEntity & Comparable<T>>
         cancel_button.visibleProperty().bind(editMode);
         object_table.disableProperty().bind(editMode);
 
-        BooleanBinding removeButtonEnabled = Bindings.and(object_table.focusedProperty(), object_table.getFocusModel().focusedItemProperty().isNotNull());
+        BooleanBinding removeButtonEnabled = isObjectSelected();
         remove_button.disableProperty().bind(removeButtonEnabled.not());
 
         add_button.disableProperty().bind(isReadyForAdd().not());
 
         edit_button.disableProperty().bind(removeButtonEnabled.not());
 
+    }
+
+    protected BooleanBinding isObjectSelected() {
+        return Bindings.and(newObjectName.focusedProperty().not(), object_table.getFocusModel().focusedItemProperty().isNotNull());
     }
 
     protected void addEventListeners() {

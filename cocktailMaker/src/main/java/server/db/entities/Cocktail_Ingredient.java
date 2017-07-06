@@ -13,6 +13,15 @@ public class Cocktail_Ingredient {
     private Cocktail cocktail;
     private Ingredient ingredient;
 
+    public Cocktail_Ingredient() {
+    }
+
+    public Cocktail_Ingredient(Cocktail cocktail, Ingredient ingredient, Integer millilitres) {
+        this.millilitres = millilitres;
+        this.cocktail = cocktail;
+        this.ingredient = ingredient;
+    }
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     public Integer getId() {

@@ -3,6 +3,7 @@
 *.iml
 **/SCC.txt
 **/main/db/
+**/cocktailMaker/db/
 **/target/
 *.log
 *.log.*
