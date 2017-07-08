@@ -1,6 +1,11 @@
 package controllers;
 
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.binding.ObjectBinding;
+import javafx.beans.binding.StringBinding;
+import javafx.beans.property.Property;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -47,26 +52,25 @@ public class ConfigurePumpsController {
     @FXML
     public Button save_button;
 
-    public ObservableList<Pump> pumpsObservableList = FXCollections.observableArrayList();
+    private ObservableList<Pump> pumpsObservableList = FXCollections.observableArrayList();
+    private Property<Pump> selectedPump = new SimpleObjectProperty<>();
+
 
     public void initialize() {
 
         configureTableColumns();
 
+        selectedPump.bind(pumps_table.getSelectionModel().selectedItemProperty());
         pumpsObservableList.addAll(DAL.getAll(Pump.class));
         pumps_table.setItems(pumpsObservableList);
+        pumps_table.getSelectionModel().select(0);
 
-        setObjectsVisibility();
+        populateSelectedPumpFields();
         populateIngredientsDropdown();
         linkSelectedPumpFieldsToPumpsTable();
         addEventListeners();
-    }
 
-    private void setObjectsVisibility() {
-        selectedPumpIngredient_box.setDisable(true);
-        selectedPumpEnabled_check.setDisable(true);
     }
-
     private void addEventListeners() {
         save_button.addEventHandler(ActionEvent.ACTION, event -> {
             Pump pump = pumps_table.getFocusModel().getFocusedItem();
@@ -77,11 +81,7 @@ public class ConfigurePumpsController {
             } else {
                 int focusedPosition = pumps_table.getFocusModel().getFocusedIndex();
                 pump.setEnabled(selectedPumpEnabled_check.isSelected());
-                if (!selectedPumpEnabled_check.isSelected()) {
-                    pump.setIngredient(null);
-                } else {
-                    pump.setIngredient(selectedPumpIngredient_box.getValue());
-                }
+                pump.setIngredient(selectedPumpIngredient_box.getValue());
 
                 DAL.update(pump);
 
@@ -98,15 +98,18 @@ public class ConfigurePumpsController {
     }
 
     private void linkSelectedPumpFieldsToPumpsTable() {
-        pumps_table.getFocusModel().focusedItemProperty().addListener((observable, oldValue, newValue) -> {
+
+        selectedPump.addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                selectedPumpId_field.setText(newValue.getId().toString());
-                selectedPumpIngredient_box.setValue(newValue.getIngredient());
-                selectedPumpEnabled_check.setSelected(newValue.getEnabled());
-                selectedPumpIngredient_box.setDisable(false);
-                selectedPumpEnabled_check.setDisable(false);
+                populateSelectedPumpFields();
             }
         });
+    }
+
+    private void populateSelectedPumpFields() {
+        selectedPumpId_field.setText(selectedPump.getValue().getId().toString());
+        selectedPumpIngredient_box.setValue(selectedPump.getValue().getIngredient());
+        selectedPumpEnabled_check.setSelected(selectedPump.getValue().getEnabled());
     }
 
     private void configureTableColumns() {

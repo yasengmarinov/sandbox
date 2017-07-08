@@ -7,7 +7,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "COCKTAILS_INGREDIENTS")
-public class Cocktail_Ingredient {
+public class Cocktail_Ingredient implements Comparable<Cocktail_Ingredient> {
     private Integer id;
     private Integer millilitres;
     private Cocktail cocktail;
@@ -80,5 +80,10 @@ public class Cocktail_Ingredient {
 
     public void setIngredient(Ingredient ingredientByIngredientId) {
         this.ingredient = ingredientByIngredientId;
+    }
+
+    @Override
+    public int compareTo(Cocktail_Ingredient o) {
+        return this.ingredient.compareTo(o.ingredient);
     }
 }

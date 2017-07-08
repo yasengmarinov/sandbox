@@ -83,14 +83,16 @@
                            <Font size="23.0" />
                         </font>
                             </Label>
-                                <Button fx:id="addIngredient_button" prefWidth="80.0" text="Add">
-                           <HBox.margin>
-                              <Insets left="185.0" />
-                           </HBox.margin></Button>
+                                <Button fx:id="deleteIngredient_button" prefWidth="80.0" text="Delete" >
+                                    <HBox.margin>
+                                        <Insets left="105.0" />
+                                    </HBox.margin>
+                                </Button>
+                                <Button fx:id="addIngredient_button" prefWidth="80.0" text="Add" />
                             </HBox>
                             <TableView fx:id="ingredients_table" prefHeight="240.0" prefWidth="305.0">
                                 <columns>
-                                    <TableColumn fx:id="ingredientName_column" prefWidth="287.0" text="Name" />
+                                    <TableColumn fx:id="ingredientName_column" prefWidth="286.0" text="Name" />
                                     <TableColumn fx:id="ingredientMl_column" prefWidth="92.0" text="Size" />
                                 </columns>
                             </TableView>

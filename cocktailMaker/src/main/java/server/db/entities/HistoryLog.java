@@ -5,7 +5,6 @@ import server.session.SessionManager;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by B06514A on 6/22/2017.

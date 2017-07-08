@@ -10,7 +10,6 @@
         <menus>
             <Menu text="Pumps">
                 <items>
-                    <MenuItem text="Calibrate" />
                     <MenuItem fx:id="pumps_item" text="Set Pumps" />
                     <MenuItem fx:id="ingredients_item" text="Add/Remove Ingredients" />
                 </items>

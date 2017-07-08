@@ -107,4 +107,11 @@ public class DAL {
         return criteria.list().isEmpty() ? null : criteria.list();
     }
 
+    public static Pump getPumpByIngredient(Ingredient ingredient) {
+        Criteria criteria = session.createCriteria(Pump.class);
+        criteria.add(Restrictions.eq("ingredient", ingredient));
+        criteria.add(Restrictions.eq("enabled", true));
+        return criteria.list().isEmpty() ? null : (Pump) criteria.list().get(0);
+    }
+
 }

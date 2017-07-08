@@ -1,9 +1,12 @@
 package controllers.templates;
 
+import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.StringBinding;
+import javafx.beans.property.Property;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,6 +18,7 @@ import javafx.scene.control.TextField;
 import server.LogType;
 import server.Utils;
 import server.db.DAL;
+import server.db.entities.Ingredient;
 import server.db.entities.interfaces.NamedEntity;
 
 import java.util.Collections;
@@ -46,24 +50,25 @@ public abstract class SimpleAddRemovePage<T extends NamedEntity & Comparable<T>>
     public Button cancel_button;
 
     protected Class T;
+    protected Property<T> selectedProperty = new SimpleObjectProperty<>();
 
     ObservableList<T> observableList = FXCollections.observableArrayList();
     SimpleBooleanProperty editMode = new SimpleBooleanProperty(false);
 
     public void initialize() {
-
         setClass();
-
+        selectedProperty.bind(object_table.getSelectionModel().selectedItemProperty());
         configureTableColumns();
+        setTableObjectAndFocus();
+        setButtonsVisibility();
+        addEventListeners();
+    }
 
+    protected void setTableObjectAndFocus() {
         object_table.setItems(observableList);
         refreshObjectList();
-
-        newObjectName.requestFocus();
-
-        setButtonsVisibility();
-
-        addEventListeners();
+        if (object_table.getItems().size() != 0)
+            object_table.getSelectionModel().select(0);
     }
 
     protected abstract void configureTableColumns();
@@ -103,7 +108,7 @@ public abstract class SimpleAddRemovePage<T extends NamedEntity & Comparable<T>>
                 success = addObject();
             }
             if (success) {
-                DAL.addHistoryEntry(LogType.TYPE_CREATE_OBJECT, "New object created: " + newObjectName.getText());
+                DAL.addHistoryEntry(LogType.TYPE_CREATE_OBJECT, "New " + T.getSimpleName() + " created: " + newObjectName.getText());
                 clearInputFields();
                 refreshObjectList();
                 editMode.set(false);
@@ -115,11 +120,11 @@ public abstract class SimpleAddRemovePage<T extends NamedEntity & Comparable<T>>
         remove_button.addEventHandler(ActionEvent.ACTION, event -> {
             if (DAL.delete(object_table.getFocusModel().getFocusedItem())) {
                 DAL.addHistoryEntry(LogType.TYPE_REMOVE_OBJECT,
-                        "Object deleted: " + object_table.getFocusModel().getFocusedItem());
+                        T.getSimpleName() + " deleted: " + object_table.getFocusModel().getFocusedItem());
                 refreshObjectList();
             } else {
                 openAlert(Alert.AlertType.WARNING, Utils.Dialogs.TITLE_DELETE_FAILED,
-                        "Please make sure the object is not used");
+                        "Please make sure the " + T.getSimpleName() + " is not used");
             }
         });
 
