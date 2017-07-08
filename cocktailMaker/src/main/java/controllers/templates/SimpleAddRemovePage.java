@@ -1,6 +1,6 @@
 package controllers.templates;
 
-import javafx.beans.Observable;
+import controllers.interfaces.SimpleController;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.StringBinding;
@@ -18,7 +18,6 @@ import javafx.scene.control.TextField;
 import server.LogType;
 import server.Utils;
 import server.db.DAL;
-import server.db.entities.Ingredient;
 import server.db.entities.interfaces.NamedEntity;
 
 import java.util.Collections;
@@ -29,7 +28,7 @@ import static server.Utils.Dialogs.openAlert;
 /**
  * Created by b06514a on 6/10/2017.
  */
-public abstract class SimpleAddRemovePage<T extends NamedEntity & Comparable<T>> {
+public abstract class SimpleAddRemovePage<T extends NamedEntity & Comparable<T>> extends SimpleController {
 
     @FXML
     public TableView<T> object_table;
@@ -60,8 +59,8 @@ public abstract class SimpleAddRemovePage<T extends NamedEntity & Comparable<T>>
         selectedProperty.bind(object_table.getSelectionModel().selectedItemProperty());
         configureTableColumns();
         setTableObjectAndFocus();
-        setButtonsVisibility();
-        addEventListeners();
+        setObjectsVisibility();
+        addEventHandlers();
     }
 
     protected void setTableObjectAndFocus() {
@@ -73,7 +72,8 @@ public abstract class SimpleAddRemovePage<T extends NamedEntity & Comparable<T>>
 
     protected abstract void configureTableColumns();
 
-    protected void setButtonsVisibility() {
+    @Override
+    protected void setObjectsVisibility() {
         add_button.textProperty().bind(new StringBinding() {
             {
                 super.bind(editMode);
@@ -99,7 +99,8 @@ public abstract class SimpleAddRemovePage<T extends NamedEntity & Comparable<T>>
         return Bindings.and(newObjectName.focusedProperty().not(), object_table.getFocusModel().focusedItemProperty().isNotNull());
     }
 
-    protected void addEventListeners() {
+    @Override
+    protected void addEventHandlers() {
         add_button.addEventHandler(ActionEvent.ACTION, event -> {
             boolean success;
             if (editMode.getValue()) {

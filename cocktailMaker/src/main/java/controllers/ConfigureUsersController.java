@@ -1,5 +1,6 @@
 package controllers;
 
+import controllers.interfaces.SimpleController;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.StringBinding;
@@ -23,7 +24,7 @@ import java.util.List;
 /**
  * Created by B06514A on 6/19/2017.
  */
-public class ConfigureUsersController {
+public class ConfigureUsersController extends SimpleController {
 
     @FXML
     public TableView<User> users_table;
@@ -79,6 +80,7 @@ public class ConfigureUsersController {
     private ObservableList<User> usersObservableList = FXCollections.observableArrayList();
     private SimpleBooleanProperty editMode = new SimpleBooleanProperty(false);
 
+    @Override
     public void initialize() {
         configureTableColumns();
         users_table.setItems(usersObservableList);
@@ -107,7 +109,8 @@ public class ConfigureUsersController {
         admin_column.setCellFactory(CheckBoxTableCell.forTableColumn(admin_column));
     }
 
-    private void setObjectsVisibility() {
+    @Override
+    protected void setObjectsVisibility() {
 
         //Add button
         add_button.textProperty().bind(new StringBinding() {
@@ -144,7 +147,8 @@ public class ConfigureUsersController {
         confirmPassword_field.disableProperty().bind(password_field.textProperty().isEmpty());
     }
 
-    private void addEventHandlers() {
+    @Override
+    protected void addEventHandlers() {
         add_button.addEventHandler(ActionEvent.ACTION, event -> {
             if (!passwordsMatch()) {
                 Utils.Dialogs.openAlert(Alert.AlertType.WARNING, Utils.Dialogs.TITLE_PASSWORD_DO_NOT_MATCH, Utils.Dialogs.CONTENT_PASSWORDS_DO_NOT_MATCH);

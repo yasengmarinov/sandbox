@@ -1,6 +1,7 @@
 package server.config;
 
-import server.PumpManager;
+import server.dispencers.PumpConfig;
+import server.dispencers.PumpManager;
 import server.db.DAL;
 import server.db.entities.Pump;
 

@@ -1,10 +1,6 @@
-package server;
+package server.dispencers;
 
-import server.config.PumpConfig;
-
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.Logger;
 
 /**

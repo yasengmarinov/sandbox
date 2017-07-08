@@ -1,8 +1,6 @@
 package controllers;
 
-import javafx.beans.binding.BooleanBinding;
-import javafx.beans.binding.ObjectBinding;
-import javafx.beans.binding.StringBinding;
+import controllers.interfaces.SimpleController;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -26,7 +24,7 @@ import java.util.List;
 /**
  * Created by B06514A on 6/18/2017.
  */
-public class ConfigurePumpsController {
+public class ConfigurePumpsController extends SimpleController{
 
     @FXML
     public TableView<Pump> pumps_table;
@@ -55,10 +53,11 @@ public class ConfigurePumpsController {
     private ObservableList<Pump> pumpsObservableList = FXCollections.observableArrayList();
     private Property<Pump> selectedPump = new SimpleObjectProperty<>();
 
-
+    @Override
     public void initialize() {
 
         configureTableColumns();
+        setObjectsVisibility();
 
         selectedPump.bind(pumps_table.getSelectionModel().selectedItemProperty());
         pumpsObservableList.addAll(DAL.getAll(Pump.class));
@@ -67,11 +66,19 @@ public class ConfigurePumpsController {
 
         populateSelectedPumpFields();
         populateIngredientsDropdown();
+
         linkSelectedPumpFieldsToPumpsTable();
-        addEventListeners();
+        addEventHandlers();
 
     }
-    private void addEventListeners() {
+
+    @Override
+    protected void setObjectsVisibility() {
+
+    }
+
+    @Override
+    protected void addEventHandlers() {
         save_button.addEventHandler(ActionEvent.ACTION, event -> {
             Pump pump = pumps_table.getFocusModel().getFocusedItem();
 
