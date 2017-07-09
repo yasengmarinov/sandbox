@@ -1,27 +1,15 @@
 package controllers;
 
 import controllers.templates.SimpleAddRemovePage;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.BooleanBinding;
-import javafx.beans.binding.StringBinding;
-import javafx.beans.property.Property;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
-import server.LogType;
 import server.Utils;
 import server.db.DAL;
 import server.db.entities.Ingredient;
-
-import javax.rmi.CORBA.Util;
-import java.util.Collections;
-import java.util.List;
 
 import static server.Utils.Dialogs.openAlert;
 
@@ -49,8 +37,8 @@ public class ConfigureIngredientsController extends SimpleAddRemovePage{
         calibrate_button.disableProperty().bind(isObjectSelected().not());
 
         calibrate_button.addEventHandler(ActionEvent.ACTION, event -> {
-            if (DAL.getPumpByIngredient((Ingredient) selectedProperty.getValue()) == null) {
-                Utils.Dialogs.openAlert(Alert.AlertType.INFORMATION, Utils.Dialogs.TITLE_INCONSISTENT_DATA, Utils.Dialogs.CONTENT_ADD_INGREDIENT_TO_PUMP);
+            if (DAL.getDispenserByIngredient((Ingredient) selectedObject.getValue()) == null) {
+                Utils.Dialogs.openAlert(Alert.AlertType.INFORMATION, Utils.Dialogs.TITLE_INCONSISTENT_DATA, Utils.Dialogs.CONTENT_ADD_INGREDIENT_TO_DISPENSER);
             }
         });
     }

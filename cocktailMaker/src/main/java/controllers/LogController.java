@@ -31,7 +31,7 @@ public class LogController {
     @FXML
     public TableColumn<HistoryLog, String> date_column;
 
-    private ObservableList<HistoryLog> historyLogObservableList;
+    protected ObservableList<HistoryLog> historyLogObservableList;
 
     public void initialize() {
 
@@ -55,8 +55,8 @@ public class LogController {
         FXCollections.sort(historyLogObservableList);
     }
 
-    public void setObservableList() {
-        historyLogObservableList = FXCollections.observableArrayList(DAL.getAll(HistoryLog.class));
+    protected void setObservableList() {
+        historyLogObservableList = FXCollections.observableArrayList(DAL.getAdminLog());
     }
 
 }

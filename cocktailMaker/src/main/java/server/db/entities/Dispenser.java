@@ -6,23 +6,23 @@ import javax.persistence.*;
  * Created by B06514A on 6/18/2017.
  */
 @Entity
-@Table(name = "PUMPS")
-public class Pump implements Comparable<Pump> {
+@Table(name = "DISPENSERS")
+public class Dispenser implements Comparable<Dispenser> {
     private Integer id;
     private Ingredient ingredient;
     private Integer millilitresLeft;
     private Boolean enabled;
 
-    public Pump() {
+    public Dispenser() {
 
     }
 
-    public Pump(Integer id, Boolean enabled) {
+    public Dispenser(Integer id, Boolean enabled) {
         this.id = id;
         this.enabled = enabled;
     }
 
-    public Pump(Integer id, Ingredient ingredient, Integer millilitresLeft, Boolean enabled) {
+    public Dispenser(Integer id, Ingredient ingredient, Integer millilitresLeft, Boolean enabled) {
         this.id = id;
         this.ingredient = ingredient;
         this.millilitresLeft = millilitresLeft;
@@ -64,10 +64,10 @@ public class Pump implements Comparable<Pump> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Pump pump = (Pump) o;
+        Dispenser dispenser = (Dispenser) o;
 
-        if (id != null ? !id.equals(pump.id) : pump.id != null) return false;
-        if (enabled != null ? !enabled == (pump.enabled) : pump.enabled != null) return false;
+        if (id != null ? !id.equals(dispenser.id) : dispenser.id != null) return false;
+        if (enabled != null ? !enabled == (dispenser.enabled) : dispenser.enabled != null) return false;
 
         return true;
     }
@@ -91,7 +91,7 @@ public class Pump implements Comparable<Pump> {
 
 
     @Override
-    public int compareTo(Pump o) {
+    public int compareTo(Dispenser o) {
         return Integer.compare(this.getId(), o.getId());
     }
 }

@@ -7,14 +7,11 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.query.Query;
 import server.LogType;
 import server.Utils;
 import server.db.entities.*;
 
 import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -90,6 +87,12 @@ public class DAL {
         }
     }
 
+    public static User getUser(String username) {
+        Criteria criteria = session.createCriteria(User.class);
+        criteria.add(Restrictions.eq("username", username.toLowerCase()));
+        return criteria.list().isEmpty() ? null : (User) criteria.list().get(0);
+    }
+
     public static User getUser(String username, String password) {
         Criteria criteria = session.createCriteria(User.class);
         criteria.add(Restrictions.eq("username", username.toLowerCase()));
@@ -107,11 +110,28 @@ public class DAL {
         return criteria.list().isEmpty() ? null : criteria.list();
     }
 
-    public static Pump getPumpByIngredient(Ingredient ingredient) {
-        Criteria criteria = session.createCriteria(Pump.class);
+    public static Dispenser getDispenserByIngredient(Ingredient ingredient) {
+        Criteria criteria = session.createCriteria(Dispenser.class);
         criteria.add(Restrictions.eq("ingredient", ingredient));
         criteria.add(Restrictions.eq("enabled", true));
-        return criteria.list().isEmpty() ? null : (Pump) criteria.list().get(0);
+        return criteria.list().isEmpty() ? null : (Dispenser) criteria.list().get(0);
     }
 
+    public static List<HistoryLog> getAdminLog() {
+        Criteria criteria = session.createCriteria(HistoryLog.class);
+        criteria.add(Restrictions.not(Restrictions.in("type", LogType.getCocktailEvents())));
+        return criteria.list();
+    }
+
+    public static List<HistoryLog> getCocktailLog() {
+        Criteria criteria = session.createCriteria(HistoryLog.class);
+        criteria.add(Restrictions.in("type", LogType.getCocktailEvents()));
+        return criteria.list();
+    }
+
+    public static List<Cocktail> getCocktailsByGroup(CocktailGroup cocktailGroup) {
+        Criteria criteria = session.createCriteria(Cocktail.class);
+        criteria.add(Restrictions.eq("cocktailGroup", cocktailGroup));
+        return criteria.list();
+    }
 }

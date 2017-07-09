@@ -4,7 +4,9 @@ import controllers.interfaces.SimpleController;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.StringBinding;
+import javafx.beans.property.Property;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -129,7 +131,8 @@ public class ConfigureUsersController extends SimpleController {
 
         //Remove and Edit buttons
         BooleanBinding removeEditButtonsEnabled = Bindings.and(users_table.focusedProperty(), users_table.getFocusModel().focusedItemProperty().isNotNull()).and(editMode.not());
-        remove_button.disableProperty().bind(removeEditButtonsEnabled.not());
+        remove_button.disableProperty().bind(removeEditButtonsEnabled.not().
+                or(isDefaultAdminSelected()));
 
         //Edit button
         edit_button.disableProperty().bind(removeEditButtonsEnabled.not());
@@ -145,6 +148,13 @@ public class ConfigureUsersController extends SimpleController {
 
         //Confirm password field
         confirmPassword_field.disableProperty().bind(password_field.textProperty().isEmpty());
+
+        //Admin checkbox
+        admin_checkbox.disableProperty().bind(editMode.and(isDefaultAdminSelected()));
+    }
+
+    private BooleanBinding isDefaultAdminSelected() {
+        return users_table.getSelectionModel().selectedItemProperty().isEqualTo(DAL.getUser("admin"));
     }
 
     @Override

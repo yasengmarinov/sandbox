@@ -17,8 +17,6 @@ import server.db.entities.CocktailGroup;
 import server.db.entities.Cocktail_Ingredient;
 import server.db.entities.Ingredient;
 
-import javax.swing.*;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -125,13 +123,17 @@ public class ConfigureCocktailController extends SimpleAddRemovePage {
     }
 
     private void configureIngredientsTable() {
-        refreshIngredientsTable();
         ingredients_table.setItems(ingredientsObservableList);
+        refreshIngredientsTable();
+
+        selectedObject.addListener(observable -> {
+            refreshIngredientsTable();
+        });
     }
 
     private void refreshIngredientsTable() {
         List<Cocktail_Ingredient> list = DAL.getCocktailIngredients
-                ((Cocktail)object_table.getSelectionModel().getSelectedItem());
+                ((Cocktail) selectedObject.getValue());
         ingredientsObservableList.clear();
         if (list != null) {
             ingredientsObservableList.addAll(list);
@@ -145,7 +147,11 @@ public class ConfigureCocktailController extends SimpleAddRemovePage {
         Dialog<Cocktail_Ingredient> dialog = addCocktailIngredientDialog();
 
         Optional<Cocktail_Ingredient> newCocktailIngredient = dialog.showAndWait();
-        return newCocktailIngredient.get();
+        if (newCocktailIngredient.isPresent()) {
+            return newCocktailIngredient.get();
+        } else {
+            return null;
+        }
     }
 
     private Dialog<Cocktail_Ingredient> addCocktailIngredientDialog() {

@@ -10,17 +10,17 @@ import javafx.stage.Stage;
  */
 public class PageNavigator {
 
-    public static final String PAGE_CONFIGURE_PUMPS = "views/configurePumps.fxml";
+    public static final String PAGE_CONFIGURE_DISPENSERS = "views/configureDispensers.fxml";
     public static final String PAGE_CONFIGURE_USERS = "views/configureUsers.fxml";
     public static final String PAGE_CONFIGURE_INGREDIENTS = "views/configureIngredients.fxml";
     public static final String PAGE_CONFIGURE_COCKTAIL_GROUPS = "views/configureCocktailGroups.fxml";
     public static final String PAGE_CONFIGURE_COCKTAILS = "views/configureCocktails.fxml";
-
-
-    public static final String PAGE_LOG = "views/log.fxml";
+    public static final String PAGE_ADMIN_LOG = "views/admin_log.fxml";
+    public static final String PAGE_COCKTAIL_LOG = "views/cocktail_log.fxml";
     public static final String PAGE_HOME_ADMIN = "views/home_admin.fxml";
     public static final String PAGE_LOGIN = "views/login.fxml";
 
+    public static final String PAGE_MAKE_COCKTAIL = "views/make_cocktail.fxml";
     private static Stage stage;
 
     public static void init(Stage stage) {

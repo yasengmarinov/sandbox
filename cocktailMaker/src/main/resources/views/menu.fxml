@@ -8,9 +8,9 @@
             prefHeight="25.0" prefWidth="800.0">
     <MenuBar prefHeight="25" prefWidth="800.0">
         <menus>
-            <Menu text="Pumps">
+            <Menu text="Dispensers">
                 <items>
-                    <MenuItem fx:id="pumps_item" text="Set Pumps" />
+                    <MenuItem fx:id="dispensers_item" text="Set Dispensers" />
                     <MenuItem fx:id="ingredients_item" text="Add/Remove Ingredients" />
                 </items>
             </Menu>
@@ -25,9 +25,10 @@
                     <MenuItem fx:id="cocktail_item" text="Add/Remove Cocktails" />
                 </items>
             </Menu>
-            <Menu text="Log">
+            <Menu text="Logs">
                 <items>
-                    <MenuItem fx:id="log_item" text="History Log" />
+                    <MenuItem fx:id="adminLog_item" text="Admin Log" />
+                    <MenuItem fx:id="cocktailLog_item" text="Cocktail Log" />
                 </items>
             </Menu>
             <Menu text="Log Off" >

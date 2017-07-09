@@ -11,11 +11,18 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import server.PageNavigator;
+import server.ServerLauncher;
 import server.Utils;
+import server.db.entities.User;
 import server.session.Session;
 import server.session.SessionManager;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class LoginController {
+
+    private static final Logger logger = Logger.getLogger(LoginController.class.getName());
 
     @FXML
     public GridPane main_grid;
@@ -37,7 +44,7 @@ public class LoginController {
         login_button.addEventHandler(ActionEvent.ACTION, event -> {
             Session session = SessionManager.createSesssion(username_field.getText(), password_field.getText());
             if (session != null) {
-                PageNavigator.navigateTo(PageNavigator.PAGE_HOME_ADMIN);
+                logUser(session.getUser());
             } else {
                 Utils.Dialogs.openAlert(Alert.AlertType.WARNING, Utils.Dialogs.TITLE_LOGIN_FAILED, Utils.Dialogs.CONTENT_LOGIN_FAILED);
                 username_field.clear();
@@ -50,6 +57,18 @@ public class LoginController {
         });
 
 
+    }
+
+    private void logUser(User user) {
+        if (user == null) {
+            logger.log(Level.WARNING, "User is null");
+            return;
+        }
+        if (user.getIsAdmin()) {
+            PageNavigator.navigateTo(PageNavigator.PAGE_HOME_ADMIN);
+        } else {
+            PageNavigator.navigateTo(PageNavigator.PAGE_MAKE_COCKTAIL);
+        }
     }
 
 }

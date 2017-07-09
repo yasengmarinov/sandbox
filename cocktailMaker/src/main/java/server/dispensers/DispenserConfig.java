@@ -1,14 +1,14 @@
-package server.dispencers;
+package server.dispensers;
 
 /**
  * Created by B06514A on 6/18/2017.
  */
-public class PumpConfig {
+public class DispenserConfig {
     private int id;
     private int pinGroud;
     private int pinIn;
 
-    public PumpConfig(int id, int pinGroud, int pinIn) {
+    public DispenserConfig(int id, int pinGroud, int pinIn) {
         this.id = id;
         this.pinGroud = pinGroud;
         this.pinIn = pinIn;

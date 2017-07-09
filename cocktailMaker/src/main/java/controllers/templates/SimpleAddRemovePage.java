@@ -49,14 +49,14 @@ public abstract class SimpleAddRemovePage<T extends NamedEntity & Comparable<T>>
     public Button cancel_button;
 
     protected Class T;
-    protected Property<T> selectedProperty = new SimpleObjectProperty<>();
+    protected Property<T> selectedObject = new SimpleObjectProperty<>();
 
     ObservableList<T> observableList = FXCollections.observableArrayList();
     SimpleBooleanProperty editMode = new SimpleBooleanProperty(false);
 
     public void initialize() {
         setClass();
-        selectedProperty.bind(object_table.getSelectionModel().selectedItemProperty());
+        selectedObject.bind(object_table.getSelectionModel().selectedItemProperty());
         configureTableColumns();
         setTableObjectAndFocus();
         setObjectsVisibility();

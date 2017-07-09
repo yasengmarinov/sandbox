@@ -52,7 +52,7 @@ public class Utils {
 
         public static final String CONTENT_PASSWORDS_DO_NOT_MATCH = "The Password is different from the Confirm Password";
         public static final String CONTENT_LOGIN_FAILED = "Username or password are incorrect";
-        public static final String CONTENT_ADD_INGREDIENT_TO_PUMP = "Please add the ingredient to an enabled Pump before calibration";
+        public static final String CONTENT_ADD_INGREDIENT_TO_DISPENSER = "Please add the ingredient to an enabled Dispenser before calibration";
 
         public static void openAlert(Alert.AlertType alertType, String title, String content) {
            openAlert(alertType, title, null, content);
