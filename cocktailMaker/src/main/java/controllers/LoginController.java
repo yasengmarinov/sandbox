@@ -13,12 +13,13 @@ import javafx.scene.layout.GridPane;
 import server.PageNavigator;
 import server.ServerLauncher;
 import server.Utils;
+import server.db.DAL;
 import server.db.entities.User;
 import server.session.Session;
 import server.session.SessionManager;
 
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 public class LoginController {
 
@@ -61,7 +62,7 @@ public class LoginController {
 
     private void logUser(User user) {
         if (user == null) {
-            logger.log(Level.WARNING, "User is null");
+            logger.warn("User is null");
             return;
         }
         if (user.getIsAdmin()) {

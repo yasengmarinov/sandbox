@@ -32,8 +32,8 @@
                 <children>
                     <TableView fx:id="log_table" prefHeight="200.0" prefWidth="760.0" GridPane.columnSpan="2" GridPane.rowIndex="0" GridPane.rowSpan="1">
                         <columns>
-                            <TableColumn fx:id="message_column" prefWidth="543.0" text="Message" />
-                            <TableColumn fx:id="user_column" prefWidth="100.0" text="User" />
+                            <TableColumn fx:id="message_column" prefWidth="539.0" text="Message" />
+                            <TableColumn fx:id="user_column" prefWidth="85.0" text="User" />
                             <TableColumn fx:id="date_column" prefWidth="115.0" text="Date" />
                         </columns>
                     </TableView>

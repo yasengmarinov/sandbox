@@ -89,6 +89,7 @@ public class ConfigureDispensersController extends SimpleController{
                 int focusedPosition = dispensers_table.getFocusModel().getFocusedIndex();
                 dispenser.setEnabled(selectedDispenserEnabled_check.isSelected());
                 dispenser.setIngredient(selectedDispenserIngredient_box.getValue());
+                dispenser.setMillilitresLeft(selectedDispenserIngredient_box.getValue().getSize());
 
                 DAL.update(dispenser);
 

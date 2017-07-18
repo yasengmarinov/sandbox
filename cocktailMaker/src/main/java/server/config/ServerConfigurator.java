@@ -1,12 +1,12 @@
 package server.config;
 
 import server.dispensers.DispenserConfig;
-import server.dispensers.DispenserManager;
+import server.dispensers.DispenserControllerManager;
 import server.db.DAL;
 import server.db.entities.Dispenser;
 
 import java.util.*;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -16,8 +16,7 @@ public class ServerConfigurator {
 
     private static final Logger logger = Logger.getLogger(ServerConfigurator.class.getName());
     private static final int DISPENSERS_MAX_COUNT = 10;
-    private static final String DISPENSER_PIN_GROUND_PROPERTY = "dispenser.%d.pin.ground";
-    private static final String DISPENSER_PIN_IN_PROPERTY = "dispenser.%d.pin.in";
+    private static final String DISPENSER_PIN_IN_PROPERTY = "dispenser.%d.pin";
 
     private static Properties properties;
 
@@ -30,12 +29,13 @@ public class ServerConfigurator {
         DAL.init();
 
         Map<Integer, DispenserConfig> dispenserMap = initDispenserMap();
-        DispenserManager.init(dispenserMap);
+        DispenserControllerManager.init(dispenserMap);
         createInitialData(dispenserMap);
 
     }
 
     private static void createInitialData(Map<Integer, DispenserConfig> dispenserMap) {
+        logger.info("Persisting dispensers in the DB");
         Set<Integer> presentDispensersIDs = new HashSet<>();
         presentDispensersIDs.addAll(DAL.getAll(Dispenser.class).stream().map(Dispenser::getId).collect(Collectors.toList()));
 
@@ -48,17 +48,16 @@ public class ServerConfigurator {
     }
 
     private static Map<Integer, DispenserConfig> initDispenserMap() {
+        logger.info("Begin building dispenser map");
         Map<Integer, DispenserConfig> dispenserMap = new HashMap<>();
 
         for (int i = 1; i <= DISPENSERS_MAX_COUNT; i++) {
-            int dispenserGround = Integer.valueOf(
-                    properties.getProperty(String.format(DISPENSER_PIN_GROUND_PROPERTY, i), "-1"));
             int dispenserIn = Integer.valueOf(
                     properties.getProperty(String.format(DISPENSER_PIN_IN_PROPERTY, i), "-1"));
-            if (dispenserGround != -1 && dispenserIn != -1) {
-                logger.info(String.format("Configuring dispenser: %d with ground: %d and in: %d",
-                        i, dispenserGround, dispenserIn));
-                dispenserMap.put(i, new DispenserConfig(i, dispenserGround, dispenserIn));
+            if (dispenserIn != -1) {
+                logger.info(String.format("Add dispenser %d with pin: %d",
+                        i, dispenserIn));
+                dispenserMap.put(i, new DispenserConfig(i, dispenserIn));
             }
         }
 

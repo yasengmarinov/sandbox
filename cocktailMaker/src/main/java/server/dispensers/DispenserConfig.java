@@ -5,24 +5,18 @@ package server.dispensers;
  */
 public class DispenserConfig {
     private int id;
-    private int pinGroud;
-    private int pinIn;
+    private int pin;
 
-    public DispenserConfig(int id, int pinGroud, int pinIn) {
+    public DispenserConfig(int id,  int pin) {
         this.id = id;
-        this.pinGroud = pinGroud;
-        this.pinIn = pinIn;
+        this.pin = pin;
     }
 
     public int getId() {
         return id;
     }
 
-    public int getPinGroud() {
-        return pinGroud;
-    }
-
-    public int getPinIn() {
-        return pinIn;
+    public int getPin() {
+        return pin;
     }
 }

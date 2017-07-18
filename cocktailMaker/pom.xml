@@ -13,6 +13,8 @@
         <org.apache.derby.version>10.13.1.1</org.apache.derby.version>
         <java.dialect.version>1.8</java.dialect.version>
         <hibernate-core.version>5.2.10.Final</hibernate-core.version>
+        <log4j.version>1.2.17</log4j.version>
+        <com.pi4j.version>1.1</com.pi4j.version>
     </properties>
 
     <build>
@@ -60,6 +62,21 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>${hibernate-core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.pi4j</groupId>
+            <artifactId>pi4j-core</artifactId>
+            <version>${com.pi4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.pi4j</groupId>
+            <artifactId>pi4j-gpio-extension</artifactId>
+            <version>${com.pi4j.version}</version>
         </dependency>
     </dependencies>
 

@@ -7,16 +7,16 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "COCKTAILS_INGREDIENTS")
-public class Cocktail_Ingredient implements Comparable<Cocktail_Ingredient> {
+public class CocktailIngredient implements Comparable<CocktailIngredient> {
     private Integer id;
     private Integer millilitres;
     private Cocktail cocktail;
     private Ingredient ingredient;
 
-    public Cocktail_Ingredient() {
+    public CocktailIngredient() {
     }
 
-    public Cocktail_Ingredient(Cocktail cocktail, Ingredient ingredient, Integer millilitres) {
+    public CocktailIngredient(Cocktail cocktail, Ingredient ingredient, Integer millilitres) {
         this.millilitres = millilitres;
         this.cocktail = cocktail;
         this.ingredient = ingredient;
@@ -47,7 +47,7 @@ public class Cocktail_Ingredient implements Comparable<Cocktail_Ingredient> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Cocktail_Ingredient that = (Cocktail_Ingredient) o;
+        CocktailIngredient that = (CocktailIngredient) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (millilitres != null ? !millilitres.equals(that.millilitres) : that.millilitres != null) return false;
@@ -83,7 +83,7 @@ public class Cocktail_Ingredient implements Comparable<Cocktail_Ingredient> {
     }
 
     @Override
-    public int compareTo(Cocktail_Ingredient o) {
+    public int compareTo(CocktailIngredient o) {
         return this.ingredient.compareTo(o.ingredient);
     }
 }

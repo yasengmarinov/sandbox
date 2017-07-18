@@ -22,11 +22,7 @@ public class SessionManager {
         return session;
     }
 
-    public static Session getSession() {
-        return session;
-    }
-
-    public static Session createSesssion() {
+    public static final Session getSession() {
         return session;
     }
 

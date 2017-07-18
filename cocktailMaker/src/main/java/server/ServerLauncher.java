@@ -6,7 +6,7 @@ import javafx.stage.Stage;
 import server.config.ServerConfigurator;
 
 import java.util.Properties;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 public class ServerLauncher extends Application {
 
@@ -34,7 +34,7 @@ public class ServerLauncher extends Application {
     public static void main(String[] args) {
 
         logger.info("Starting application");
-        Properties serverProperties = Utils.loadPropertiesFile("server_config.properties");
+        Properties serverProperties = Utils.loadPropertiesFile("dispencer_config.properties");
 
         logger.info("Starting initial configuration");
 

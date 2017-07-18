@@ -14,7 +14,7 @@ import javafx.scene.layout.VBox;
 import server.db.DAL;
 import server.db.entities.Cocktail;
 import server.db.entities.CocktailGroup;
-import server.db.entities.Cocktail_Ingredient;
+import server.db.entities.CocktailIngredient;
 import server.db.entities.Ingredient;
 
 import java.util.List;
@@ -35,13 +35,13 @@ public class ConfigureCocktailController extends SimpleAddRemovePage {
     public ComboBox<CocktailGroup> cocktailGroup_box;
 
     @FXML
-    public TableView<Cocktail_Ingredient> ingredients_table;
+    public TableView<CocktailIngredient> ingredients_table;
 
     @FXML
-    public TableColumn<Cocktail_Ingredient, String> ingredientName_column;
+    public TableColumn<CocktailIngredient, String> ingredientName_column;
 
     @FXML
-    public TableColumn<Cocktail_Ingredient, String> ingredientMl_column;
+    public TableColumn<CocktailIngredient, String> ingredientMl_column;
 
     @FXML
     public Button addIngredient_button;
@@ -49,7 +49,7 @@ public class ConfigureCocktailController extends SimpleAddRemovePage {
     @FXML
     public Button deleteIngredient_button;
 
-    private ObservableList<Cocktail_Ingredient> ingredientsObservableList = FXCollections.observableArrayList();
+    private ObservableList<CocktailIngredient> ingredientsObservableList = FXCollections.observableArrayList();
 
     public void initialize() {
         super.initialize();
@@ -66,7 +66,7 @@ public class ConfigureCocktailController extends SimpleAddRemovePage {
     private void configureAddRemoveIngredientButtons() {
         addIngredient_button.disableProperty().bind(isObjectSelected().not());
         addIngredient_button.addEventHandler(ActionEvent.ACTION, event -> {
-            Cocktail_Ingredient cocktail_ingredient = getCocktailIngredientByDialog();
+            CocktailIngredient cocktail_ingredient = getCocktailIngredientByDialog();
             if (cocktail_ingredient != null) {
                 DAL.persist(cocktail_ingredient);
                 refreshIngredientsTable();
@@ -85,7 +85,7 @@ public class ConfigureCocktailController extends SimpleAddRemovePage {
         cocktail_column.setCellValueFactory(new PropertyValueFactory<Cocktail, String>("name"));
         cocktailGroup_column.setCellValueFactory(new PropertyValueFactory<Cocktail, CocktailGroup>("cocktailGroup"));
 
-        ingredientName_column.setCellValueFactory(new PropertyValueFactory<Cocktail_Ingredient, String>("ingredient"));
+        ingredientName_column.setCellValueFactory(new PropertyValueFactory<CocktailIngredient, String>("ingredient"));
         ingredientMl_column.setCellValueFactory(param -> {
             SimpleStringProperty simpleStringProperty = new SimpleStringProperty(param.getValue().getMillilitres() + " ml");
             return simpleStringProperty;
@@ -132,7 +132,7 @@ public class ConfigureCocktailController extends SimpleAddRemovePage {
     }
 
     private void refreshIngredientsTable() {
-        List<Cocktail_Ingredient> list = DAL.getCocktailIngredients
+        List<CocktailIngredient> list = DAL.getCocktailIngredients
                 ((Cocktail) selectedObject.getValue());
         ingredientsObservableList.clear();
         if (list != null) {
@@ -142,11 +142,11 @@ public class ConfigureCocktailController extends SimpleAddRemovePage {
         ingredients_table.refresh();
     }
 
-    private Cocktail_Ingredient getCocktailIngredientByDialog() {
+    private CocktailIngredient getCocktailIngredientByDialog() {
 
-        Dialog<Cocktail_Ingredient> dialog = addCocktailIngredientDialog();
+        Dialog<CocktailIngredient> dialog = addCocktailIngredientDialog();
 
-        Optional<Cocktail_Ingredient> newCocktailIngredient = dialog.showAndWait();
+        Optional<CocktailIngredient> newCocktailIngredient = dialog.showAndWait();
         if (newCocktailIngredient.isPresent()) {
             return newCocktailIngredient.get();
         } else {
@@ -154,9 +154,9 @@ public class ConfigureCocktailController extends SimpleAddRemovePage {
         }
     }
 
-    private Dialog<Cocktail_Ingredient> addCocktailIngredientDialog() {
+    private Dialog<CocktailIngredient> addCocktailIngredientDialog() {
         Cocktail selectedCocktail =  (Cocktail) object_table.getSelectionModel().getSelectedItem();
-        Dialog<Cocktail_Ingredient> dialog = new Dialog<>();
+        Dialog<CocktailIngredient> dialog = new Dialog<>();
         dialog.setTitle("Add Ingredient");
         dialog.setHeaderText("Add a new ingredient for cocktail " + selectedCocktail);
 
@@ -189,7 +189,7 @@ public class ConfigureCocktailController extends SimpleAddRemovePage {
         );
         dialog.setResultConverter(param -> {
             if (param == buttonAdd) {
-                return new Cocktail_Ingredient(selectedCocktail, ingredient.getValue(), Integer.valueOf(ingredientAmount.getText()));
+                return new CocktailIngredient(selectedCocktail, ingredient.getValue(), Integer.valueOf(ingredientAmount.getText()));
             }
 
             return null;

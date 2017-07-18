@@ -130,7 +130,7 @@ public abstract class SimpleAddRemovePage<T extends NamedEntity & Comparable<T>>
         });
 
         edit_button.addEventHandler(ActionEvent.ACTION, event -> {
-            newObjectName.setText(object_table.getFocusModel().getFocusedItem().getName());
+            fillInputFields();
             editMode.set(true);
         });
 
@@ -138,6 +138,10 @@ public abstract class SimpleAddRemovePage<T extends NamedEntity & Comparable<T>>
             clearInputFields();
             editMode.set(false);
         });
+    }
+
+    protected void fillInputFields() {
+        newObjectName.setText(object_table.getFocusModel().getFocusedItem().getName());
     }
 
     protected void clearInputFields() {

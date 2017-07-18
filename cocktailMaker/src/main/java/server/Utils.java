@@ -45,17 +45,27 @@ public class Utils {
 
     public static class Dialogs {
 
+        // Info
+        public static final String TITLE_CALIBRATE_INSTRUCTIONS = "Calibrate instructions";
+        public static final String TITLE_CALIBRATION = "Calibration";
+
+        public static final String CONTENT_CALIBRATE_INSTRUCTIONS = "In order to calibrate fill exactly 100 ml of the ingredient attached to " +
+                "the specified dispenser. Once ready press Start. Once the liquid has run out press Stop.";
+        public static final String CONTENT_CALIBRATION_SUCCESS = "Calibration successful!";
+        // Error
+        public static final String TITLE_LOGIN_FAILED = "Login failed";
         public static final String TITLE_INCONSISTENT_DATA = "Inconsistent Data";
         public static final String TITLE_DELETE_FAILED = "Delete Failed";
         public static final String TITLE_PASSWORD_DO_NOT_MATCH = "Passwords do not match";
-        public static final String TITLE_LOGIN_FAILED = "Login failed";
+        public static final String TITLE_INGREDIENTS_UNAVAILABLE = "Ingredients unavailable";
 
-        public static final String CONTENT_PASSWORDS_DO_NOT_MATCH = "The Password is different from the Confirm Password";
         public static final String CONTENT_LOGIN_FAILED = "Username or password are incorrect";
+        public static final String CONTENT_PASSWORDS_DO_NOT_MATCH = "The Password is different from the Confirm Password";
         public static final String CONTENT_ADD_INGREDIENT_TO_DISPENSER = "Please add the ingredient to an enabled Dispenser before calibration";
+        public static final String CONTENT_CALIBRATION_FAILED = "Calibration failed!";
 
         public static void openAlert(Alert.AlertType alertType, String title, String content) {
-           openAlert(alertType, title, null, content);
+            openAlert(alertType, title, null, content);
         }
 
         public static void openAlert(Alert.AlertType alertType, String title, String header, String content) {

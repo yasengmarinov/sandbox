@@ -1,5 +1,6 @@
 package server.db;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -11,9 +12,7 @@ import server.LogType;
 import server.Utils;
 import server.db.entities.*;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Created by b06514a on 6/10/2017.
@@ -24,7 +23,6 @@ public class DAL {
 
     private static SessionFactory sessionFactory;
     private static Session session;
-    private static CriteriaBuilder criteriaBuilder;
 
     public static void init() {
         logger.info("Initializing DAL");
@@ -33,7 +31,6 @@ public class DAL {
                 .build();
         sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
         session = sessionFactory.openSession();
-        criteriaBuilder = session.getCriteriaBuilder();
         prepopulateData();
     }
 
@@ -52,6 +49,7 @@ public class DAL {
     }
 
     public static boolean persist(Object object) {
+        logger.info("Persisting object " + object + " in the DB");
         try {
             session.beginTransaction();
             session.save(object);
@@ -64,6 +62,7 @@ public class DAL {
     }
 
     public static boolean update(Object object) {
+        logger.info("Updating object " + object);
         try {
             session.beginTransaction();
             session.update(object);
@@ -76,6 +75,7 @@ public class DAL {
     }
 
     public static boolean delete(Object object) {
+        logger.info("Deleting object " + object);
         try {
             session.beginTransaction();
             session.delete(object);
@@ -93,6 +93,7 @@ public class DAL {
         return criteria.list().isEmpty() ? null : (User) criteria.list().get(0);
     }
 
+    @SuppressWarnings("deprecation")
     public static User getUser(String username, String password) {
         Criteria criteria = session.createCriteria(User.class);
         criteria.add(Restrictions.eq("username", username.toLowerCase()));
@@ -104,8 +105,8 @@ public class DAL {
         return persist(new HistoryLog(type, message));
     }
 
-    public static List<Cocktail_Ingredient> getCocktailIngredients(Cocktail cocktail) {
-        Criteria criteria = session.createCriteria(Cocktail_Ingredient.class);
+    public static List<CocktailIngredient> getCocktailIngredients(Cocktail cocktail) {
+        Criteria criteria = session.createCriteria(CocktailIngredient.class);
         criteria.add(Restrictions.eq("cocktail", cocktail));
         return criteria.list().isEmpty() ? null : criteria.list();
     }
@@ -115,6 +116,20 @@ public class DAL {
         criteria.add(Restrictions.eq("ingredient", ingredient));
         criteria.add(Restrictions.eq("enabled", true));
         return criteria.list().isEmpty() ? null : (Dispenser) criteria.list().get(0);
+    }
+
+    public synchronized static Dispenser getDispenserByCocktailIngredient(CocktailIngredient cocktailIngredient) {
+        Criteria criteria = session.createCriteria(Dispenser.class);
+        criteria.add(Restrictions.eq("ingredient", cocktailIngredient.getIngredient()));
+        criteria.add(Restrictions.eq("enabled", true));
+        criteria.add(Restrictions.ge("millilitresLeft", cocktailIngredient.getMillilitres()));
+        return criteria.list().isEmpty() ? null : (Dispenser) criteria.list().get(0);
+    }
+
+    public static List<Dispenser> getEnabledDispensers() {
+        Criteria criteria = session.createCriteria(Dispenser.class);
+        criteria.add(Restrictions.eq("enabled", true));
+        return criteria.list();
     }
 
     public static List<HistoryLog> getAdminLog() {
@@ -134,4 +149,5 @@ public class DAL {
         criteria.add(Restrictions.eq("cocktailGroup", cocktailGroup));
         return criteria.list();
     }
+
 }

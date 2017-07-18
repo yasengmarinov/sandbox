@@ -12,7 +12,7 @@
         <mapping class="server.db.entities.Ingredient"/>
         <mapping class="server.db.entities.CocktailGroup"/>
         <mapping class="server.db.entities.Cocktail"/>
-        <mapping class="server.db.entities.Cocktail_Ingredient"/>
+        <mapping class="server.db.entities.CocktailIngredient"/>
         <mapping class="server.db.entities.Dispenser"/>
         <mapping class="server.db.entities.Dispenser"/>
         <mapping class="server.db.entities.HistoryLog"/>

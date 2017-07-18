@@ -207,7 +207,7 @@ public class ConfigureUsersController extends SimpleController {
         success = DAL.persist(new User(username_field.getText().toLowerCase(), firstname_field.getText(),
                 lastname_field.getText(), Utils.md5(password_field.getText()), admin_checkbox.isSelected()));
         if (success)
-            DAL.persist(new HistoryLog(LogType.TYPE_CREATE_USER,
+            DAL.persist(new HistoryLog(LogType.TYPE_CREATE_OBJECT,
                     "New user created: " + username_field.getText()));
         return success;
     }
@@ -226,7 +226,7 @@ public class ConfigureUsersController extends SimpleController {
         success = DAL.update(user);
 
         if (success)
-            DAL.persist(new HistoryLog(LogType.TYPE_UPDATE_USER, "User updated: " + user.getUsername()));
+            DAL.persist(new HistoryLog(LogType.TYPE_UPDATE_OBJECT, "User updated: " + user.getUsername()));
         return success;
     }
 

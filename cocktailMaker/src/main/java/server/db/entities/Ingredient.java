@@ -12,14 +12,16 @@ import javax.persistence.*;
 public class Ingredient implements NamedEntity, Comparable<Ingredient> {
     private Integer id;
     private String name;
-    private Double velocity;
+    private Integer velocity;
+    private Integer size;
 
     public Ingredient() {
 
     }
 
-    public Ingredient(String name) {
+    public Ingredient(String name, int size) {
         this.name = name;
+        this.size = size;
     }
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,12 +46,22 @@ public class Ingredient implements NamedEntity, Comparable<Ingredient> {
 
     @Basic
     @Column(name = "VELOCITY")
-    public Double getVelocity() {
+    public Integer getVelocity() {
         return velocity;
     }
 
-    public void setVelocity(Double velocity) {
+    public void setVelocity(Integer velocity) {
         this.velocity = velocity;
+    }
+
+    @Basic
+    @Column(name = "SIZE")
+    public Integer getSize() {
+        return size;
+    }
+
+    public void setSize(Integer size) {
+        this.size = size;
     }
 
     @Override
@@ -62,6 +74,7 @@ public class Ingredient implements NamedEntity, Comparable<Ingredient> {
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (velocity != null ? !velocity.equals(that.velocity) : that.velocity != null) return false;
+        if (size != null ? !size.equals(that.size) : that.size != null) return false;
 
         return true;
     }
@@ -71,12 +84,13 @@ public class Ingredient implements NamedEntity, Comparable<Ingredient> {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (velocity != null ? velocity.hashCode() : 0);
+        result = 31 * result + (size != null ? size.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return name;
+        return String.format("%s %d ml", name, size);
     }
 
     @Override

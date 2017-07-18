@@ -17,7 +17,7 @@ public class Cocktail implements NamedEntity, Comparable<Cocktail> {
     private Integer id;
     private String name;
     private CocktailGroup cocktailGroup;
-    private List<Cocktail_Ingredient> cocktailIngredients;
+    private List<CocktailIngredient> cocktailIngredients;
 
     public Cocktail() {
         cocktailIngredients = new LinkedList<>();
@@ -83,11 +83,11 @@ public class Cocktail implements NamedEntity, Comparable<Cocktail> {
 
     @OneToMany(mappedBy = "cocktail")
     @Cascade(CascadeType.SAVE_UPDATE)
-    public List<Cocktail_Ingredient> getCocktailIngredients() {
+    public List<CocktailIngredient> getCocktailIngredients() {
         return cocktailIngredients;
     }
 
-    public void setCocktailIngredients(List<Cocktail_Ingredient> cocktailIngredientById) {
+    public void setCocktailIngredients(List<CocktailIngredient> cocktailIngredientById) {
         this.cocktailIngredients = cocktailIngredientById;
     }
 

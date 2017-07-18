@@ -111,4 +111,16 @@ public class HistoryLog implements Comparable<HistoryLog> {
     public int compareTo(HistoryLog o) {
         return o.getEventDate().compareTo(this.getEventDate());
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Log Entry type ");
+        builder.append(type);
+        builder.append(": ");
+        builder.append(message);
+        builder.append(" by ");
+        builder.append(username);
+        return builder.toString();
+    }
 }

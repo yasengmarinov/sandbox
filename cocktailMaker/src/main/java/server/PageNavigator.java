@@ -21,6 +21,8 @@ public class PageNavigator {
     public static final String PAGE_LOGIN = "views/login.fxml";
 
     public static final String PAGE_MAKE_COCKTAIL = "views/make_cocktail.fxml";
+    public static final String PAGE_REFILL = "views/refill.fxml";
+
     private static Stage stage;
 
     public static void init(Stage stage) {
