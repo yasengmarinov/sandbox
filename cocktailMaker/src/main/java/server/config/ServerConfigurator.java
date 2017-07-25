@@ -23,6 +23,7 @@ public class ServerConfigurator {
     public static void init(Properties properties) {
         ServerConfigurator.properties = properties;
     }
+
     public static void configure() {
         logger.info("Initialize server configuration");
 

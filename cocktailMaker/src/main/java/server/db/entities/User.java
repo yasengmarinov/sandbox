@@ -35,7 +35,8 @@ public class User implements Comparable<User> {
         this.isAdmin = isAdmin;
     }
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     public Integer getId() {
         return id;

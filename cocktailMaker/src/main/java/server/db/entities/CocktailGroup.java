@@ -20,7 +20,8 @@ public class CocktailGroup implements NamedEntity, Comparable<CocktailGroup> {
         this.name = name;
     }
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     public Integer getId() {
         return id;

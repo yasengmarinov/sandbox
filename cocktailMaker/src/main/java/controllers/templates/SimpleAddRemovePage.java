@@ -78,6 +78,7 @@ public abstract class SimpleAddRemovePage<T extends NamedEntity & Comparable<T>>
             {
                 super.bind(editMode);
             }
+
             @Override
             protected String computeValue() {
                 return (editMode.getValue() ? "Save" : "Add");

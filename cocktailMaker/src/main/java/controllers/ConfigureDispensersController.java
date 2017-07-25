@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * Created by B06514A on 6/18/2017.
  */
-public class ConfigureDispensersController extends SimpleController{
+public class ConfigureDispensersController extends SimpleController {
 
     @FXML
     public TableView<Dispenser> dispensers_table;

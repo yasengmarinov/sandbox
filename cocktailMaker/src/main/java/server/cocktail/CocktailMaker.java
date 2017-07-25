@@ -33,7 +33,7 @@ public class CocktailMaker {
                 ingredientsAvailability.put(dispenser.getIngredient(), dispenser.getMillilitresLeft());
             } else {
                 ingredientsAvailability.compute(dispenser.getIngredient(), (ingredient, integer) -> {
-                   return Math.max(integer, dispenser.getMillilitresLeft());
+                    return Math.max(integer, dispenser.getMillilitresLeft());
                 });
             }
         }

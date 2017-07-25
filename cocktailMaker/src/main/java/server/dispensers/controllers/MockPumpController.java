@@ -18,6 +18,7 @@ public class MockPumpController implements DispenserController {
         gpio = String.format("GPIO_%02d", config.getPin());
         System.out.printf("Creating dispencser with id %d with pin %s\n", id, gpio);
     }
+
     @Override
     public void run() {
         logger.info(gpio + " started");

@@ -2,38 +2,38 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            xmlns="http://javafx.com/javafx"
             fx:controller="controllers.MenuController"
             prefHeight="25.0" prefWidth="800.0">
     <MenuBar prefHeight="25" prefWidth="800.0">
         <menus>
             <Menu text="Dispensers">
                 <items>
-                    <MenuItem fx:id="dispensers_item" text="Set Dispensers" />
-                    <MenuItem fx:id="ingredients_item" text="Add/Remove Ingredients" />
+                    <MenuItem fx:id="dispensers_item" text="Set Dispensers"/>
+                    <MenuItem fx:id="ingredients_item" text="Add/Remove Ingredients"/>
                 </items>
             </Menu>
             <Menu text="Users">
                 <items>
-                    <MenuItem fx:id="users_item" text="Add/Remove Users" />
+                    <MenuItem fx:id="users_item" text="Add/Remove Users"/>
                 </items>
             </Menu>
             <Menu text="Cocktails">
                 <items>
-                    <MenuItem fx:id="cocktailGroup_item" text="Add/Remove Groups" />
-                    <MenuItem fx:id="cocktail_item" text="Add/Remove Cocktails" />
+                    <MenuItem fx:id="cocktailGroup_item" text="Add/Remove Groups"/>
+                    <MenuItem fx:id="cocktail_item" text="Add/Remove Cocktails"/>
                 </items>
             </Menu>
             <Menu text="Logs">
                 <items>
-                    <MenuItem fx:id="adminLog_item" text="Admin Log" />
-                    <MenuItem fx:id="cocktailLog_item" text="Cocktail Log" />
+                    <MenuItem fx:id="adminLog_item" text="Admin Log"/>
+                    <MenuItem fx:id="cocktailLog_item" text="Cocktail Log"/>
                 </items>
             </Menu>
-            <Menu text="Log Off" >
+            <Menu text="Log Off">
                 <items>
-                    <MenuItem fx:id="logoff_item" text="Log Off" />
+                    <MenuItem fx:id="logoff_item" text="Log Off"/>
                 </items>
             </Menu>
         </menus>

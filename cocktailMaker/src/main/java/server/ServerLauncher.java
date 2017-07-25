@@ -14,8 +14,23 @@ public class ServerLauncher extends Application {
 
     private static Stage stage;
 
+    public static void main(String[] args) {
+
+        logger.info("Starting application");
+        Properties serverProperties = Utils.loadPropertiesFile("dispencer_config.properties");
+
+        logger.info("Starting initial configuration");
+
+        ServerConfigurator.init(serverProperties);
+        ServerConfigurator.configure();
+
+        logger.info("Launching application");
+        launch(args);
+
+    }
+
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         stage = primaryStage;
 //        stage.setFullScreen(true);
         PageNavigator.init(stage);
@@ -28,21 +43,5 @@ public class ServerLauncher extends Application {
     public void stop() {
         Platform.exit();
         System.exit(0);
-    }
-
-
-    public static void main(String[] args) {
-
-        logger.info("Starting application");
-        Properties serverProperties = Utils.loadPropertiesFile("dispencer_config.properties");
-
-        logger.info("Starting initial configuration");
-
-        ServerConfigurator.init(serverProperties);
-        ServerConfigurator.configure();
-
-        logger.info( "Launching application");
-        launch(args);
-
     }
 }

@@ -22,7 +22,8 @@ public class CocktailIngredient implements Comparable<CocktailIngredient> {
         this.ingredient = ingredient;
     }
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     public Integer getId() {
         return id;

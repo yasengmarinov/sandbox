@@ -6,6 +6,7 @@ package server.dispensers.interfaces;
 public interface DispenserController {
 
     void run();
+
     void stop();
 
 }

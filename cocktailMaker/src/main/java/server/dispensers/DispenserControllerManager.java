@@ -21,7 +21,7 @@ public class DispenserControllerManager {
         logger.info("Initializing Dispenser Controller Manager");
         DispenserControllerManager.dispenserMap = dispenserMap;
 
-        for(DispenserConfig config : dispenserMap.values()) {
+        for (DispenserConfig config : dispenserMap.values()) {
             dispenserControllerMap.put(config.getId(), new MockPumpController(config));
         }
     }

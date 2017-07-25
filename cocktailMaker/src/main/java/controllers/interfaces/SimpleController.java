@@ -6,7 +6,9 @@ package controllers.interfaces;
 public abstract class SimpleController {
 
     public abstract void initialize();
+
     protected abstract void setObjectsVisibility();
+
     protected abstract void addEventHandlers();
 
 }

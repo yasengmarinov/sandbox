@@ -4,60 +4,66 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<AnchorPane prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.RefillController">
-   <children>
-      <GridPane>
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="800.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="430.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-          <children>
-              <HBox spacing="20.0">
-                  <Label fx:id="welcome_label" prefWidth="540.0" text="Welcome User">
-                  <font>
-                     <Font name="System Bold" size="25.0" />
-                  </font>
-                  <HBox.margin>
-                     <Insets top="5.0" />
-                  </HBox.margin></Label>
-                  <Button fx:id="back_button" minWidth="100.0" prefWidth="100.0" text="Back">
-                  <font>
-                     <Font size="20.0" />
-                  </font>
-                  <HBox.margin>
-                     <Insets left="20.0" />
-                  </HBox.margin></Button>
-                  <Button fx:id="logOff_button" minWidth="100.0" prefWidth="100.0" text="Log off">
-                  <font>
-                     <Font size="20.0" />
-                  </font></Button>
-               <GridPane.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </GridPane.margin>
-              </HBox>
-              <HBox GridPane.rowIndex="1">
-                  <TableView fx:id="dispenser_table" prefHeight="390.0" prefWidth="529.0">
-                      <columns>
-                          <TableColumn fx:id="dispenserId_column" style="-fx-alignment: CENTER;" prefWidth="99.0" text="Dispenser ID" />
-                          <TableColumn fx:id="ingredient_column" prefWidth="336.0" text="Ingredient" />
-                          <TableColumn fx:id="available_column" prefWidth="90.0" text="Available" />
-                      </columns>
-                  </TableView>
-                  <Button fx:id="refill_button" prefWidth="100.0" text="Refill">
-                  <font>
-                     <Font size="20.0" />
-                  </font>
-                  <HBox.margin>
-                     <Insets left="20.0" />
-                  </HBox.margin></Button>
-               <GridPane.margin>
-                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-               </GridPane.margin>
-              </HBox>
-          </children>
-      </GridPane>
-   </children>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="480.0" prefWidth="800.0"
+            xmlns="http://javafx.com/javafx/8.0.112" fx:controller="controllers.RefillController">
+    <children>
+        <GridPane>
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="800.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="430.0" vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <children>
+                <HBox spacing="20.0">
+                    <Label fx:id="welcome_label" prefWidth="540.0" text="Welcome User">
+                        <font>
+                            <Font name="System Bold" size="25.0"/>
+                        </font>
+                        <HBox.margin>
+                            <Insets top="5.0"/>
+                        </HBox.margin>
+                    </Label>
+                    <Button fx:id="back_button" minWidth="100.0" prefWidth="100.0" text="Back">
+                        <font>
+                            <Font size="20.0"/>
+                        </font>
+                        <HBox.margin>
+                            <Insets left="20.0"/>
+                        </HBox.margin>
+                    </Button>
+                    <Button fx:id="logOff_button" minWidth="100.0" prefWidth="100.0" text="Log off">
+                        <font>
+                            <Font size="20.0"/>
+                        </font>
+                    </Button>
+                    <GridPane.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                    </GridPane.margin>
+                </HBox>
+                <HBox GridPane.rowIndex="1">
+                    <TableView fx:id="dispenser_table" prefHeight="390.0" prefWidth="529.0">
+                        <columns>
+                            <TableColumn fx:id="dispenserId_column" style="-fx-alignment: CENTER;" prefWidth="99.0"
+                                         text="Dispenser ID"/>
+                            <TableColumn fx:id="ingredient_column" prefWidth="336.0" text="Ingredient"/>
+                            <TableColumn fx:id="available_column" prefWidth="90.0" text="Available"/>
+                        </columns>
+                    </TableView>
+                    <Button fx:id="refill_button" prefWidth="100.0" text="Refill">
+                        <font>
+                            <Font size="20.0"/>
+                        </font>
+                        <HBox.margin>
+                            <Insets left="20.0"/>
+                        </HBox.margin>
+                    </Button>
+                    <GridPane.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                    </GridPane.margin>
+                </HBox>
+            </children>
+        </GridPane>
+    </children>
 </AnchorPane>

@@ -17,6 +17,7 @@ public class LogType {
     public static final int TYPE_MAKE_COCKTAIL = 9;
 
     private static List<Integer> cocktailEvents;
+
     static {
         cocktailEvents = new ArrayList<>();
         cocktailEvents.add(TYPE_MAKE_COCKTAIL);

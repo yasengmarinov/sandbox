@@ -155,7 +155,7 @@ public class ConfigureCocktailController extends SimpleAddRemovePage {
     }
 
     private Dialog<CocktailIngredient> addCocktailIngredientDialog() {
-        Cocktail selectedCocktail =  (Cocktail) object_table.getSelectionModel().getSelectedItem();
+        Cocktail selectedCocktail = (Cocktail) object_table.getSelectionModel().getSelectedItem();
         Dialog<CocktailIngredient> dialog = new Dialog<>();
         dialog.setTitle("Add Ingredient");
         dialog.setHeaderText("Add a new ingredient for cocktail " + selectedCocktail);

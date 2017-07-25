@@ -24,6 +24,10 @@ public class DAL {
     private static SessionFactory sessionFactory;
     private static Session session;
 
+    private DAL() {
+
+    }
+
     public static void init() {
         logger.info("Initializing DAL");
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
@@ -32,10 +36,6 @@ public class DAL {
         sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
         session = sessionFactory.openSession();
         prepopulateData();
-    }
-
-    private DAL() {
-
     }
 
     public static <T> List<T> getAll(Class<T> clazz) {

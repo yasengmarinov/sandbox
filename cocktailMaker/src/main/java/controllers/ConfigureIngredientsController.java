@@ -25,16 +25,14 @@ import java.time.Instant;
 /**
  * Created by b06514a on 6/10/2017.
  */
-public class ConfigureIngredientsController extends SimpleAddRemovePage{
-
-    private static final Logger logger = Logger.getLogger(ConfigureUsersController.class.getName());
-
+public class ConfigureIngredientsController extends SimpleAddRemovePage {
 
     public static final int CALIBRATION_INTERVAL_MS = 100;
     public static final int МS_IN_SECOND = 1000;
     public static final int MAX_ALLOWED_CALIBRATION_TIME_SEC = 60;
     public static final int DIVIDE_NANO_TO_GET_3_DIGITS = 1000000;
     public static final int DEFAULT_INGREDIENT_SIZE = 750;
+    private static final Logger logger = Logger.getLogger(ConfigureUsersController.class.getName());
     @FXML
     public TableColumn<Ingredient, String> ingredient_column;
 
@@ -113,6 +111,7 @@ public class ConfigureIngredientsController extends SimpleAddRemovePage{
             {
                 super.bind(calibrating);
             }
+
             @Override
             protected String computeValue() {
                 return calibrating.getValue() ? "Stop" : "Start";
@@ -179,7 +178,7 @@ public class ConfigureIngredientsController extends SimpleAddRemovePage{
 
         if (isDurationValid(duration)) {
             Ingredient ingredient = (Ingredient) selectedObject.getValue();
-            ingredient.setVelocity( (int) duration.getSeconds() * 1000 + duration.getNano() / DIVIDE_NANO_TO_GET_3_DIGITS);
+            ingredient.setVelocity((int) duration.getSeconds() * 1000 + duration.getNano() / DIVIDE_NANO_TO_GET_3_DIGITS);
             DAL.update(ingredient);
             DAL.addHistoryEntry(LogType.TYPE_UPDATE_OBJECT, String.format("Velocity of Ingredient %s set", ingredient.getName()));
             Utils.Dialogs.openAlert(Alert.AlertType.INFORMATION, Utils.Dialogs.TITLE_CALIBRATION, Utils.Dialogs.CONTENT_CALIBRATION_SUCCESS);

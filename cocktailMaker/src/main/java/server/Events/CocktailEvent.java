@@ -10,10 +10,9 @@ import server.db.entities.Cocktail;
  */
 public class CocktailEvent extends Event {
 
-    protected Cocktail cocktail;
-
     public static EventType<CocktailEvent> DONE = new EventType<>("DONE");
     public static EventType<CocktailEvent> BEGIN = new EventType<>("BEGIN");
+    protected Cocktail cocktail;
 
 
     public CocktailEvent(EventType<? extends Event> eventType, Cocktail cocktail) {

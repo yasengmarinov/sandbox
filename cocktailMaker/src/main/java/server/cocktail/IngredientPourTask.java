@@ -12,7 +12,7 @@ import java.util.concurrent.Callable;
 /**
  * Created by b06514a on 7/18/2017.
  */
-public class IngredientPourTask implements Callable<Boolean>{
+public class IngredientPourTask implements Callable<Boolean> {
     private static final Logger logger = Logger.getLogger(IngredientPourTask.class.getName());
 
 

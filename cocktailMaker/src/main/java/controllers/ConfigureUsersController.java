@@ -86,7 +86,7 @@ public class ConfigureUsersController extends SimpleController {
         users_table.setItems(usersObservableList);
 
         refreshUsersList();
-        
+
         setObjectsVisibility();
         addEventHandlers();
     }
@@ -117,6 +117,7 @@ public class ConfigureUsersController extends SimpleController {
             {
                 super.bind(editMode);
             }
+
             @Override
             protected String computeValue() {
                 return (editMode.getValue() ? "Save" : "Add");

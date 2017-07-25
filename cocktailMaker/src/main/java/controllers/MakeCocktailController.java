@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 /**
  * Created by b06514a on 7/8/2017.
  */
-public class MakeCocktailController extends SimpleController{
+public class MakeCocktailController extends SimpleController {
 
     private static final Logger logger = Logger.getLogger(MakeCocktailController.class.getName());
 
