@@ -12,16 +12,15 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
+import org.apache.log4j.Logger;
 import server.LogType;
 import server.Utils;
 import server.db.DAL;
 import server.db.entities.Ingredient;
 import server.dispensers.Calibrator;
 
-import javax.rmi.CORBA.Util;
 import java.time.Duration;
 import java.time.Instant;
-import org.apache.log4j.Logger;
 
 /**
  * Created by b06514a on 6/10/2017.

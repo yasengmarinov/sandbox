@@ -1,10 +1,9 @@
 package server.dispensers.controllers;
 
 import com.pi4j.io.gpio.*;
+import org.apache.log4j.Logger;
 import server.dispensers.DispenserConfig;
 import server.dispensers.interfaces.DispenserController;
-
-import org.apache.log4j.Logger;
 
 /**
  * Created by b06514a on 7/9/2017.

@@ -1,7 +1,5 @@
 package server.db.entities;
 
-import org.hibernate.annotations.Type;
-
 import javax.persistence.*;
 
 /**

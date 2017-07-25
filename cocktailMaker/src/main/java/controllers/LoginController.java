@@ -10,16 +10,12 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import org.apache.log4j.Logger;
 import server.PageNavigator;
-import server.ServerLauncher;
 import server.Utils;
-import server.db.DAL;
 import server.db.entities.User;
 import server.session.Session;
 import server.session.SessionManager;
-
-import java.util.logging.Level;
-import org.apache.log4j.Logger;
 
 public class LoginController {
 

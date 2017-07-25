@@ -2,7 +2,6 @@ package controls.objects;
 
 import javafx.scene.control.Button;
 import server.db.entities.Cocktail;
-import server.db.entities.CocktailGroup;
 
 
 /**

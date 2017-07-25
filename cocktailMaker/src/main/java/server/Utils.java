@@ -1,6 +1,5 @@
 package server;
 
-import javafx.beans.binding.StringBinding;
 import javafx.scene.control.Alert;
 
 import java.io.FileReader;
@@ -9,7 +8,6 @@ import java.math.BigInteger;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 import java.util.Properties;
 
 /**

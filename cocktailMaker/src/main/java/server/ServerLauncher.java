@@ -3,10 +3,10 @@ package server;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
+import org.apache.log4j.Logger;
 import server.config.ServerConfigurator;
 
 import java.util.Properties;
-import org.apache.log4j.Logger;
 
 public class ServerLauncher extends Application {
 

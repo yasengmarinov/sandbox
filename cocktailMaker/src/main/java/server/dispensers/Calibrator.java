@@ -1,13 +1,12 @@
 package server.dispensers;
 
+import org.apache.log4j.Logger;
 import server.db.entities.Dispenser;
 import server.db.entities.Ingredient;
 import server.dispensers.interfaces.DispenserController;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.logging.Level;
-import org.apache.log4j.Logger;
 
 /**
  * Created by b06514a on 7/17/2017.

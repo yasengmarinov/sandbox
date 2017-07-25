@@ -15,8 +15,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import server.LogType;
 import server.Utils;
 import server.db.DAL;
-import server.db.entities.Ingredient;
 import server.db.entities.Dispenser;
+import server.db.entities.Ingredient;
 
 import java.util.Collections;
 import java.util.List;

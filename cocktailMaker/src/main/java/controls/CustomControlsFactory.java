@@ -4,11 +4,11 @@ import controls.objects.CocktailButton;
 import controls.objects.CocktailGroupButton;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import org.apache.log4j.Logger;
 import server.db.entities.Cocktail;
 import server.db.entities.CocktailGroup;
 
 import java.io.IOException;
-import org.apache.log4j.Logger;
 
 /**
  * Created by b06514a on 7/8/2017.

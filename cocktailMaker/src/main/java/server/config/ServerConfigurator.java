@@ -1,12 +1,12 @@
 package server.config;
 
-import server.dispensers.DispenserConfig;
-import server.dispensers.DispenserControllerManager;
+import org.apache.log4j.Logger;
 import server.db.DAL;
 import server.db.entities.Dispenser;
+import server.dispensers.DispenserConfig;
+import server.dispensers.DispenserControllerManager;
 
 import java.util.*;
-import org.apache.log4j.Logger;
 import java.util.stream.Collectors;
 
 /**

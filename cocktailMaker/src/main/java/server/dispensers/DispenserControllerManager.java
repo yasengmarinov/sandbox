@@ -1,12 +1,12 @@
 package server.dispensers;
 
+import org.apache.log4j.Logger;
 import server.db.entities.Dispenser;
 import server.dispensers.controllers.MockPumpController;
 import server.dispensers.interfaces.DispenserController;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.log4j.Logger;
 
 /**
  * Created by B06514A on 6/18/2017.

@@ -1,17 +1,21 @@
 package controllers;
 
-import controls.CustomControlsFactory;
 import controllers.interfaces.SimpleController;
+import controls.CustomControlsFactory;
 import controls.objects.CocktailButton;
 import controls.objects.CocktailGroupButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import org.apache.log4j.Logger;
+import server.Events.CocktailEvent;
+import server.LogType;
 import server.PageNavigator;
 import server.cocktail.CocktailMaker;
 import server.db.DAL;
@@ -21,6 +25,8 @@ import server.session.SessionManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 /**
@@ -32,6 +38,9 @@ public class MakeCocktailController extends SimpleController{
 
     @FXML
     public GridPane main_pane;
+
+    @FXML
+    public Pane makingCocktail_pane;
 
     @FXML
     public FlowPane cocktailGroup_pane;
@@ -61,6 +70,7 @@ public class MakeCocktailController extends SimpleController{
         welcome_label.setText("Welcome " + SessionManager.getSession().getUser().getFirstname());
 
         addEventHandlers();
+        setObjectsVisibility();
         populateCocktailGroupPane();
         addEventHandlers();
 
@@ -81,11 +91,22 @@ public class MakeCocktailController extends SimpleController{
 
     @Override
     protected void setObjectsVisibility() {
-
+        makingCocktail_pane.setVisible(false);
     }
 
     @Override
     protected void addEventHandlers() {
+        main_pane.addEventFilter(CocktailEvent.DONE, event -> {
+            makingCocktail_pane.setVisible(false);
+            main_pane.setDisable(false);
+            DAL.addHistoryEntry(LogType.TYPE_MAKE_COCKTAIL, String.format("Cocktail %s made", event.getCocktail().getName()));
+        });
+
+        main_pane.addEventFilter(CocktailEvent.BEGIN, event -> {
+            main_pane.setDisable(true);
+            makingCocktail_pane.setVisible(true);
+        });
+
         logOff_button.addEventHandler(ActionEvent.ACTION, event -> {
             SessionManager.sessionInvalidate();
             PageNavigator.navigateTo(PageNavigator.PAGE_LOGIN);
@@ -106,15 +127,31 @@ public class MakeCocktailController extends SimpleController{
     }
 
     private void makeCocktail(Cocktail cocktail) {
-
         if (CocktailMaker.validate(cocktail)) {
-            logger.info("Enough availability for making " + cocktail.getName());
-            main_pane.setDisable(true);
-            CocktailMaker.make(cocktail);
-            main_pane.setDisable(false);
+            logger.info("Begin making " + cocktail.getName());
+            main_pane.fireEvent(new CocktailEvent(CocktailEvent.BEGIN, cocktail));
+            runCocktailTask(cocktail);
         } else {
             logger.info("Not enough availability for making " + cocktail.getName());
         }
+    }
+
+    private void runCocktailTask(Cocktail cocktail) {
+        ExecutorService es = Executors.newSingleThreadExecutor();
+        es.submit(() -> {
+            CocktailMaker.make(cocktail);
+            main_pane.fireEvent(new CocktailEvent(CocktailEvent.DONE, cocktail));
+        });
+    }
+
+    private Dialog<Boolean> getMakingCocktailDialog() {
+        Dialog<Boolean> dialog = new Dialog<>();
+        dialog.setTitle("Please wait");
+        dialog.setContentText("Making a cocktail is in progress...");
+
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
+        dialog.getDialogPane().lookupButton(ButtonType.CLOSE).setVisible(false);
+        return dialog;
     }
 
     private void fillCocktailPane(CocktailGroup cocktailGroup) {
@@ -143,5 +180,6 @@ public class MakeCocktailController extends SimpleController{
                 map(CocktailIngredient::getIngredient)
                 .collect(Collectors.toSet()));
     }
+
 
 }

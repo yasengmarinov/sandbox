@@ -13,9 +13,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by b06514a on 7/18/2017.
@@ -50,12 +50,11 @@ public class CocktailMaker {
         return true;
     }
 
-    public static boolean make(Cocktail cocktail) {
+    public static void make(Cocktail cocktail) {
 
         logger.info("Begin making of cocktail " + cocktail.getName());
 
-        List<IngredientPourTask> tasks = new LinkedList<>();
-
+        List<Callable<Boolean>> tasks = new LinkedList<>();
         for (CocktailIngredient cocktailIngredient : cocktail.getCocktailIngredients()) {
             tasks.add(new IngredientPourTask(cocktailIngredient));
         }
@@ -63,11 +62,7 @@ public class CocktailMaker {
         try {
             pool.invokeAll(tasks);
         } catch (InterruptedException e) {
-            e.printStackTrace();
-            return true;
+            logger.error(e);
         }
-        logger.info("Cocktail Prepared");
-
-        return true;
     }
 }

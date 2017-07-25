@@ -8,7 +8,6 @@ import server.dispensers.DispenserControllerManager;
 import server.dispensers.interfaces.DispenserController;
 
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
 
 /**
  * Created by b06514a on 7/18/2017.
@@ -35,6 +34,11 @@ public class IngredientPourTask implements Callable<Boolean>{
             dispenserController.run();
             Thread.sleep(msToRun);
             dispenserController.stop();
+
+            dispenser.setMillilitresLeft(dispenser.getMillilitresLeft() - cocktailIngredient.getMillilitres());
+            DAL.update(dispenser);
+            logger.info(String.format("Availability of %s on dispenser %d reduced to %d", cocktailIngredient.getIngredient(),
+                    dispenser.getId(), dispenser.getMillilitresLeft()));
         } catch (InterruptedException e) {
             logger.error(e);
             return false;
