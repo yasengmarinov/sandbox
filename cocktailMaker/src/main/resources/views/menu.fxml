@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml"
             xmlns="http://javafx.com/javafx"
-            fx:controller="controllers.MenuController"
+            fx:controller="ui.controllers.MenuController"
             prefHeight="25.0" prefWidth="800.0">
     <MenuBar prefHeight="25" prefWidth="800.0">
         <menus>
