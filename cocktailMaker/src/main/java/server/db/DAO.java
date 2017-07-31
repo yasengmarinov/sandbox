@@ -17,21 +17,21 @@ import java.util.List;
 /**
  * Created by b06514a on 6/10/2017.
  */
-public class DAL {
+public class DAO {
 
-    public static final Logger logger = Logger.getLogger(DAL.class.getName());
+    public static final Logger logger = Logger.getLogger(DAO.class.getName());
 
     private static SessionFactory sessionFactory;
     private static Session session;
 
-    private DAL() {
+    private DAO() {
 
     }
 
     public static void init() {
-        logger.info("Initializing DAL");
+        logger.info("Initializing DAO");
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
-                .configure(DAL.class.getClassLoader().getResource("config/hibernate/hibernate.cfg.xml"))
+                .configure(DAO.class.getClassLoader().getResource("config/hibernate/hibernate.cfg.xml"))
                 .build();
         sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
         session = sessionFactory.openSession();
@@ -44,8 +44,8 @@ public class DAL {
     }
 
     private static void prepopulateData() {
-        if (DAL.getAll(User.class).size() == 0)
-            DAL.persist(new User("admin", Utils.md5("admin"), true));
+        if (DAO.getAll(User.class).size() == 0)
+            DAO.persist(new User("admin", Utils.md5("admin"), true));
     }
 
     public static boolean persist(Object object) {

@@ -1,6 +1,7 @@
-package controllers;
+package ui.controllers;
 
-import controllers.interfaces.SimpleController;
+import server.db.DAO;
+import ui.controllers.interfaces.SimpleController;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.StringBinding;
@@ -14,7 +15,6 @@ import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import server.LogType;
 import server.Utils;
-import server.db.DAL;
 import server.db.entities.HistoryLog;
 import server.db.entities.User;
 
@@ -153,7 +153,7 @@ public class ConfigureUsersController extends SimpleController {
     }
 
     private BooleanBinding isDefaultAdminSelected() {
-        return users_table.getSelectionModel().selectedItemProperty().isEqualTo(DAL.getUser("admin"));
+        return users_table.getSelectionModel().selectedItemProperty().isEqualTo(DAO.getUser("admin"));
     }
 
     @Override
@@ -183,7 +183,7 @@ public class ConfigureUsersController extends SimpleController {
         });
 
         remove_button.addEventHandler(ActionEvent.ACTION, event -> {
-            if (DAL.delete(users_table.getFocusModel().getFocusedItem())) {
+            if (DAO.delete(users_table.getFocusModel().getFocusedItem())) {
                 refreshUsersList();
             } else {
                 Utils.Dialogs.openAlert(Alert.AlertType.WARNING, Utils.Dialogs.TITLE_DELETE_FAILED, "Delete of user failed");
@@ -203,10 +203,10 @@ public class ConfigureUsersController extends SimpleController {
 
     private boolean createUser() {
         boolean success;
-        success = DAL.persist(new User(username_field.getText().toLowerCase(), firstname_field.getText(),
+        success = DAO.persist(new User(username_field.getText().toLowerCase(), firstname_field.getText(),
                 lastname_field.getText(), Utils.md5(password_field.getText()), admin_checkbox.isSelected()));
         if (success)
-            DAL.persist(new HistoryLog(LogType.TYPE_CREATE_OBJECT,
+            DAO.persist(new HistoryLog(LogType.TYPE_CREATE_OBJECT,
                     "New user created: " + username_field.getText()));
         return success;
     }
@@ -222,10 +222,10 @@ public class ConfigureUsersController extends SimpleController {
             user.setPassword(Utils.md5(password_field.getText()));
         }
 
-        success = DAL.update(user);
+        success = DAO.update(user);
 
         if (success)
-            DAL.persist(new HistoryLog(LogType.TYPE_UPDATE_OBJECT, "User updated: " + user.getUsername()));
+            DAO.persist(new HistoryLog(LogType.TYPE_UPDATE_OBJECT, "User updated: " + user.getUsername()));
         return success;
     }
 
@@ -251,7 +251,7 @@ public class ConfigureUsersController extends SimpleController {
     }
 
     private void refreshUsersList() {
-        List<User> list = DAL.getAll(User.class);
+        List<User> list = DAO.getAll(User.class);
         Collections.sort(list);
         usersObservableList.clear();
         usersObservableList.addAll(list);

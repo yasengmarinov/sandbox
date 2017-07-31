@@ -1,6 +1,7 @@
-package controllers;
+package ui.controllers;
 
-import controllers.templates.SimpleAddRemovePage;
+import server.db.DAO;
+import ui.controllers.templates.SimpleAddRemovePage;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.binding.StringBinding;
@@ -15,7 +16,6 @@ import javafx.scene.layout.VBox;
 import org.apache.log4j.Logger;
 import server.LogType;
 import server.Utils;
-import server.db.DAL;
 import server.db.entities.Ingredient;
 import server.dispensers.Calibrator;
 
@@ -82,7 +82,7 @@ public class ConfigureIngredientsController extends SimpleAddRemovePage {
     @Override
     protected boolean addObject() {
         int size = Integer.valueOf(newObjectSize.getText().isEmpty() ? DEFAULT_INGREDIENT_SIZE : Integer.valueOf(newObjectSize.getText()));
-        return DAL.persist(new Ingredient(newObjectName.getText(), size));
+        return DAO.persist(new Ingredient(newObjectName.getText(), size));
     }
 
     @Override
@@ -91,7 +91,7 @@ public class ConfigureIngredientsController extends SimpleAddRemovePage {
         Ingredient ingredient = (Ingredient) selectedObject.getValue();
         ingredient.setName(newObjectName.getText());
         ingredient.setSize(size);
-        return DAL.update(ingredient);
+        return DAO.update(ingredient);
     }
 
     @Override
@@ -123,7 +123,7 @@ public class ConfigureIngredientsController extends SimpleAddRemovePage {
     protected void addEventHandlers() {
         super.addEventHandlers();
         calibrate_button.addEventHandler(ActionEvent.ACTION, event -> {
-            if (DAL.getDispenserByIngredient((Ingredient) selectedObject.getValue()) == null) {
+            if (DAO.getDispenserByIngredient((Ingredient) selectedObject.getValue()) == null) {
                 Utils.Dialogs.openAlert(Alert.AlertType.INFORMATION, Utils.Dialogs.TITLE_INCONSISTENT_DATA, Utils.Dialogs.CONTENT_ADD_INGREDIENT_TO_DISPENSER);
             } else {
                 openCalibrationPane();
@@ -154,7 +154,7 @@ public class ConfigureIngredientsController extends SimpleAddRemovePage {
     private void calibrationStart() {
         calibrating.setValue(true);
 
-        calibrator = new Calibrator((Ingredient) selectedObject.getValue(), DAL.getDispenserByIngredient((Ingredient) selectedObject.getValue()));
+        calibrator = new Calibrator((Ingredient) selectedObject.getValue(), DAO.getDispenserByIngredient((Ingredient) selectedObject.getValue()));
 
         timeline = new Timeline();
         timeline.setCycleCount(MAX_ALLOWED_CALIBRATION_TIME_SEC * МS_IN_SECOND / CALIBRATION_INTERVAL_MS);
@@ -179,8 +179,8 @@ public class ConfigureIngredientsController extends SimpleAddRemovePage {
         if (isDurationValid(duration)) {
             Ingredient ingredient = (Ingredient) selectedObject.getValue();
             ingredient.setVelocity((int) duration.getSeconds() * 1000 + duration.getNano() / DIVIDE_NANO_TO_GET_3_DIGITS);
-            DAL.update(ingredient);
-            DAL.addHistoryEntry(LogType.TYPE_UPDATE_OBJECT, String.format("Velocity of Ingredient %s set", ingredient.getName()));
+            DAO.update(ingredient);
+            DAO.addHistoryEntry(LogType.TYPE_UPDATE_OBJECT, String.format("Velocity of Ingredient %s set", ingredient.getName()));
             Utils.Dialogs.openAlert(Alert.AlertType.INFORMATION, Utils.Dialogs.TITLE_CALIBRATION, Utils.Dialogs.CONTENT_CALIBRATION_SUCCESS);
             refreshObjectList();
         } else {
@@ -198,7 +198,7 @@ public class ConfigureIngredientsController extends SimpleAddRemovePage {
         calibrate_mode.setValue(true);
 
         calibrateHeader_label.setText(String.format("Calibrating %s on Dispenser %d", selectedObject.getValue(),
-                DAL.getDispenserByIngredient((Ingredient) selectedObject.getValue()).getId()));
+                DAO.getDispenserByIngredient((Ingredient) selectedObject.getValue()).getId()));
 
     }
 

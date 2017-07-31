@@ -1,7 +1,7 @@
 package server.config;
 
 import org.apache.log4j.Logger;
-import server.db.DAL;
+import server.db.DAO;
 import server.db.entities.Dispenser;
 import server.dispensers.DispenserConfig;
 import server.dispensers.DispenserControllerManager;
@@ -27,7 +27,7 @@ public class ServerConfigurator {
     public static void configure() {
         logger.info("Initialize server configuration");
 
-        DAL.init();
+        DAO.init();
 
         Map<Integer, DispenserConfig> dispenserMap = initDispenserMap();
         DispenserControllerManager.init(dispenserMap);
@@ -38,11 +38,11 @@ public class ServerConfigurator {
     private static void createInitialData(Map<Integer, DispenserConfig> dispenserMap) {
         logger.info("Persisting dispensers in the DB");
         Set<Integer> presentDispensersIDs = new HashSet<>();
-        presentDispensersIDs.addAll(DAL.getAll(Dispenser.class).stream().map(Dispenser::getId).collect(Collectors.toList()));
+        presentDispensersIDs.addAll(DAO.getAll(Dispenser.class).stream().map(Dispenser::getId).collect(Collectors.toList()));
 
         for (DispenserConfig dispenserConfig : dispenserMap.values()) {
             if (!presentDispensersIDs.contains(dispenserConfig.getId())) {
-                DAL.persist(new Dispenser(dispenserConfig.getId(), false));
+                DAO.persist(new Dispenser(dispenserConfig.getId(), false));
             }
         }
 

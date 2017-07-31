@@ -1,7 +1,7 @@
-package controls;
+package ui.controls;
 
-import controls.objects.CocktailButton;
-import controls.objects.CocktailGroupButton;
+import ui.controls.objects.CocktailButton;
+import ui.controls.objects.CocktailGroupButton;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import org.apache.log4j.Logger;

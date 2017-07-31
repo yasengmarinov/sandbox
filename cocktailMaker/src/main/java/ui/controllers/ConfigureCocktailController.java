@@ -1,6 +1,7 @@
-package controllers;
+package ui.controllers;
 
-import controllers.templates.SimpleAddRemovePage;
+import server.db.DAO;
+import ui.controllers.templates.SimpleAddRemovePage;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleStringProperty;
@@ -11,7 +12,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
-import server.db.DAL;
 import server.db.entities.Cocktail;
 import server.db.entities.CocktailGroup;
 import server.db.entities.CocktailIngredient;
@@ -59,7 +59,7 @@ public class ConfigureCocktailController extends SimpleAddRemovePage {
     }
 
     private void configureCocktailGroupDropdown() {
-        List<CocktailGroup> cocktailGroups = DAL.getAll(CocktailGroup.class);
+        List<CocktailGroup> cocktailGroups = DAO.getAll(CocktailGroup.class);
         cocktailGroup_box.setItems(FXCollections.observableArrayList(cocktailGroups));
     }
 
@@ -68,14 +68,14 @@ public class ConfigureCocktailController extends SimpleAddRemovePage {
         addIngredient_button.addEventHandler(ActionEvent.ACTION, event -> {
             CocktailIngredient cocktail_ingredient = getCocktailIngredientByDialog();
             if (cocktail_ingredient != null) {
-                DAL.persist(cocktail_ingredient);
+                DAO.persist(cocktail_ingredient);
                 refreshIngredientsTable();
             }
         });
 
         deleteIngredient_button.disableProperty().bind(ingredients_table.getSelectionModel().selectedItemProperty().isNull());
         deleteIngredient_button.addEventHandler(ActionEvent.ACTION, event -> {
-            DAL.delete(ingredients_table.getSelectionModel().getSelectedItem());
+            DAO.delete(ingredients_table.getSelectionModel().getSelectedItem());
             refreshIngredientsTable();
         });
     }
@@ -94,7 +94,7 @@ public class ConfigureCocktailController extends SimpleAddRemovePage {
 
     @Override
     protected boolean addObject() {
-        return DAL.persist(new Cocktail(newObjectName.getText(), cocktailGroup_box.getSelectionModel().getSelectedItem()));
+        return DAO.persist(new Cocktail(newObjectName.getText(), cocktailGroup_box.getSelectionModel().getSelectedItem()));
     }
 
     @Override
@@ -102,7 +102,7 @@ public class ConfigureCocktailController extends SimpleAddRemovePage {
         Cocktail cocktail = (Cocktail) object_table.getSelectionModel().getSelectedItem();
         cocktail.setName(newObjectName.getText());
         cocktail.setCocktailGroup(cocktailGroup_box.getValue());
-        return DAL.update(cocktail);
+        return DAO.update(cocktail);
     }
 
     @Override
@@ -132,7 +132,7 @@ public class ConfigureCocktailController extends SimpleAddRemovePage {
     }
 
     private void refreshIngredientsTable() {
-        List<CocktailIngredient> list = DAL.getCocktailIngredients
+        List<CocktailIngredient> list = DAO.getCocktailIngredients
                 ((Cocktail) selectedObject.getValue());
         ingredientsObservableList.clear();
         if (list != null) {
@@ -163,7 +163,7 @@ public class ConfigureCocktailController extends SimpleAddRemovePage {
         ComboBox<Ingredient> ingredient = new ComboBox<>();
         ingredient.setPrefWidth(200);
         ingredient.setPromptText("Ingredient");
-        ingredient.setItems(FXCollections.observableArrayList(DAL.getAll(Ingredient.class)));
+        ingredient.setItems(FXCollections.observableArrayList(DAO.getAll(Ingredient.class)));
 
         TextField ingredientAmount = new TextField();
         ingredientAmount.setMaxWidth(150);

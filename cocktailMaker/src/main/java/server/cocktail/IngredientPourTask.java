@@ -1,7 +1,7 @@
 package server.cocktail;
 
 import org.apache.log4j.Logger;
-import server.db.DAL;
+import server.db.DAO;
 import server.db.entities.CocktailIngredient;
 import server.db.entities.Dispenser;
 import server.dispensers.DispenserControllerManager;
@@ -24,7 +24,7 @@ public class IngredientPourTask implements Callable<Boolean> {
 
     @Override
     public Boolean call() throws Exception {
-        Dispenser dispenser = DAL.getDispenserByCocktailIngredient(cocktailIngredient);
+        Dispenser dispenser = DAO.getDispenserByCocktailIngredient(cocktailIngredient);
         Long msToRun = (long) cocktailIngredient.getIngredient().getVelocity() * cocktailIngredient.getMillilitres() / 100;
         DispenserController dispenserController = DispenserControllerManager.getDispenserController(dispenser);
 
@@ -36,7 +36,7 @@ public class IngredientPourTask implements Callable<Boolean> {
             dispenserController.stop();
 
             dispenser.setMillilitresLeft(dispenser.getMillilitresLeft() - cocktailIngredient.getMillilitres());
-            DAL.update(dispenser);
+            DAO.update(dispenser);
             logger.info(String.format("Availability of %s on dispenser %d reduced to %d", cocktailIngredient.getIngredient(),
                     dispenser.getId(), dispenser.getMillilitresLeft()));
         } catch (InterruptedException e) {

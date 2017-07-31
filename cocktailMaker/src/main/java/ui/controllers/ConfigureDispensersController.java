@@ -1,6 +1,7 @@
-package controllers;
+package ui.controllers;
 
-import controllers.interfaces.SimpleController;
+import server.db.DAO;
+import ui.controllers.interfaces.SimpleController;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -14,7 +15,6 @@ import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import server.LogType;
 import server.Utils;
-import server.db.DAL;
 import server.db.entities.Dispenser;
 import server.db.entities.Ingredient;
 
@@ -60,7 +60,7 @@ public class ConfigureDispensersController extends SimpleController {
         setObjectsVisibility();
 
         selectedDispenser.bind(dispensers_table.getSelectionModel().selectedItemProperty());
-        dispensersObservableList.addAll(DAL.getAll(Dispenser.class));
+        dispensersObservableList.addAll(DAO.getAll(Dispenser.class));
         dispensers_table.setItems(dispensersObservableList);
         dispensers_table.getSelectionModel().select(0);
 
@@ -91,12 +91,12 @@ public class ConfigureDispensersController extends SimpleController {
                 dispenser.setIngredient(selectedDispenserIngredient_box.getValue());
                 dispenser.setMillilitresLeft(selectedDispenserIngredient_box.getValue().getSize());
 
-                DAL.update(dispenser);
+                DAO.update(dispenser);
 
                 dispensersObservableList.set(dispensers_table.getFocusModel().getFocusedIndex(), dispenser);
                 FXCollections.sort(dispensersObservableList);
 
-                DAL.addHistoryEntry(LogType.TYPE_CONFIGURE_DISPENSER,
+                DAO.addHistoryEntry(LogType.TYPE_CONFIGURE_DISPENSER,
                         String.format("Dispenser %d configured with ingredient %s. ", dispenser.getId(), dispenser.getIngredient()));
 
                 dispensers_table.refresh();
@@ -136,7 +136,7 @@ public class ConfigureDispensersController extends SimpleController {
     }
 
     private void populateIngredientsDropdown() {
-        List<Ingredient> list = DAL.getAll(Ingredient.class);
+        List<Ingredient> list = DAO.getAll(Ingredient.class);
         Collections.sort(list);
         selectedDispenserIngredient_box.setItems(FXCollections.observableArrayList(list));
     }

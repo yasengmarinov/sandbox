@@ -1,6 +1,6 @@
 package server.session;
 
-import server.db.DAL;
+import server.db.DAO;
 import server.db.entities.User;
 
 /**
@@ -14,7 +14,7 @@ public class SessionManager {
 
         if (username.isEmpty() || password.isEmpty())
             return null;
-        User user = DAL.getUser(username, password);
+        User user = DAO.getUser(username, password);
 
         if (user != null) {
             session = new Session(user);

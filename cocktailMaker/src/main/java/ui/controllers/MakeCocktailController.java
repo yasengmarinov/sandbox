@@ -1,9 +1,10 @@
-package controllers;
+package ui.controllers;
 
-import controllers.interfaces.SimpleController;
-import controls.CustomControlsFactory;
-import controls.objects.CocktailButton;
-import controls.objects.CocktailGroupButton;
+import server.db.DAO;
+import ui.controllers.interfaces.SimpleController;
+import ui.controls.CustomControlsFactory;
+import ui.controls.objects.CocktailButton;
+import ui.controls.objects.CocktailGroupButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -14,11 +15,10 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import org.apache.log4j.Logger;
-import server.Events.CocktailEvent;
+import server.events.CocktailEvent;
 import server.LogType;
 import server.PageNavigator;
 import server.cocktail.CocktailMaker;
-import server.db.DAL;
 import server.db.entities.*;
 import server.session.SessionManager;
 
@@ -60,7 +60,7 @@ public class MakeCocktailController extends SimpleController {
     private List<CocktailGroupButton> cocktailGroupButtons = new ArrayList<>();
     private List<CocktailButton> cocktailButtons = new ArrayList<>();
 
-    private Set<Ingredient> enabledIngredients = DAL.getEnabledDispensers()
+    private Set<Ingredient> enabledIngredients = DAO.getEnabledDispensers()
             .stream()
             .map(Dispenser::getIngredient)
             .collect(Collectors.toSet());
@@ -77,7 +77,7 @@ public class MakeCocktailController extends SimpleController {
     }
 
     private void populateCocktailGroupPane() {
-        List<CocktailGroup> cocktailGroups = DAL.getAll(CocktailGroup.class);
+        List<CocktailGroup> cocktailGroups = DAO.getAll(CocktailGroup.class);
         List<Button> buttons = new ArrayList<>(cocktailGroups.size());
 
         for (CocktailGroup cocktailGroup : cocktailGroups) {
@@ -99,7 +99,7 @@ public class MakeCocktailController extends SimpleController {
         main_pane.addEventFilter(CocktailEvent.DONE, event -> {
             makingCocktail_pane.setVisible(false);
             main_pane.setDisable(false);
-            DAL.addHistoryEntry(LogType.TYPE_MAKE_COCKTAIL, String.format("Cocktail %s made", event.getCocktail().getName()));
+            DAO.addHistoryEntry(LogType.TYPE_MAKE_COCKTAIL, String.format("Cocktail %s made", event.getCocktail().getName()));
         });
 
         main_pane.addEventFilter(CocktailEvent.BEGIN, event -> {
@@ -155,7 +155,7 @@ public class MakeCocktailController extends SimpleController {
     }
 
     private void fillCocktailPane(CocktailGroup cocktailGroup) {
-        List<Cocktail> cocktails = DAL.getCocktailsByGroup(cocktailGroup);
+        List<Cocktail> cocktails = DAO.getCocktailsByGroup(cocktailGroup);
         List<Button> buttons = new ArrayList<>(cocktails.size());
 
         for (Cocktail cocktail : cocktails) {

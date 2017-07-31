@@ -1,4 +1,4 @@
-package controllers;
+package ui.controllers;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;

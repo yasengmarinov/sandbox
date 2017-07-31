@@ -1,4 +1,4 @@
-package controls.objects;
+package ui.controls.objects;
 
 import javafx.scene.control.Button;
 import server.db.entities.CocktailGroup;

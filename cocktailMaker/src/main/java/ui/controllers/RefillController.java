@@ -1,4 +1,4 @@
-package controllers;
+package ui.controllers;
 
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
@@ -12,7 +12,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import server.PageNavigator;
-import server.db.DAL;
+import server.db.DAO;
 import server.db.entities.Dispenser;
 import server.db.entities.Ingredient;
 import server.session.SessionManager;
@@ -69,14 +69,14 @@ public class RefillController {
         refill_button.addEventHandler(ActionEvent.ACTION, event -> {
             Dispenser dispenser = selectedProperty.getValue();
             dispenser.setMillilitresLeft(dispenser.getIngredient().getSize());
-            DAL.update(dispenser);
+            DAO.update(dispenser);
             refreshDispenserList();
         });
     }
 
     private void refreshDispenserList() {
         dispenserObservableList.clear();
-        dispenserObservableList.addAll(DAL.getEnabledDispensers());
+        dispenserObservableList.addAll(DAO.getEnabledDispensers());
         dispenser_table.refresh();
     }
 

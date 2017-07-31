@@ -1,14 +1,14 @@
 package server;
 
-import javafx.scene.control.Alert;
+    import javafx.scene.control.Alert;
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.math.BigInteger;
-import java.net.URL;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Properties;
+    import java.io.FileReader;
+    import java.io.IOException;
+    import java.math.BigInteger;
+    import java.net.URL;
+    import java.security.MessageDigest;
+    import java.security.NoSuchAlgorithmException;
+    import java.util.Properties;
 
 /**
  * Created by B06514A on 6/17/2017.

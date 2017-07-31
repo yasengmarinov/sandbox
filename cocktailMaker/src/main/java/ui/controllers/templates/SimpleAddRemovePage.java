@@ -1,6 +1,7 @@
-package controllers.templates;
+package ui.controllers.templates;
 
-import controllers.interfaces.SimpleController;
+import server.db.DAO;
+import ui.controllers.interfaces.SimpleController;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.StringBinding;
@@ -17,7 +18,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import server.LogType;
 import server.Utils;
-import server.db.DAL;
 import server.db.entities.interfaces.NamedEntity;
 
 import java.util.Collections;
@@ -110,7 +110,7 @@ public abstract class SimpleAddRemovePage<T extends NamedEntity & Comparable<T>>
                 success = addObject();
             }
             if (success) {
-                DAL.addHistoryEntry(LogType.TYPE_CREATE_OBJECT, "New " + T.getSimpleName() + " created: " + newObjectName.getText());
+                DAO.addHistoryEntry(LogType.TYPE_CREATE_OBJECT, "New " + T.getSimpleName() + " created: " + newObjectName.getText());
                 clearInputFields();
                 refreshObjectList();
                 editMode.set(false);
@@ -120,8 +120,8 @@ public abstract class SimpleAddRemovePage<T extends NamedEntity & Comparable<T>>
         });
 
         remove_button.addEventHandler(ActionEvent.ACTION, event -> {
-            if (DAL.delete(object_table.getFocusModel().getFocusedItem())) {
-                DAL.addHistoryEntry(LogType.TYPE_REMOVE_OBJECT,
+            if (DAO.delete(object_table.getFocusModel().getFocusedItem())) {
+                DAO.addHistoryEntry(LogType.TYPE_REMOVE_OBJECT,
                         T.getSimpleName() + " deleted: " + object_table.getFocusModel().getFocusedItem());
                 refreshObjectList();
             } else {
@@ -155,7 +155,7 @@ public abstract class SimpleAddRemovePage<T extends NamedEntity & Comparable<T>>
         boolean success;
         T object = object_table.getFocusModel().getFocusedItem();
         object.setName(newObjectName.getText());
-        success = DAL.update(object);
+        success = DAO.update(object);
         return success;
     }
 
@@ -164,7 +164,7 @@ public abstract class SimpleAddRemovePage<T extends NamedEntity & Comparable<T>>
     }
 
     protected void refreshObjectList() {
-        List<T> list = DAL.getAll(T);
+        List<T> list = DAO.getAll(T);
         Collections.sort(list);
         observableList.clear();
         observableList.addAll(list);

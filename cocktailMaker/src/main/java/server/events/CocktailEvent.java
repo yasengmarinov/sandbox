@@ -1,4 +1,4 @@
-package server.Events;
+package server.events;
 
 import javafx.event.Event;
 import javafx.event.EventTarget;

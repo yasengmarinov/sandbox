@@ -1,10 +1,10 @@
-package controllers;
+package ui.controllers;
 
-import controllers.templates.SimpleAddRemovePage;
+import ui.controllers.templates.SimpleAddRemovePage;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
-import server.db.DAL;
+import server.db.DAO;
 import server.db.entities.CocktailGroup;
 
 
@@ -23,7 +23,7 @@ public class ConfigureCocktailGroupController extends SimpleAddRemovePage {
 
     @Override
     protected boolean addObject() {
-        return DAL.persist(new CocktailGroup(newObjectName.getText()));
+        return DAO.persist(new CocktailGroup(newObjectName.getText()));
     }
 
     @Override

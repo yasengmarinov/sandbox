@@ -1,4 +1,4 @@
-package controllers;
+package ui.controllers;
 
 /**
  * Created by b06514a on 6/10/2017.

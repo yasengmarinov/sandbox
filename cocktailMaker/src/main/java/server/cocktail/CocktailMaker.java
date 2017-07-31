@@ -3,7 +3,7 @@ package server.cocktail;
 import javafx.scene.control.Alert;
 import org.apache.log4j.Logger;
 import server.Utils;
-import server.db.DAL;
+import server.db.DAO;
 import server.db.entities.Cocktail;
 import server.db.entities.CocktailIngredient;
 import server.db.entities.Dispenser;
@@ -28,7 +28,7 @@ public class CocktailMaker {
     public static boolean validate(Cocktail cocktail) {
         List<CocktailIngredient> cocktailIngredients = cocktail.getCocktailIngredients();
         Map<Ingredient, Integer> ingredientsAvailability = new HashMap<>();
-        for (Dispenser dispenser : DAL.getEnabledDispensers()) {
+        for (Dispenser dispenser : DAO.getEnabledDispensers()) {
             if (!ingredientsAvailability.containsKey(dispenser.getIngredient())) {
                 ingredientsAvailability.put(dispenser.getIngredient(), dispenser.getMillilitresLeft());
             } else {

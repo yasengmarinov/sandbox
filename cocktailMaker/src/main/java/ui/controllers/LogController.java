@@ -1,4 +1,4 @@
-package controllers;
+package ui.controllers;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -7,7 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import server.db.DAL;
+import server.db.DAO;
 import server.db.entities.HistoryLog;
 
 import java.text.SimpleDateFormat;
@@ -56,7 +56,7 @@ public class LogController {
     }
 
     protected void setObservableList() {
-        historyLogObservableList = FXCollections.observableArrayList(DAL.getAdminLog());
+        historyLogObservableList = FXCollections.observableArrayList(DAO.getAdminLog());
     }
 
 }
