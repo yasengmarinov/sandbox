@@ -2,6 +2,8 @@ package ui.controllers;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -10,6 +12,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import org.apache.log4j.Logger;
 import server.PageNavigator;
 import server.Utils;
@@ -25,6 +28,12 @@ public class LoginController {
     public GridPane main_grid;
 
     @FXML
+    public VBox credentials_box;
+
+    @FXML
+    public Button openCredentials_button;
+
+    @FXML
     public TextField username_field;
 
     @FXML
@@ -32,6 +41,8 @@ public class LoginController {
 
     @FXML
     public Button login_button;
+
+    protected BooleanProperty credentials_mode = new SimpleBooleanProperty(false);
 
     public void initialize() {
         BooleanBinding loginButtonEnabled = Bindings.and(username_field.textProperty().isNotEmpty(),

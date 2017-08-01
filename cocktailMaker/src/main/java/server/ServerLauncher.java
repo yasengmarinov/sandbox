@@ -11,13 +11,14 @@ import java.util.Properties;
 public class ServerLauncher extends Application {
 
     private static final Logger logger = Logger.getLogger(ServerLauncher.class.getName());
+    public static final String FULLSCREEN_PROPERTY = "fullscreen";
 
     private static Stage stage;
 
     public static void main(String[] args) {
 
         logger.info("Starting application");
-        Properties serverProperties = Utils.loadPropertiesFile("dispencer_config.properties");
+        Properties serverProperties = Utils.loadPropertiesFile("server_config.properties");
 
         logger.info("Starting initial configuration");
 
@@ -32,7 +33,11 @@ public class ServerLauncher extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         stage = primaryStage;
-//        stage.setFullScreen(true);
+
+        if (ServerConfigurator.getProperty(FULLSCREEN_PROPERTY).equalsIgnoreCase("true")) {
+            stage.setFullScreen(true);
+        }
+
         PageNavigator.init(stage);
         primaryStage.setTitle("Cocktail Maker");
         PageNavigator.navigateTo(PageNavigator.PAGE_LOGIN);

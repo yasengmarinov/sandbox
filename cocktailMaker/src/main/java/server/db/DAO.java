@@ -93,7 +93,6 @@ public class DAO {
         return criteria.list().isEmpty() ? null : (User) criteria.list().get(0);
     }
 
-    @SuppressWarnings("deprecation")
     public static User getUser(String username, String password) {
         Criteria criteria = session.createCriteria(User.class);
         criteria.add(Restrictions.eq("username", username.toLowerCase()));

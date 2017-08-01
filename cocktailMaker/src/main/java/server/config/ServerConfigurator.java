@@ -65,4 +65,7 @@ public class ServerConfigurator {
         return dispenserMap;
     }
 
+    public static final String getProperty(String property) {
+        return properties.getProperty(property, "");
+    }
 }
