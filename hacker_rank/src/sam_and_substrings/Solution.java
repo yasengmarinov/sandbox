@@ -6,24 +6,18 @@ public class Solution {
 
     public static void main(String args[]) {
         Scanner scanner = new Scanner(System.in);
+        long module = (long) Math.pow(10, 9) + 7;
 
         String array = scanner.next();
-        long[] results = new long[array.length()];
-
-        int i = 0;
-
-        while (i < array.length()) {
-            if (i != 0 ) {
-                results[i] += results[i - 1];
-            }
-            for (int j = 0; j < i + 1; j++) {
-                results[i] += Long.valueOf(array.substring(j, i + 1));
-            }
-            results[i] = results[i] % ((long)Math.pow(10, 9) + 7);
-            i++;
+        int[] numbers = array.chars().map(Character::getNumericValue).toArray();
+        long result = 0;
+        long f = 1;
+        for (int i = numbers.length - 1; i >= 0; i--) {
+            result = (result + numbers[i] * f * (i + 1)) % module;
+            f = (f * 10 + 1) % module;
         }
 
-        System.out.println(results[results.length - 1] % ((long)Math.pow(10, 9) + 7));
+        System.out.println(result);
     }
 
 }
