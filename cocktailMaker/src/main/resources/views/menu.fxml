@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml"
             xmlns="http://javafx.com/javafx"
-            fx:controller="ui.controllers.MenuController"
+            fx:controller="cocktailMaker.ui.controllers.MenuController"
             prefHeight="25.0" prefWidth="800.0">
     <MenuBar prefHeight="25" prefWidth="800.0">
         <menus>
@@ -27,7 +27,6 @@
             </Menu>
             <Menu text="Logs">
                 <items>
-                    <MenuItem fx:id="adminLog_item" text="Admin Log"/>
                     <MenuItem fx:id="cocktailLog_item" text="Cocktail Log"/>
                 </items>
             </Menu>

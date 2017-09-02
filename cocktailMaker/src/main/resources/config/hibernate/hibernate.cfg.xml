@@ -8,13 +8,13 @@
         <!-- DB schema will be updated if needed -->
         <property name="hbm2ddl.auto">update</property>
         <property name="connection.driver_class">org.apache.derby.jdbc.EmbeddedDriver</property>
-        <mapping class="server.db.entities.User"/>
-        <mapping class="server.db.entities.Ingredient"/>
-        <mapping class="server.db.entities.CocktailGroup"/>
-        <mapping class="server.db.entities.Cocktail"/>
-        <mapping class="server.db.entities.CocktailIngredient"/>
-        <mapping class="server.db.entities.Dispenser"/>
-        <mapping class="server.db.entities.Dispenser"/>
-        <mapping class="server.db.entities.HistoryLog"/>
+        <mapping class="cocktailMaker.server.db.entities.User"/>
+        <mapping class="cocktailMaker.server.db.entities.Ingredient"/>
+        <mapping class="cocktailMaker.server.db.entities.CocktailGroup"/>
+        <mapping class="cocktailMaker.server.db.entities.Cocktail"/>
+        <mapping class="cocktailMaker.server.db.entities.CocktailIngredient"/>
+        <mapping class="cocktailMaker.server.db.entities.Dispenser"/>
+        <mapping class="cocktailMaker.server.db.entities.Dispenser"/>
+        <mapping class="cocktailMaker.server.db.entities.CocktailLog"/>
     </session-factory>
 </hibernate-configuration>

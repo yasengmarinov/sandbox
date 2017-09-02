@@ -74,7 +74,7 @@ public class Solver {
 
     // solve a slider puzzle (given below)
     public static void main(String[] args) {
-        int[][] array = {{0, 15, 14, 13}, {12, 11, 10, 9}, {8, 7, 6, 5}, {4, 3, 2, 1}};
+        int[][] array = {{1, 2, 4, 3}, {7, 15, 10, 9}, {8, 6, 11, 13}, {5, 14, 12, 0}};
         Board initial = new Board(array);
         Solver solver = new Solver(initial);
         System.out.println(solver.isSolvable());

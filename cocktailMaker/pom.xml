@@ -14,8 +14,20 @@
         <java.dialect.version>1.8</java.dialect.version>
         <hibernate-core.version>5.2.10.Final</hibernate-core.version>
         <log4j.version>1.2.17</log4j.version>
-        <com.pi4j.version>1.1</com.pi4j.version>
+        <com.pi4j.version>1.2-SNAPSHOT</com.pi4j.version>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>oss-snapshots-repo</id>
+            <name>Sonatype OSS Maven Repository</name>
+            <url>https://oss.sonatype.org/content/groups/public</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
 
     <build>
         <plugins>
@@ -32,7 +44,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>server.ServerLauncher</mainClass>
+                            <mainClass>cocktailMaker.server.ServerLauncher</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
@@ -48,6 +60,19 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>appassembler-maven-plugin</artifactId>
+                <version>1.10</version>
+                <configuration>
+                    <programs>
+                        <program>
+                            <mainClass>cocktailMaker.server.ServerLauncher</mainClass>
+                            <id>app</id>
+                        </program>
+                    </programs>
+                </configuration>
             </plugin>
         </plugins>
     </build>
