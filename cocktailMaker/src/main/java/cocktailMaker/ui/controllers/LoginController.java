@@ -2,6 +2,9 @@ package cocktailMaker.ui.controllers;
 
 import cocktailMaker.server.PageNavigator;
 import cocktailMaker.server.Utils;
+import cocktailMaker.server.card.CardSwipeDispatcher;
+import cocktailMaker.server.card.SwipeEventListener;
+import cocktailMaker.server.db.DAO;
 import cocktailMaker.server.db.entities.User;
 import cocktailMaker.server.session.Session;
 import cocktailMaker.server.session.SessionManager;
@@ -15,12 +18,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import org.apache.log4j.Logger;
 
-public class LoginController {
+public class LoginController implements SwipeEventListener {
 
     private static final Logger logger = Logger.getLogger(LoginController.class.getName());
 
@@ -48,6 +50,7 @@ public class LoginController {
     protected BooleanProperty credentials_mode = new SimpleBooleanProperty(false);
 
     public void initialize() {
+        CardSwipeDispatcher.getInstance().subscribe(this);
         BooleanBinding loginButtonEnabled = Bindings.and(username_field.textProperty().isNotEmpty(),
                 password_field.textProperty().isNotEmpty());
 
@@ -56,14 +59,16 @@ public class LoginController {
         logWithCredentials_button.visibleProperty().bind(credentials_mode.not());
 
         logWithCredentials_button.addEventHandler(ActionEvent.ACTION, event -> {
+            CardSwipeDispatcher.getInstance().unsubscribe(this);
             credentialsModeToggle();
         });
         logWithCard_button.addEventHandler(ActionEvent.ACTION, event -> {
+            CardSwipeDispatcher.getInstance().subscribe(this);
             credentialsModeToggle();
         });
 
         login_button.addEventHandler(ActionEvent.ACTION, event -> {
-            Session session = SessionManager.createSesssion(username_field.getText(), password_field.getText());
+            Session session = SessionManager.createSession(username_field.getText(), password_field.getText());
             if (session != null) {
                 logUser(session.getUser());
             } else {
@@ -72,11 +77,6 @@ public class LoginController {
                 password_field.clear();
             }
         });
-
-        main_grid.addEventFilter(KeyEvent.KEY_TYPED, event -> {
-//            System.out.println(event.getCharacter());
-        });
-
 
     }
 
@@ -94,6 +94,19 @@ public class LoginController {
         } else {
             PageNavigator.navigateTo(PageNavigator.PAGE_MAKE_COCKTAIL);
         }
+        CardSwipeDispatcher.getInstance().unsubscribe(this);
     }
 
+    @Override
+    public void cardSwiped(String card) {
+        User user = DAO.getUserByCard(card);
+        if (user == null) {
+            Utils.Dialogs.openAlert(Alert.AlertType.WARNING,
+                    Utils.Dialogs.TITLE_UNRECOGNIZED_CARD,
+                    Utils.Dialogs.CONTENT_UNRECOGNIZED_CARD);
+        } else {
+            SessionManager.createSession(user);
+            logUser(user);
+        }
+    }
 }

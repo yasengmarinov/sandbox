@@ -15,11 +15,8 @@ package cocktailMaker.server;
 public class Utils {
 
     public static Properties loadPropertiesFile(String fileName) {
-        URL serverPropertiesURL = ServerLauncher.class.
-                getClassLoader().getResource(fileName);
         Properties properties = new Properties();
         try {
-//            properties.load(new FileReader(serverPropertiesURL.getFile()));
             properties.load(ServerLauncher.class.getClassLoader().getResourceAsStream(fileName));
         } catch (IOException e) {
             e.printStackTrace();
@@ -56,11 +53,14 @@ public class Utils {
         public static final String TITLE_DELETE_FAILED = "Delete Failed";
         public static final String TITLE_PASSWORD_DO_NOT_MATCH = "Passwords do not match";
         public static final String TITLE_INGREDIENTS_UNAVAILABLE = "Ingredients unavailable";
+        public static final String TITLE_UNRECOGNIZED_CARD = "Card not recognized";
 
         public static final String CONTENT_LOGIN_FAILED = "Username or password are incorrect";
         public static final String CONTENT_PASSWORDS_DO_NOT_MATCH = "The Password is different from the Confirm Password";
         public static final String CONTENT_ADD_INGREDIENT_TO_DISPENSER = "Please add the ingredient to an enabled Dispenser before calibration";
         public static final String CONTENT_CALIBRATION_FAILED = "Calibration failed!";
+        public static final String CONTENT_UNRECOGNIZED_CARD = "Please make sure the card is configured";
+        public static final String CONTENT_USED_CARD = "This card is already used";
 
         public static void openAlert(Alert.AlertType alertType, String title, String content) {
             openAlert(alertType, title, null, content);

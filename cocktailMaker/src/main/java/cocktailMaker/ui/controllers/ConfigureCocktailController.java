@@ -1,6 +1,10 @@
 package cocktailMaker.ui.controllers;
 
 import cocktailMaker.server.db.DAO;
+import cocktailMaker.server.db.entities.Cocktail;
+import cocktailMaker.server.db.entities.CocktailGroup;
+import cocktailMaker.server.db.entities.CocktailIngredient;
+import cocktailMaker.server.db.entities.Ingredient;
 import cocktailMaker.ui.controllers.templates.SimpleAddRemovePage;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
@@ -12,10 +16,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
-import cocktailMaker.server.db.entities.Cocktail;
-import cocktailMaker.server.db.entities.CocktailGroup;
-import cocktailMaker.server.db.entities.CocktailIngredient;
-import cocktailMaker.server.db.entities.Ingredient;
 
 import java.util.List;
 import java.util.Optional;

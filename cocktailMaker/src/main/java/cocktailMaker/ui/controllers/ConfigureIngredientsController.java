@@ -32,6 +32,7 @@ public class ConfigureIngredientsController extends SimpleAddRemovePage {
     public static final int MAX_ALLOWED_CALIBRATION_TIME_SEC = 60;
     public static final int DIVIDE_NANO_TO_GET_3_DIGITS = 1000000;
     private static final Logger logger = Logger.getLogger(ConfigureUsersController.class.getName());
+
     @FXML
     public TableColumn<Ingredient, String> ingredient_column;
 

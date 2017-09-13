@@ -16,6 +16,7 @@ public class PageNavigator {
     public static final String PAGE_CONFIGURE_COCKTAIL_GROUPS = "views/configureCocktailGroups.fxml";
     public static final String PAGE_CONFIGURE_COCKTAILS = "views/configureCocktails.fxml";
     public static final String PAGE_COCKTAIL_LOG = "views/cocktail_log.fxml";
+    public static final String PAGE_INGREDIENTS_LOG = "views/ingredients_log.fxml";
     public static final String PAGE_HOME_ADMIN = "views/home_admin.fxml";
     public static final String PAGE_LOGIN = "views/login.fxml";
 

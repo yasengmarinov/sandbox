@@ -17,7 +17,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import cocktailMaker.server.LogType;
 import cocktailMaker.server.Utils;
 import cocktailMaker.server.db.entities.interfaces.NamedEntity;
 import org.apache.log4j.Logger;
@@ -69,8 +68,13 @@ public abstract class SimpleAddRemovePage<T extends NamedEntity & Comparable<T>>
     protected void setTableObjectAndFocus() {
         object_table.setItems(observableList);
         refreshObjectList();
+        selectFirstElementInTable();
+    }
+
+    private void selectFirstElementInTable() {
         if (object_table.getItems().size() != 0)
             object_table.getSelectionModel().select(0);
+        object_table.requestFocus();
     }
 
     protected abstract void configureTableColumns();
@@ -171,6 +175,7 @@ public abstract class SimpleAddRemovePage<T extends NamedEntity & Comparable<T>>
         Collections.sort(list);
         observableList.clear();
         observableList.addAll(list);
+        selectFirstElementInTable();
     }
 
     protected abstract void setClass();

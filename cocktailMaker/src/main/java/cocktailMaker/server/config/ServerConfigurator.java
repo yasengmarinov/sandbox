@@ -1,5 +1,8 @@
 package cocktailMaker.server.config;
 
+import cocktailMaker.server.card.CardSwipeDispatcher;
+import cocktailMaker.server.PageNavigator;
+import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 import cocktailMaker.server.db.DAO;
 import cocktailMaker.server.db.entities.Dispenser;
@@ -19,6 +22,7 @@ public class ServerConfigurator {
     private static final String DISPENSER_PIN_IN_PROPERTY = "dispenser.%d.pin";
 
     private static Properties properties;
+    private static Stage stage;
 
     public static void init(Properties properties) {
         ServerConfigurator.properties = properties;
@@ -32,6 +36,9 @@ public class ServerConfigurator {
         Map<Integer, DispenserConfig> dispenserMap = initDispenserMap();
         DispenserControllerManager.init(dispenserMap);
         createInitialData(dispenserMap);
+        CardSwipeDispatcher.getInstance().init(stage, properties);
+
+        initPageNavigator();
 
     }
 
@@ -67,5 +74,20 @@ public class ServerConfigurator {
 
     public static final String getProperty(String property) {
         return properties.getProperty(property, "");
+    }
+
+    public static void setStage(Stage stage) {
+        ServerConfigurator.stage = stage;
+    }
+
+    public static Stage getStage() {
+        return stage;
+    }
+
+    private static void initPageNavigator() {
+        PageNavigator.init(stage);
+        stage.setTitle("Cocktail Maker");
+        PageNavigator.navigateTo(PageNavigator.PAGE_LOGIN);
+        stage.show();
     }
 }

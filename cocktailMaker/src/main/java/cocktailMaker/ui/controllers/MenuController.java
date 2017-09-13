@@ -23,7 +23,7 @@ public class MenuController {
     public MenuItem users_item;
 
     @FXML
-    public MenuItem adminLog_item;
+    public MenuItem ingredientsLog_item;
 
     @FXML
     public MenuItem cocktailLog_item;
@@ -40,6 +40,7 @@ public class MenuController {
         configureNavigation(ingredients_item, PageNavigator.PAGE_CONFIGURE_INGREDIENTS);
         configureNavigation(users_item, PageNavigator.PAGE_CONFIGURE_USERS);
         configureNavigation(cocktailLog_item, PageNavigator.PAGE_COCKTAIL_LOG);
+        configureNavigation(ingredientsLog_item, PageNavigator.PAGE_INGREDIENTS_LOG);
         configureNavigation(cocktailGroup_item, PageNavigator.PAGE_CONFIGURE_COCKTAIL_GROUPS);
         configureNavigation(cocktail_item, PageNavigator.PAGE_CONFIGURE_COCKTAILS);
 

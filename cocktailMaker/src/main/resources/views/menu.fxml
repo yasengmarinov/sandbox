@@ -28,6 +28,7 @@
             <Menu text="Logs">
                 <items>
                     <MenuItem fx:id="cocktailLog_item" text="Cocktail Log"/>
+                    <MenuItem fx:id="ingredientsLog_item" text="Ingredients Log"/>
                 </items>
             </Menu>
             <Menu text="Log Off">

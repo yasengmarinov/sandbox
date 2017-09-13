@@ -12,6 +12,9 @@ import cocktailMaker.server.LogType;
 import cocktailMaker.server.Utils;
 import cocktailMaker.server.db.entities.*;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -100,8 +103,10 @@ public class DAO {
         return criteria.list().isEmpty() ? null : (User) criteria.list().get(0);
     }
 
-    public static boolean addHistoryEntry(int type, String message) {
-        return persist(new CocktailLog(type, message));
+    public static User getUserByCard(String card) {
+        Criteria criteria = session.createCriteria(User.class);
+        criteria.add(Restrictions.eq("magneticCard", Utils.md5(card)));
+        return criteria.list().isEmpty() ? null : (User) criteria.list().get(0);
     }
 
     public static List<CocktailIngredient> getCocktailIngredients(Cocktail cocktail) {
@@ -137,10 +142,21 @@ public class DAO {
         return criteria.list();
     }
 
+    public static List<CocktailLog> getIngredientsLog(LocalDate from, LocalDate to) {
+        Date fromDate = Date.from(from.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date toDate = Date.from(to.plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        Criteria criteria = session.createCriteria(CocktailLog.class);
+        criteria.add(Restrictions.in("type", LogType.TYPE_INGREDIENTS));
+        criteria.add(Restrictions.between("eventDate", fromDate, toDate));
+        return criteria.list();
+    }
+
     public static List<Cocktail> getCocktailsByGroup(CocktailGroup cocktailGroup) {
         Criteria criteria = session.createCriteria(Cocktail.class);
         criteria.add(Restrictions.eq("cocktailGroup", cocktailGroup));
         return criteria.list();
     }
+
 
 }

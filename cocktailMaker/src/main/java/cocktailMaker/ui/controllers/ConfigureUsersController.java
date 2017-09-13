@@ -1,12 +1,15 @@
 package cocktailMaker.ui.controllers;
 
+import cocktailMaker.server.card.CardSwipeDispatcher;
+import cocktailMaker.server.card.SwipeEventListener;
 import cocktailMaker.server.db.DAO;
-import cocktailMaker.server.db.entities.CocktailLog;
 import cocktailMaker.ui.controllers.interfaces.SimpleController;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.StringBinding;
+import javafx.beans.property.Property;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,11 +17,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
-import cocktailMaker.server.LogType;
 import cocktailMaker.server.Utils;
 import cocktailMaker.server.db.entities.User;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import org.apache.log4j.Logger;
-import sun.rmi.runtime.Log;
 
 import java.util.Collections;
 import java.util.List;
@@ -26,9 +29,15 @@ import java.util.List;
 /**
  * Created by B06514A on 6/19/2017.
  */
-public class ConfigureUsersController extends SimpleController {
+public class ConfigureUsersController extends SimpleController implements SwipeEventListener {
 
     private static final Logger logger = Logger.getLogger(ConfigureUsersController.class);
+
+    @FXML
+    public GridPane main_grid;
+
+    @FXML
+    public Pane cardSwipe_pane;
 
     @FXML
     public TableView<User> users_table;
@@ -83,11 +92,14 @@ public class ConfigureUsersController extends SimpleController {
 
     private ObservableList<User> usersObservableList = FXCollections.observableArrayList();
     private SimpleBooleanProperty editMode = new SimpleBooleanProperty(false);
+    protected Property<User> selectedObject = new SimpleObjectProperty<>();
+
 
     @Override
     public void initialize() {
         configureTableColumns();
         users_table.setItems(usersObservableList);
+        selectedObject.bind(users_table.getSelectionModel().selectedItemProperty());
 
         refreshUsersList();
 
@@ -115,6 +127,8 @@ public class ConfigureUsersController extends SimpleController {
 
     @Override
     protected void setObjectsVisibility() {
+
+        cardSwipe_pane.setVisible(false);
 
         //Add button
         add_button.textProperty().bind(new StringBinding() {
@@ -144,6 +158,16 @@ public class ConfigureUsersController extends SimpleController {
         cancel_button.visibleProperty().bind(editMode);
 
         //Set Card button
+        setCard_button.textProperty().bind(new StringBinding() {
+            {
+                super.bind(selectedObject);
+            }
+
+            @Override
+            protected String computeValue() {
+                return (selectedObject.getValue() == null || selectedObject.getValue().getMagneticCard() == null ? "Set Card" : "Clear Card");
+            }
+        });
         setCard_button.disableProperty().bind(removeEditButtonsEnabled.not());
 
         //Username field
@@ -203,6 +227,33 @@ public class ConfigureUsersController extends SimpleController {
             editMode.setValue(false);
             clearFields();
         });
+
+        setCard_button.addEventHandler(ActionEvent.ACTION, event -> {
+            if (selectedObject.getValue().getMagneticCard() == null) {
+                enterCarSetMode();
+            } else {
+                clearCard();
+            }
+        });
+    }
+
+    private void clearCard() {
+        User user = selectedObject.getValue();
+        user.setMagneticCard(null);
+        DAO.update(user);
+        refreshUsersList();
+    }
+
+    private void enterCarSetMode() {
+        CardSwipeDispatcher.getInstance().subscribe(this);
+        main_grid.setDisable(true);
+        cardSwipe_pane.setVisible(true);
+    }
+
+    private void exitCarSetMode() {
+        CardSwipeDispatcher.getInstance().unsubscribe(this);
+        main_grid.setDisable(false);
+        cardSwipe_pane.setVisible(false);
     }
 
     private boolean createUser() {
@@ -261,4 +312,16 @@ public class ConfigureUsersController extends SimpleController {
 
     }
 
+    @Override
+    public void cardSwiped(String card) {
+        if (DAO.getUserByCard(card) != null) {
+            Utils.Dialogs.openAlert(Alert.AlertType.WARNING, Utils.Dialogs.TITLE_INCONSISTENT_DATA, Utils.Dialogs.CONTENT_USED_CARD);
+        } else {
+            User user = users_table.getSelectionModel().getSelectedItem();
+            user.setMagneticCard(Utils.md5(card));
+            DAO.update(user);
+            users_table.refresh();
+        }
+        exitCarSetMode();
+    }
 }

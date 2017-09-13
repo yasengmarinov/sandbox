@@ -140,8 +140,22 @@ public class MakeCocktailController extends SimpleController {
         es.submit(() -> {
             CocktailMaker.make(cocktail);
             main_pane.fireEvent(new CocktailEvent(CocktailEvent.DONE, cocktail));
-            DAO.addHistoryEntry(LogType.TYPE_COCKTAIL, String.format("Cocktail %s made", cocktail.getName()));
+            logInDB(cocktail);
         });
+    }
+
+    private void logInDB(Cocktail cocktail) {
+        DAO.persist(new CocktailLog(LogType.TYPE_COCKTAIL, String.format("Cocktail %s made", cocktail.getName())));
+
+        StringBuilder builder = new StringBuilder();
+        for (CocktailIngredient cocktailIngredient : cocktail.getCocktailIngredients()) {
+            builder.append(cocktailIngredient.getIngredient().getName());
+            builder.append(":");
+            builder.append(cocktailIngredient.getMillilitres());
+            builder.append(";");
+        }
+
+        DAO.persist(new CocktailLog(LogType.TYPE_INGREDIENTS, builder.toString()));
     }
 
     private Dialog<Boolean> getMakingCocktailDialog() {
