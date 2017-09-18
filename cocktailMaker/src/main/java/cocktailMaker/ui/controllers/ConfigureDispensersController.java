@@ -1,7 +1,6 @@
 package cocktailMaker.ui.controllers;
 
 import cocktailMaker.server.db.DAO;
-import cocktailMaker.ui.controllers.interfaces.SimpleController;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -13,7 +12,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
-import cocktailMaker.server.LogType;
 import cocktailMaker.server.Utils;
 import cocktailMaker.server.db.entities.Dispenser;
 import cocktailMaker.server.db.entities.Ingredient;
@@ -25,7 +23,7 @@ import java.util.List;
 /**
  * Created by B06514A on 6/18/2017.
  */
-public class ConfigureDispensersController extends SimpleController {
+public class ConfigureDispensersController {
     private static final Logger logger = Logger.getLogger(ConfigureDispensersController.class);
 
     public static final int EMPTY = 0;
@@ -56,7 +54,6 @@ public class ConfigureDispensersController extends SimpleController {
     private ObservableList<Dispenser> dispensersObservableList = FXCollections.observableArrayList();
     private Property<Dispenser> selectedDispenser = new SimpleObjectProperty<>();
 
-    @Override
     public void initialize() {
 
         configureTableColumns();
@@ -75,12 +72,10 @@ public class ConfigureDispensersController extends SimpleController {
 
     }
 
-    @Override
     protected void setObjectsVisibility() {
 
     }
 
-    @Override
     protected void addEventHandlers() {
         save_button.addEventHandler(ActionEvent.ACTION, event -> {
             Dispenser dispenser = dispensers_table.getFocusModel().getFocusedItem();

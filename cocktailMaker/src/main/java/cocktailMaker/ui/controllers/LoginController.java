@@ -8,6 +8,7 @@ import cocktailMaker.server.db.DAO;
 import cocktailMaker.server.db.entities.User;
 import cocktailMaker.server.session.Session;
 import cocktailMaker.server.session.SessionManager;
+import cocktailMaker.ui.controllers.templates.GuiceInjectedController;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
@@ -22,7 +23,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import org.apache.log4j.Logger;
 
-public class LoginController implements SwipeEventListener {
+public class LoginController extends GuiceInjectedController implements SwipeEventListener {
 
     private static final Logger logger = Logger.getLogger(LoginController.class.getName());
 
@@ -90,9 +91,9 @@ public class LoginController implements SwipeEventListener {
             return;
         }
         if (user.getIsAdmin()) {
-            PageNavigator.navigateTo(PageNavigator.PAGE_HOME_ADMIN);
+            pageNavigator.navigateTo(PageNavigator.PAGE_HOME_ADMIN);
         } else {
-            PageNavigator.navigateTo(PageNavigator.PAGE_MAKE_COCKTAIL);
+            pageNavigator.navigateTo(PageNavigator.PAGE_MAKE_COCKTAIL);
         }
         CardSwipeDispatcher.getInstance().unsubscribe(this);
     }

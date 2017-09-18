@@ -1,7 +1,7 @@
 package cocktailMaker.ui.controllers;
 
 import cocktailMaker.server.db.DAO;
-import cocktailMaker.ui.controllers.interfaces.SimpleController;
+import cocktailMaker.ui.controllers.templates.GuiceInjectedController;
 import cocktailMaker.ui.controls.CustomControlsFactory;
 import cocktailMaker.ui.controls.objects.CocktailButton;
 import cocktailMaker.ui.controls.objects.CocktailGroupButton;
@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 /**
  * Created by b06514a on 7/8/2017.
  */
-public class MakeCocktailController extends SimpleController {
+public class MakeCocktailController extends GuiceInjectedController {
 
     private static final Logger logger = Logger.getLogger(MakeCocktailController.class.getName());
 
@@ -89,12 +89,10 @@ public class MakeCocktailController extends SimpleController {
         cocktailGroup_pane.getChildren().addAll(buttons);
     }
 
-    @Override
     protected void setObjectsVisibility() {
         makingCocktail_pane.setVisible(false);
     }
 
-    @Override
     protected void addEventHandlers() {
         main_pane.addEventFilter(CocktailEvent.DONE, event -> {
             makingCocktail_pane.setVisible(false);
@@ -108,11 +106,11 @@ public class MakeCocktailController extends SimpleController {
 
         logOff_button.addEventHandler(ActionEvent.ACTION, event -> {
             SessionManager.sessionInvalidate();
-            PageNavigator.navigateTo(PageNavigator.PAGE_LOGIN);
+            pageNavigator.navigateTo(PageNavigator.PAGE_LOGIN);
         });
 
         refill_button.addEventHandler(ActionEvent.ACTION, event -> {
-            PageNavigator.navigateTo(PageNavigator.PAGE_REFILL);
+            pageNavigator.navigateTo(PageNavigator.PAGE_REFILL);
         });
 
         for (CocktailGroupButton button : cocktailGroupButtons) {

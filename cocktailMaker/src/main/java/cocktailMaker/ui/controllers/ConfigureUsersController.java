@@ -3,7 +3,6 @@ package cocktailMaker.ui.controllers;
 import cocktailMaker.server.card.CardSwipeDispatcher;
 import cocktailMaker.server.card.SwipeEventListener;
 import cocktailMaker.server.db.DAO;
-import cocktailMaker.ui.controllers.interfaces.SimpleController;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.StringBinding;
@@ -29,7 +28,7 @@ import java.util.List;
 /**
  * Created by B06514A on 6/19/2017.
  */
-public class ConfigureUsersController extends SimpleController implements SwipeEventListener {
+public class ConfigureUsersController implements SwipeEventListener {
 
     private static final Logger logger = Logger.getLogger(ConfigureUsersController.class);
 
@@ -95,7 +94,6 @@ public class ConfigureUsersController extends SimpleController implements SwipeE
     protected Property<User> selectedObject = new SimpleObjectProperty<>();
 
 
-    @Override
     public void initialize() {
         configureTableColumns();
         users_table.setItems(usersObservableList);
@@ -125,7 +123,6 @@ public class ConfigureUsersController extends SimpleController implements SwipeE
         admin_column.setCellFactory(CheckBoxTableCell.forTableColumn(admin_column));
     }
 
-    @Override
     protected void setObjectsVisibility() {
 
         cardSwipe_pane.setVisible(false);
@@ -184,7 +181,6 @@ public class ConfigureUsersController extends SimpleController implements SwipeE
         return users_table.getSelectionModel().selectedItemProperty().isEqualTo(DAO.getUser("admin"));
     }
 
-    @Override
     protected void addEventHandlers() {
         add_button.addEventHandler(ActionEvent.ACTION, event -> {
             if (!passwordsMatch()) {

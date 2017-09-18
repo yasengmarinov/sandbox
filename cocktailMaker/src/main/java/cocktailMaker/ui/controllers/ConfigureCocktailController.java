@@ -23,7 +23,7 @@ import java.util.Optional;
 /**
  * Created by b06514a on 7/5/2017.
  */
-public class ConfigureCocktailController extends SimpleAddRemovePage {
+public class ConfigureCocktailController extends SimpleAddRemovePage<Cocktail> {
 
     @FXML
     public TableColumn<Cocktail, String> cocktail_column;

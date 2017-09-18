@@ -17,7 +17,7 @@ public class PumpController implements DispenserController {
 
     public PumpController(DispenserConfig config) {
         id = config.getId();
-        String pinName = String.format("GPIO %02d", config.getPin());
+        String pinName = String.format("GPIO %d", config.getPin());
         final GpioController gpio = GpioFactory.getInstance();
         Pin pin = RaspiPin.getPinByName(pinName);
         if (pin == null) {
@@ -31,13 +31,13 @@ public class PumpController implements DispenserController {
 
     @Override
     public void run() {
-        logger.info(String.format("Pump %d run", id));
+        logger.info(String.format("Pump %d started on pin %s", id, pinOutput.getName()));
         pinOutput.high();
     }
 
     @Override
     public void stop() {
-        logger.info(String.format("Pump %d stop", id));
+        logger.info(String.format("Pump %d stopped on pin $s", id, pinOutput.getName()));
         pinOutput.low();
     }
 }

@@ -1,5 +1,6 @@
 package cocktailMaker.ui.controllers;
 
+import cocktailMaker.ui.controllers.templates.GuiceInjectedController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
@@ -9,7 +10,7 @@ import cocktailMaker.server.session.SessionManager;
 /**
  * Created by B06514A on 6/18/2017.
  */
-public class MenuController {
+public class MenuController extends GuiceInjectedController {
 
     @FXML
     public MenuItem logoff_item;
@@ -46,14 +47,14 @@ public class MenuController {
 
         logoff_item.addEventHandler(ActionEvent.ACTION, event -> {
             SessionManager.sessionInvalidate();
-            PageNavigator.navigateTo(PageNavigator.PAGE_LOGIN);
+            pageNavigator.navigateTo(PageNavigator.PAGE_LOGIN);
         });
 
     }
 
     private void configureNavigation(MenuItem menuItem, String page) {
         menuItem.addEventHandler(ActionEvent.ACTION, event -> {
-            PageNavigator.navigateTo(page);
+            pageNavigator.navigateTo(page);
         });
     }
 

@@ -26,7 +26,7 @@ public class IngredientPourTask implements Callable<Boolean> {
     public Boolean call() throws Exception {
         Dispenser dispenser = DAO.getDispenserByCocktailIngredient(cocktailIngredient);
         Long msToRun = (long) cocktailIngredient.getIngredient().getVelocity() * cocktailIngredient.getMillilitres() / 100;
-        DispenserController dispenserController = DispenserControllerManager.getDispenserController(dispenser);
+        DispenserController dispenserController = DispenserControllerManager.getDispenserController(dispenser.getId());
 
         logger.info(String.format("Begin pouring %s on Dispenser %d for %d ms", cocktailIngredient.getIngredient().getName(),
                 dispenser.getId(), msToRun));

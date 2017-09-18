@@ -1,11 +1,11 @@
 package cocktailMaker.ui.controllers;
 
 import cocktailMaker.server.PageNavigator;
-import cocktailMaker.server.config.ServerConfigurator;
 import cocktailMaker.server.db.DAO;
 import cocktailMaker.server.db.entities.Dispenser;
 import cocktailMaker.server.db.entities.Ingredient;
 import cocktailMaker.server.session.SessionManager;
+import cocktailMaker.ui.controllers.templates.GuiceInjectedController;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 /**
  * Created by b06514a on 7/18/2017.
  */
-public class RefillController {
+public class RefillController extends GuiceInjectedController {
 
     public static final String BOTTLE_SIZES_PROPERTY = "bottle_sizes";
     @FXML
@@ -88,7 +88,7 @@ public class RefillController {
     private void createSizeButtons() {
 
         List<Integer> bottleSizes = Arrays
-                .stream(ServerConfigurator.getProperty(BOTTLE_SIZES_PROPERTY).split(","))
+                .stream(serverProperties.getProperty(BOTTLE_SIZES_PROPERTY).split(","))
                 .map(Integer::valueOf)
                 .collect(Collectors.toList());
         int defaultSize = bottleSizes.get(0);
@@ -117,11 +117,11 @@ public class RefillController {
     private void addEventHandlers() {
         logOff_button.addEventHandler(ActionEvent.ACTION, event -> {
             SessionManager.sessionInvalidate();
-            PageNavigator.navigateTo(PageNavigator.PAGE_LOGIN);
+            pageNavigator.navigateTo(PageNavigator.PAGE_LOGIN);
         });
 
         back_button.addEventHandler(ActionEvent.ACTION, event -> {
-            PageNavigator.navigateTo(PageNavigator.PAGE_MAKE_COCKTAIL);
+            pageNavigator.navigateTo(PageNavigator.PAGE_MAKE_COCKTAIL);
         });
 
         refill_button.addEventHandler(ActionEvent.ACTION, event -> {

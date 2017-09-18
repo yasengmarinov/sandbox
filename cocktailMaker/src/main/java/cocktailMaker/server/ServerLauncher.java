@@ -1,5 +1,9 @@
 package cocktailMaker.server;
 
+import cocktailMaker.guice.MainModule;
+import com.google.inject.Guice;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.input.KeyEvent;
@@ -13,16 +17,11 @@ public class ServerLauncher extends Application {
 
     private static final Logger logger = Logger.getLogger(ServerLauncher.class.getName());
 
-    private static Stage stage;
-
     public static void main(String[] args) {
 
         logger.info("Starting application");
-        Properties serverProperties = Utils.loadPropertiesFile("config/server_config.properties");
 
         logger.info("Starting initial configuration");
-
-        ServerConfigurator.init(serverProperties);
 
         logger.info("Launching application");
         launch(args);
@@ -31,8 +30,12 @@ public class ServerLauncher extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        ServerConfigurator.setStage(primaryStage);
-        ServerConfigurator.configure();
+        Injector injector = Guice.createInjector(new MainModule());
+
+        ServerConfigurator serverConfigurator = injector.getInstance(ServerConfigurator.class);
+        injector.getProvider()
+        serverConfigurator.setStage(primaryStage);
+        serverConfigurator.configure();
     }
 
     @Override

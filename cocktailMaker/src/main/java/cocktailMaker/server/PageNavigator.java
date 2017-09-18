@@ -1,14 +1,22 @@
 package cocktailMaker.server;
 
+import cocktailMaker.guice.MainModule;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.Singleton;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.apache.log4j.Logger;
 
 /**
  * Created by B06514A on 6/19/2017.
  */
+@Singleton
 public class PageNavigator {
+
+    private final Logger logger = Logger.getLogger(PageNavigator.class);
 
     public static final String PAGE_CONFIGURE_DISPENSERS = "views/configureDispensers.fxml";
     public static final String PAGE_CONFIGURE_USERS = "views/configureUsers.fxml";
@@ -23,15 +31,21 @@ public class PageNavigator {
     public static final String PAGE_MAKE_COCKTAIL = "views/make_cocktail.fxml";
     public static final String PAGE_REFILL = "views/refill.fxml";
 
-    private static Stage stage;
+    private Stage stage;
 
-    public static void init(Stage stage) {
-        PageNavigator.stage = stage;
+    PageNavigator() {
+        logger.debug("Constructor called");
     }
 
-    public static void navigateTo(String page) {
+    public void navigateTo(String page) {
         try {
-            Parent root = FXMLLoader.load(ServerLauncher.class.getClassLoader().getResource(page));
+            Injector injector = Guice.createInjector(new MainModule());
+
+            FXMLLoader loader = new FXMLLoader(ServerLauncher.class.getClassLoader().getResource(page));
+            loader.setControllerFactory(injector::getInstance);
+
+//            Parent root = loader.load(ServerLauncher.class.getClassLoader().getResource(page));
+            Parent root = loader.<Parent>load();
             if (stage.getScene() == null) {
                 String appCss = "css/application.css";
                 Scene scene = new Scene(root, 800, 480);
@@ -41,8 +55,11 @@ public class PageNavigator {
                 stage.getScene().setRoot(root);
             }
         } catch (Exception ex) {
-            System.err.println(ex);
+            logger.error(ex);
         }
     }
 
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
 }

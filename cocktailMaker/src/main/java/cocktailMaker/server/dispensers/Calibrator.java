@@ -27,7 +27,7 @@ public class Calibrator {
         }
         this.ingredient = ingredient;
         this.dispenser = dispenser;
-        dispenserController = DispenserControllerManager.getDispenserController(dispenser);
+        dispenserController = DispenserControllerManager.getDispenserController(dispenser.getId());
         logger.info("Calibrator created:");
         logger.info("Ingredient: " + ingredient.getId());
         logger.info("Dispenser: " + dispenser.getId());

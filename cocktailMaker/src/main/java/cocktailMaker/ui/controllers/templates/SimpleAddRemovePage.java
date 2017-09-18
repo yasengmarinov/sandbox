@@ -2,7 +2,6 @@ package cocktailMaker.ui.controllers.templates;
 
 import cocktailMaker.server.db.DAO;
 import cocktailMaker.server.session.SessionManager;
-import cocktailMaker.ui.controllers.interfaces.SimpleController;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.StringBinding;
@@ -29,7 +28,7 @@ import static cocktailMaker.server.Utils.Dialogs.openAlert;
 /**
  * Created by b06514a on 6/10/2017.
  */
-public abstract class SimpleAddRemovePage<T extends NamedEntity & Comparable<T>> extends SimpleController {
+public abstract class SimpleAddRemovePage<T extends NamedEntity & Comparable<T>>  {
 
     private static final Logger logger = Logger.getLogger(SimpleAddRemovePage.class);
     @FXML
@@ -79,7 +78,6 @@ public abstract class SimpleAddRemovePage<T extends NamedEntity & Comparable<T>>
 
     protected abstract void configureTableColumns();
 
-    @Override
     protected void setObjectsVisibility() {
         add_button.textProperty().bind(new StringBinding() {
             {
@@ -107,7 +105,6 @@ public abstract class SimpleAddRemovePage<T extends NamedEntity & Comparable<T>>
         return Bindings.and(newObjectName.focusedProperty().not(), object_table.getFocusModel().focusedItemProperty().isNotNull());
     }
 
-    @Override
     protected void addEventHandlers() {
         add_button.addEventHandler(ActionEvent.ACTION, event -> {
             boolean success;
