@@ -2,6 +2,7 @@ package cocktailMaker.ui.controllers;
 
 import cocktailMaker.server.db.DAO;
 import cocktailMaker.server.db.entities.CocktailLog;
+import cocktailMaker.ui.controllers.templates.GuiceInjectedController;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class IngredientsLogController {
+public class IngredientsLogController extends GuiceInjectedController{
 
     @FXML
     public TableView<Map.Entry<String, Integer>> log_table;
@@ -73,7 +74,7 @@ public class IngredientsLogController {
             LocalDate from = from_date.getValue();
             LocalDate to = to_date.getValue();
 
-            List<CocktailLog> logEntries = DAO.getIngredientsLog(from, to);
+            List<CocktailLog> logEntries = dao.getIngredientsLog(from, to);
 
             Map<String, Integer> ingredientsAmountMap = new HashMap<>();
 

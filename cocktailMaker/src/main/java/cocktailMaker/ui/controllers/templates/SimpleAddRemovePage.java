@@ -28,7 +28,7 @@ import static cocktailMaker.server.Utils.Dialogs.openAlert;
 /**
  * Created by b06514a on 6/10/2017.
  */
-public abstract class SimpleAddRemovePage<T extends NamedEntity & Comparable<T>>  {
+public abstract class SimpleAddRemovePage<T extends NamedEntity & Comparable<T>> extends GuiceInjectedController {
 
     private static final Logger logger = Logger.getLogger(SimpleAddRemovePage.class);
     @FXML
@@ -126,7 +126,7 @@ public abstract class SimpleAddRemovePage<T extends NamedEntity & Comparable<T>>
         });
 
         remove_button.addEventHandler(ActionEvent.ACTION, event -> {
-            if (DAO.delete(object_table.getFocusModel().getFocusedItem())) {
+            if (dao.delete(object_table.getFocusModel().getFocusedItem())) {
                 refreshObjectList();
             } else {
                 openAlert(Alert.AlertType.WARNING, Utils.Dialogs.TITLE_DELETE_FAILED,
@@ -159,7 +159,7 @@ public abstract class SimpleAddRemovePage<T extends NamedEntity & Comparable<T>>
         boolean success;
         T object = object_table.getFocusModel().getFocusedItem();
         object.setName(newObjectName.getText());
-        success = DAO.update(object);
+        success = dao.update(object);
         return success;
     }
 
@@ -168,7 +168,7 @@ public abstract class SimpleAddRemovePage<T extends NamedEntity & Comparable<T>>
     }
 
     protected void refreshObjectList() {
-        List<T> list = DAO.getAll(T);
+        List<T> list = dao.getAll(T);
         Collections.sort(list);
         observableList.clear();
         observableList.addAll(list);

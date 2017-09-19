@@ -23,7 +23,7 @@ public class ConfigureCocktailGroupController extends SimpleAddRemovePage {
 
     @Override
     protected boolean addObject() {
-        return DAO.persist(new CocktailGroup(newObjectName.getText()));
+        return dao.persist(new CocktailGroup(newObjectName.getText()));
     }
 
     @Override

@@ -3,6 +3,7 @@ package cocktailMaker.ui.controllers;
 import cocktailMaker.server.card.CardSwipeDispatcher;
 import cocktailMaker.server.card.SwipeEventListener;
 import cocktailMaker.server.db.DAO;
+import cocktailMaker.ui.controllers.templates.GuiceInjectedController;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.StringBinding;
@@ -28,7 +29,7 @@ import java.util.List;
 /**
  * Created by B06514A on 6/19/2017.
  */
-public class ConfigureUsersController implements SwipeEventListener {
+public class ConfigureUsersController extends GuiceInjectedController implements SwipeEventListener {
 
     private static final Logger logger = Logger.getLogger(ConfigureUsersController.class);
 
@@ -178,7 +179,7 @@ public class ConfigureUsersController implements SwipeEventListener {
     }
 
     private BooleanBinding isDefaultAdminSelected() {
-        return users_table.getSelectionModel().selectedItemProperty().isEqualTo(DAO.getUser("admin"));
+        return users_table.getSelectionModel().selectedItemProperty().isEqualTo(dao.getUser("admin"));
     }
 
     protected void addEventHandlers() {
@@ -207,7 +208,7 @@ public class ConfigureUsersController implements SwipeEventListener {
         });
 
         remove_button.addEventHandler(ActionEvent.ACTION, event -> {
-            if (DAO.delete(users_table.getFocusModel().getFocusedItem())) {
+            if (dao.delete(users_table.getFocusModel().getFocusedItem())) {
                 refreshUsersList();
             } else {
                 Utils.Dialogs.openAlert(Alert.AlertType.WARNING, Utils.Dialogs.TITLE_DELETE_FAILED, "Delete of user failed");
@@ -236,7 +237,7 @@ public class ConfigureUsersController implements SwipeEventListener {
     private void clearCard() {
         User user = selectedObject.getValue();
         user.setMagneticCard(null);
-        DAO.update(user);
+        dao.update(user);
         refreshUsersList();
     }
 
@@ -254,7 +255,7 @@ public class ConfigureUsersController implements SwipeEventListener {
 
     private boolean createUser() {
         boolean success;
-        success = DAO.persist(new User(username_field.getText().toLowerCase(), firstname_field.getText(),
+        success = dao.persist(new User(username_field.getText().toLowerCase(), firstname_field.getText(),
                 lastname_field.getText(), Utils.md5(password_field.getText()), admin_checkbox.isSelected()));
         if (success)
             logger.info("New user created: " + username_field.getText());
@@ -272,7 +273,7 @@ public class ConfigureUsersController implements SwipeEventListener {
             user.setPassword(Utils.md5(password_field.getText()));
         }
 
-        success = DAO.update(user);
+        success = dao.update(user);
 
         if (success)
             logger.info("User updated: " + user.getUsername());
@@ -301,7 +302,7 @@ public class ConfigureUsersController implements SwipeEventListener {
     }
 
     private void refreshUsersList() {
-        List<User> list = DAO.getAll(User.class);
+        List<User> list = dao.getAll(User.class);
         Collections.sort(list);
         usersObservableList.clear();
         usersObservableList.addAll(list);
@@ -310,12 +311,12 @@ public class ConfigureUsersController implements SwipeEventListener {
 
     @Override
     public void cardSwiped(String card) {
-        if (DAO.getUserByCard(card) != null) {
+        if (dao.getUserByCard(card) != null) {
             Utils.Dialogs.openAlert(Alert.AlertType.WARNING, Utils.Dialogs.TITLE_INCONSISTENT_DATA, Utils.Dialogs.CONTENT_USED_CARD);
         } else {
             User user = users_table.getSelectionModel().getSelectedItem();
             user.setMagneticCard(Utils.md5(card));
-            DAO.update(user);
+            dao.update(user);
             users_table.refresh();
         }
         exitCarSetMode();

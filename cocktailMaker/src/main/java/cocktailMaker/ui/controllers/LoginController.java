@@ -100,7 +100,7 @@ public class LoginController extends GuiceInjectedController implements SwipeEve
 
     @Override
     public void cardSwiped(String card) {
-        User user = DAO.getUserByCard(card);
+        User user = dao.getUserByCard(card);
         if (user == null) {
             Utils.Dialogs.openAlert(Alert.AlertType.WARNING,
                     Utils.Dialogs.TITLE_UNRECOGNIZED_CARD,

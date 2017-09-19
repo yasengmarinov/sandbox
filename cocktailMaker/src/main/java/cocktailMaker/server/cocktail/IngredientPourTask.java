@@ -1,5 +1,7 @@
 package cocktailMaker.server.cocktail;
 
+import cocktailMaker.ui.controllers.templates.GuiceInjectedController;
+import com.google.inject.Inject;
 import org.apache.log4j.Logger;
 import cocktailMaker.server.db.DAO;
 import cocktailMaker.server.db.entities.CocktailIngredient;
@@ -15,18 +17,26 @@ import java.util.concurrent.Callable;
 public class IngredientPourTask implements Callable<Boolean> {
     private static final Logger logger = Logger.getLogger(IngredientPourTask.class.getName());
 
+    protected final DispenserControllerManager dispenserControllerManager;
+    protected final DAO dao;
 
     private CocktailIngredient cocktailIngredient;
 
-    public IngredientPourTask(CocktailIngredient cocktailIngredient) {
+    @Inject
+    public IngredientPourTask(DispenserControllerManager dispenserControllerManager, DAO dao) {
+        this.dispenserControllerManager = dispenserControllerManager;
+        this.dao = dao;
+    }
+
+    public void setCocktailIngredient(CocktailIngredient cocktailIngredient) {
         this.cocktailIngredient = cocktailIngredient;
     }
 
     @Override
     public Boolean call() throws Exception {
-        Dispenser dispenser = DAO.getDispenserByCocktailIngredient(cocktailIngredient);
+        Dispenser dispenser = dao.getDispenserByCocktailIngredient(cocktailIngredient);
         Long msToRun = (long) cocktailIngredient.getIngredient().getVelocity() * cocktailIngredient.getMillilitres() / 100;
-        DispenserController dispenserController = DispenserControllerManager.getDispenserController(dispenser.getId());
+        DispenserController dispenserController = dispenserControllerManager.getDispenserController(dispenser.getId());
 
         logger.info(String.format("Begin pouring %s on Dispenser %d for %d ms", cocktailIngredient.getIngredient().getName(),
                 dispenser.getId(), msToRun));
@@ -36,7 +46,7 @@ public class IngredientPourTask implements Callable<Boolean> {
             dispenserController.stop();
 
             dispenser.setMillilitresLeft(dispenser.getMillilitresLeft() - cocktailIngredient.getMillilitres());
-            DAO.update(dispenser);
+            dao.update(dispenser);
             logger.info(String.format("Availability of %s on dispenser %d reduced to %d", cocktailIngredient.getIngredient(),
                     dispenser.getId(), dispenser.getMillilitresLeft()));
         } catch (InterruptedException e) {

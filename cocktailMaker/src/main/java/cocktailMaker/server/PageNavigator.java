@@ -32,6 +32,7 @@ public class PageNavigator {
     public static final String PAGE_REFILL = "views/refill.fxml";
 
     private Stage stage;
+    private Injector injector;
 
     PageNavigator() {
         logger.debug("Constructor called");
@@ -39,7 +40,7 @@ public class PageNavigator {
 
     public void navigateTo(String page) {
         try {
-            Injector injector = Guice.createInjector(new MainModule());
+//            Injector injector = Guice.createInjector(new MainModule());
 
             FXMLLoader loader = new FXMLLoader(ServerLauncher.class.getClassLoader().getResource(page));
             loader.setControllerFactory(injector::getInstance);
@@ -61,5 +62,9 @@ public class PageNavigator {
 
     public void setStage(Stage stage) {
         this.stage = stage;
+    }
+
+    public void setInjector(Injector injector) {
+        this.injector = injector;
     }
 }

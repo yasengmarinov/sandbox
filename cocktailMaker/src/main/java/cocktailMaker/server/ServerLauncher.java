@@ -33,8 +33,8 @@ public class ServerLauncher extends Application {
         Injector injector = Guice.createInjector(new MainModule());
 
         ServerConfigurator serverConfigurator = injector.getInstance(ServerConfigurator.class);
-        injector.getProvider()
         serverConfigurator.setStage(primaryStage);
+        serverConfigurator.setInjector(injector);
         serverConfigurator.configure();
     }
 

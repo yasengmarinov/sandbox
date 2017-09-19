@@ -5,6 +5,7 @@ import cocktailMaker.ui.controllers.templates.GuiceInjectedController;
 import cocktailMaker.ui.controls.CustomControlsFactory;
 import cocktailMaker.ui.controls.objects.CocktailButton;
 import cocktailMaker.ui.controls.objects.CocktailGroupButton;
+import com.google.inject.Inject;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -35,6 +36,7 @@ import java.util.stream.Collectors;
 public class MakeCocktailController extends GuiceInjectedController {
 
     private static final Logger logger = Logger.getLogger(MakeCocktailController.class.getName());
+    protected CocktailMaker cocktailMaker;
 
     @FXML
     public GridPane main_pane;
@@ -60,7 +62,7 @@ public class MakeCocktailController extends GuiceInjectedController {
     private List<CocktailGroupButton> cocktailGroupButtons = new ArrayList<>();
     private List<CocktailButton> cocktailButtons = new ArrayList<>();
 
-    private Set<Ingredient> enabledIngredients = DAO.getEnabledDispensers()
+    private Set<Ingredient> enabledIngredients = dao.getEnabledDispensers()
             .stream()
             .map(Dispenser::getIngredient)
             .collect(Collectors.toSet());
@@ -76,8 +78,13 @@ public class MakeCocktailController extends GuiceInjectedController {
 
     }
 
+    @Inject
+    public void setCocktailMaker(CocktailMaker cocktailMaker) {
+        this.cocktailMaker = cocktailMaker;
+    }
+
     private void populateCocktailGroupPane() {
-        List<CocktailGroup> cocktailGroups = DAO.getAll(CocktailGroup.class);
+        List<CocktailGroup> cocktailGroups = dao.getAll(CocktailGroup.class);
         List<Button> buttons = new ArrayList<>(cocktailGroups.size());
 
         for (CocktailGroup cocktailGroup : cocktailGroups) {
@@ -124,7 +131,7 @@ public class MakeCocktailController extends GuiceInjectedController {
     }
 
     private void makeCocktail(Cocktail cocktail) {
-        if (CocktailMaker.validate(cocktail)) {
+        if (cocktailMaker.validate(cocktail)) {
             logger.info("Begin making " + cocktail.getName());
             main_pane.fireEvent(new CocktailEvent(CocktailEvent.BEGIN, cocktail));
             runCocktailTask(cocktail);
@@ -136,14 +143,14 @@ public class MakeCocktailController extends GuiceInjectedController {
     private void runCocktailTask(Cocktail cocktail) {
         ExecutorService es = Executors.newSingleThreadExecutor();
         es.submit(() -> {
-            CocktailMaker.make(cocktail);
+            cocktailMaker.make(cocktail);
             main_pane.fireEvent(new CocktailEvent(CocktailEvent.DONE, cocktail));
             logInDB(cocktail);
         });
     }
 
     private void logInDB(Cocktail cocktail) {
-        DAO.persist(new CocktailLog(LogType.TYPE_COCKTAIL, String.format("Cocktail %s made", cocktail.getName())));
+        dao.persist(new CocktailLog(LogType.TYPE_COCKTAIL, String.format("Cocktail %s made", cocktail.getName())));
 
         StringBuilder builder = new StringBuilder();
         for (CocktailIngredient cocktailIngredient : cocktail.getCocktailIngredients()) {
@@ -153,7 +160,7 @@ public class MakeCocktailController extends GuiceInjectedController {
             builder.append(";");
         }
 
-        DAO.persist(new CocktailLog(LogType.TYPE_INGREDIENTS, builder.toString()));
+        dao.persist(new CocktailLog(LogType.TYPE_INGREDIENTS, builder.toString()));
     }
 
     private Dialog<Boolean> getMakingCocktailDialog() {
@@ -167,7 +174,7 @@ public class MakeCocktailController extends GuiceInjectedController {
     }
 
     private void fillCocktailPane(CocktailGroup cocktailGroup) {
-        List<Cocktail> cocktails = DAO.getCocktailsByGroup(cocktailGroup);
+        List<Cocktail> cocktails = dao.getCocktailsByGroup(cocktailGroup);
         List<Button> buttons = new ArrayList<>(cocktails.size());
 
         for (Cocktail cocktail : cocktails) {

@@ -1,5 +1,6 @@
 package cocktailMaker.server.db;
 
+import com.google.inject.Inject;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -27,11 +28,11 @@ public class DAO {
     private static SessionFactory sessionFactory;
     private static Session session;
 
+    @Inject
     private DAO() {
-
     }
 
-    public static void init() {
+    public void init() {
         logger.info("Initializing DAO");
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
                 .configure(DAO.class.getClassLoader().getResource("config/hibernate/hibernate.cfg.xml"))
@@ -41,17 +42,17 @@ public class DAO {
         prepopulateData();
     }
 
-    public static <T> List<T> getAll(Class<T> clazz) {
+    public <T> List<T> getAll(Class<T> clazz) {
         Criteria criteria = session.createCriteria(clazz);
         return criteria.list();
     }
 
-    private static void prepopulateData() {
-        if (DAO.getAll(User.class).size() == 0)
-            DAO.persist(new User("admin", Utils.md5("admin"), true));
+    private void prepopulateData() {
+        if (getAll(User.class).size() == 0)
+            persist(new User("admin", Utils.md5("admin"), true));
     }
 
-    public static boolean persist(Object object) {
+    public boolean persist(Object object) {
         logger.info("Persisting object in the DB: \n" + object.toString());
         try {
             session.beginTransaction();
@@ -64,7 +65,7 @@ public class DAO {
         }
     }
 
-    public static boolean update(Object object) {
+    public boolean update(Object object) {
         logger.info("Updating object " + object);
         try {
             session.beginTransaction();
@@ -77,7 +78,7 @@ public class DAO {
         }
     }
 
-    public static boolean delete(Object object) {
+    public boolean delete(Object object) {
         logger.info("Deleting object " + object);
         try {
             session.beginTransaction();
@@ -90,39 +91,39 @@ public class DAO {
         }
     }
 
-    public static User getUser(String username) {
+    public User getUser(String username) {
         Criteria criteria = session.createCriteria(User.class);
         criteria.add(Restrictions.eq("username", username.toLowerCase()));
         return criteria.list().isEmpty() ? null : (User) criteria.list().get(0);
     }
 
-    public static User getUser(String username, String password) {
+    public User getUser(String username, String password) {
         Criteria criteria = session.createCriteria(User.class);
         criteria.add(Restrictions.eq("username", username.toLowerCase()));
         criteria.add(Restrictions.eq("password", Utils.md5(password)));
         return criteria.list().isEmpty() ? null : (User) criteria.list().get(0);
     }
 
-    public static User getUserByCard(String card) {
+    public User getUserByCard(String card) {
         Criteria criteria = session.createCriteria(User.class);
         criteria.add(Restrictions.eq("magneticCard", Utils.md5(card)));
         return criteria.list().isEmpty() ? null : (User) criteria.list().get(0);
     }
 
-    public static List<CocktailIngredient> getCocktailIngredients(Cocktail cocktail) {
+    public List<CocktailIngredient> getCocktailIngredients(Cocktail cocktail) {
         Criteria criteria = session.createCriteria(CocktailIngredient.class);
         criteria.add(Restrictions.eq("cocktail", cocktail));
         return criteria.list().isEmpty() ? null : criteria.list();
     }
 
-    public static Dispenser getDispenserByIngredient(Ingredient ingredient) {
+    public Dispenser getDispenserByIngredient(Ingredient ingredient) {
         Criteria criteria = session.createCriteria(Dispenser.class);
         criteria.add(Restrictions.eq("ingredient", ingredient));
         criteria.add(Restrictions.eq("enabled", true));
         return criteria.list().isEmpty() ? null : (Dispenser) criteria.list().get(0);
     }
 
-    public synchronized static Dispenser getDispenserByCocktailIngredient(CocktailIngredient cocktailIngredient) {
+    public synchronized Dispenser getDispenserByCocktailIngredient(CocktailIngredient cocktailIngredient) {
         Criteria criteria = session.createCriteria(Dispenser.class);
         criteria.add(Restrictions.eq("ingredient", cocktailIngredient.getIngredient()));
         criteria.add(Restrictions.eq("enabled", true));
@@ -130,19 +131,19 @@ public class DAO {
         return criteria.list().isEmpty() ? null : (Dispenser) criteria.list().get(0);
     }
 
-    public static List<Dispenser> getEnabledDispensers() {
+    public List<Dispenser> getEnabledDispensers() {
         Criteria criteria = session.createCriteria(Dispenser.class);
         criteria.add(Restrictions.eq("enabled", true));
         return criteria.list();
     }
 
-    public static List<CocktailLog> getCocktailLog() {
+    public List<CocktailLog> getCocktailLog() {
         Criteria criteria = session.createCriteria(CocktailLog.class);
         criteria.add(Restrictions.in("type", LogType.TYPE_COCKTAIL));
         return criteria.list();
     }
 
-    public static List<CocktailLog> getIngredientsLog(LocalDate from, LocalDate to) {
+    public List<CocktailLog> getIngredientsLog(LocalDate from, LocalDate to) {
         Date fromDate = Date.from(from.atStartOfDay(ZoneId.systemDefault()).toInstant());
         Date toDate = Date.from(to.plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant());
 
@@ -152,7 +153,7 @@ public class DAO {
         return criteria.list();
     }
 
-    public static List<Cocktail> getCocktailsByGroup(CocktailGroup cocktailGroup) {
+    public List<Cocktail> getCocktailsByGroup(CocktailGroup cocktailGroup) {
         Criteria criteria = session.createCriteria(Cocktail.class);
         criteria.add(Restrictions.eq("cocktailGroup", cocktailGroup));
         return criteria.list();

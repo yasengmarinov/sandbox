@@ -10,7 +10,7 @@ public class CocktailLogController extends LogController {
 
     @Override
     protected void setObservableList() {
-        cocktailLogObservableList = FXCollections.observableArrayList(DAO.getCocktailLog());
+        cocktailLogObservableList = FXCollections.observableArrayList(dao.getCocktailLog());
     }
 
 }

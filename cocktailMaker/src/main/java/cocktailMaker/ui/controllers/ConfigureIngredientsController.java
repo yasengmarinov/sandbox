@@ -74,14 +74,14 @@ public class ConfigureIngredientsController extends SimpleAddRemovePage {
 
     @Override
     protected boolean addObject() {
-        return DAO.persist(new Ingredient(newObjectName.getText()));
+        return dao.persist(new Ingredient(newObjectName.getText()));
     }
 
     @Override
     protected boolean updateObject() {
         Ingredient ingredient = (Ingredient) selectedObject.getValue();
         ingredient.setName(newObjectName.getText());
-        return DAO.update(ingredient);
+        return dao.update(ingredient);
     }
 
     @Override
@@ -113,7 +113,7 @@ public class ConfigureIngredientsController extends SimpleAddRemovePage {
     protected void addEventHandlers() {
         super.addEventHandlers();
         calibrate_button.addEventHandler(ActionEvent.ACTION, event -> {
-            if (DAO.getDispenserByIngredient((Ingredient) selectedObject.getValue()) == null) {
+            if (dao.getDispenserByIngredient((Ingredient) selectedObject.getValue()) == null) {
                 Utils.Dialogs.openAlert(Alert.AlertType.INFORMATION, Utils.Dialogs.TITLE_INCONSISTENT_DATA, Utils.Dialogs.CONTENT_ADD_INGREDIENT_TO_DISPENSER);
             } else {
                 openCalibrationPane();
@@ -137,7 +137,7 @@ public class ConfigureIngredientsController extends SimpleAddRemovePage {
     private void calibrationStart() {
         calibrating.setValue(true);
 
-        calibrator = new Calibrator((Ingredient) selectedObject.getValue(), DAO.getDispenserByIngredient((Ingredient) selectedObject.getValue()));
+        calibrator = new Calibrator((Ingredient) selectedObject.getValue(), dao.getDispenserByIngredient((Ingredient) selectedObject.getValue()));
 
         timeline = new Timeline();
         timeline.setCycleCount(MAX_ALLOWED_CALIBRATION_TIME_SEC * МS_IN_SECOND / CALIBRATION_INTERVAL_MS);
@@ -162,7 +162,7 @@ public class ConfigureIngredientsController extends SimpleAddRemovePage {
         if (isDurationValid(duration)) {
             Ingredient ingredient = (Ingredient) selectedObject.getValue();
             ingredient.setVelocity((int) duration.getSeconds() * 1000 + duration.getNano() / DIVIDE_NANO_TO_GET_3_DIGITS);
-            DAO.update(ingredient);
+            dao.update(ingredient);
             logger.info(String.format("Velocity of Ingredient %s set", ingredient.getName()));
             Utils.Dialogs.openAlert(Alert.AlertType.INFORMATION, Utils.Dialogs.TITLE_CALIBRATION, Utils.Dialogs.CONTENT_CALIBRATION_SUCCESS);
             refreshObjectList();
@@ -181,7 +181,7 @@ public class ConfigureIngredientsController extends SimpleAddRemovePage {
         calibrate_mode.setValue(true);
 
         calibrateHeader_label.setText(String.format("Calibrating %s on Dispenser %d", selectedObject.getValue(),
-                DAO.getDispenserByIngredient((Ingredient) selectedObject.getValue()).getId()));
+                dao.getDispenserByIngredient((Ingredient) selectedObject.getValue()).getId()));
 
     }
 

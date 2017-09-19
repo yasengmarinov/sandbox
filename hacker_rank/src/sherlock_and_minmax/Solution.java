@@ -10,91 +10,59 @@ public class Solution {
         Scanner scanner = new Scanner(System.in);
         int n = scanner.nextInt();
         int[] a = new int[n];
-        int[] b = new int[n];
 
         for (int i = 0; i < n; i++) {
             a[i] = scanner.nextInt();
         }
+        Arrays.sort(a);
 
         int p = scanner.nextInt();
         int q = scanner.nextInt();
 
-        int currentOffer = p;
+        int currentMiniMax;
+        int longestDistance;
 
-        int minSum = Integer.MIN_VALUE;
-        int minSumA = -1;
-        int minCurrentOffer = p;
+        // Calculate the value for the first possible offer
+        currentMiniMax = calculateDistance(a, p);
+        longestDistance = p;
 
-//        Arrays.sort(a);
-
-//        List<Integer> order = getOrder(a);
-
-        for (int i = 0; i < b.length; i++) {
-            b[i] = a[i] - p;
-        }
-        while (currentOffer <= q) {
-            if(!(Math.abs(minSumA - currentOffer) < minSum)) {
-
-                boolean swap = true;
-                int currentMinSum = Integer.MAX_VALUE;
-                int currentMinSumA = -1;
-
-                for (int i = 0; i < a.length; i++) {
-                    int currentNumber = a[i];
-                    int currentSum = Math.abs(currentNumber - currentOffer);
-//                    int currentSum = Math.abs(b[i]--);
-
-                    if (currentSum <= minSum) {
-                        swap = false;
-                        break;
-                    }
-
-                    if (currentSum < currentMinSum) {
-                        currentMinSum = currentSum;
-                        currentMinSumA = currentNumber;
-                    }
-                }
-
-                if (swap) {
-                    minSum = currentMinSum;
-                    minSumA = currentMinSumA;
-                    minCurrentOffer = currentOffer;
-                    if (minSumA - minCurrentOffer > 0) {
-                        currentOffer+= minSum * 2;
-                    }
+        for (int i = 0; i < a.length - 1; i++) {
+            int med = (int) Math.floor((a[i] + a[i + 1]) / 2);
+            if (med >= p && med <= q) {
+                int offerMiniMax = med - a[i];
+                if (offerMiniMax > currentMiniMax) {
+                    currentMiniMax = offerMiniMax;
+                    longestDistance = med;
                 }
             }
-
-            currentOffer++;
         }
 
-        System.out.println(minCurrentOffer);
-
-    }
-
-    private static List<Integer> getOrder(int[] a) {
-        List<Integer> arrayOrderSample = new LinkedList<>();
-        int percentOfBorders = PERCENT_OF_BORDERS;
-        int sizeOfArray = a.length;
-        int sizeOfSample = sizeOfArray * percentOfBorders / 100;
-        int endMin = sizeOfSample;
-        int startMid = (sizeOfArray - sizeOfSample) / 2;
-        int endMid = (sizeOfArray + sizeOfSample) / 2;
-        int startMax = sizeOfArray - sizeOfSample;
-
-        addInterval(arrayOrderSample, 0, endMin);
-        addInterval(arrayOrderSample, startMid, endMid);
-        addInterval(arrayOrderSample, startMax, sizeOfArray);
-        addInterval(arrayOrderSample, endMin, startMid);
-        addInterval(arrayOrderSample, endMid, startMax);
-
-        return arrayOrderSample;
-    }
-
-    private static void addInterval(List<Integer> arrayOrderSample, int start, int end) {
-        for (int i = start; i < end; i++) {
-            arrayOrderSample.add(i);
+        // If all medians are not in the range then the searched value should be p or q
+        int offerMiniMax = calculateDistance(a, q);
+        if (offerMiniMax > currentMiniMax) {
+            currentMiniMax = offerMiniMax;
+            longestDistance = q;
         }
+
+        System.out.println(longestDistance);
+    }
+
+    private static int calculateDistance(int[] a, int p) {
+        int minDistance = -1;
+        if (p <= a[0]) {
+            minDistance = a[0] - p;
+        } else if (p >= a[a.length - 1]){
+            minDistance = p - a[a.length - 1];
+        } else {
+            for (int i = 0; i < a.length - 1; i++) {
+                if (a[i] <= p && p <= a[i + 1]) {
+                    minDistance = Math.min(p - a[i], a[i + 1] - p);
+                    break;
+                }
+            }
+        }
+
+        return minDistance;
     }
 
 }

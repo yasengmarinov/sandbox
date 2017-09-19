@@ -1,5 +1,7 @@
 package cocktailMaker.server.cocktail;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 import javafx.scene.control.Alert;
 import org.apache.log4j.Logger;
 import cocktailMaker.server.Utils;
@@ -23,9 +25,18 @@ import java.util.concurrent.Executors;
 public class CocktailMaker {
     private static final Logger logger = Logger.getLogger(CocktailMaker.class.getName());
 
+    protected DAO dao;
+    protected Provider<IngredientPourTask> ingredientPourTaskProvider;
+
     private static ExecutorService pool = Executors.newFixedThreadPool(4);
 
-    public static boolean validate(Cocktail cocktail) {
+    @Inject
+    public CocktailMaker(DAO dao, Provider<IngredientPourTask> ingredientPourTaskProvider) {
+        this.dao = dao;
+        this.ingredientPourTaskProvider = ingredientPourTaskProvider;
+    }
+
+    public boolean validate(Cocktail cocktail) {
         List<CocktailIngredient> cocktailIngredients = cocktail.getCocktailIngredients();
 
         for (CocktailIngredient ingredient : cocktailIngredients) {
@@ -38,7 +49,7 @@ public class CocktailMaker {
         }
 
         Map<Ingredient, Integer> ingredientsAvailability = new HashMap<>();
-        for (Dispenser dispenser : DAO.getEnabledDispensers()) {
+        for (Dispenser dispenser : dao.getEnabledDispensers()) {
             if (!ingredientsAvailability.containsKey(dispenser.getIngredient())) {
                 ingredientsAvailability.put(dispenser.getIngredient(), dispenser.getMillilitresLeft());
             } else {
@@ -60,13 +71,15 @@ public class CocktailMaker {
         return true;
     }
 
-    public static void make(Cocktail cocktail) {
+    public void make(Cocktail cocktail) {
 
         logger.info("Begin making of cocktail " + cocktail.getName());
 
         List<Callable<Boolean>> tasks = new LinkedList<>();
         for (CocktailIngredient cocktailIngredient : cocktail.getCocktailIngredients()) {
-            tasks.add(new IngredientPourTask(cocktailIngredient));
+            IngredientPourTask task = ingredientPourTaskProvider.get();
+            task.setCocktailIngredient(cocktailIngredient);
+            tasks.add(task);
         }
 
         try {

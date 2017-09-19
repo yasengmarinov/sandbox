@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 public class DispenserControllerManager {
 
     protected static DispenserControllerManager instance;
+    protected final DAO dao;
 
     private static final Logger logger = Logger.getLogger(DispenserControllerManager.class.getName());
     private static final int DISPENSERS_MAX_COUNT = 10;
@@ -26,12 +27,10 @@ public class DispenserControllerManager {
 
     private static Map<Integer, DispenserController> dispenserControllerMap = new HashMap<>();
 
-    public static DispenserControllerManager getInstance() {
-        if (instance == null) {
-            instance = new DispenserControllerManager();
-        }
-        return instance;
+    public DispenserControllerManager(DAO dao) {
+        this.dao = dao;
     }
+
     public void init(Properties properties) {
 
 
@@ -52,11 +51,11 @@ public class DispenserControllerManager {
         }
     }
 
-    private static boolean isTestModeEnables(Properties properties) {
+    private boolean isTestModeEnables(Properties properties) {
         return properties.getProperty(TEST_MODE).equalsIgnoreCase("true");
     }
 
-    public static DispenserController getDispenserController(int dispenserId) {
+    public DispenserController getDispenserController(int dispenserId) {
         return dispenserControllerMap.get(dispenserId);
     }
 
@@ -80,11 +79,11 @@ public class DispenserControllerManager {
     protected void persistDispensersInDB(Map<Integer, DispenserConfig> dispenserMap) {
         logger.info("Persisting dispensers in the DB");
         Set<Integer> presentDispensersIDs = new HashSet<>();
-        presentDispensersIDs.addAll(DAO.getAll(Dispenser.class).stream().map(Dispenser::getId).collect(Collectors.toList()));
+        presentDispensersIDs.addAll(dao.getAll(Dispenser.class).stream().map(Dispenser::getId).collect(Collectors.toList()));
 
         for (DispenserConfig dispenserConfig : dispenserMap.values()) {
             if (!presentDispensersIDs.contains(dispenserConfig.getId())) {
-                DAO.persist(new Dispenser(dispenserConfig.getId(), false));
+                dao.persist(new Dispenser(dispenserConfig.getId(), false));
             }
         }
 

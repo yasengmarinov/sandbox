@@ -1,6 +1,7 @@
 package cocktailMaker.ui.controllers;
 
 import cocktailMaker.server.db.entities.CocktailLog;
+import cocktailMaker.ui.controllers.templates.GuiceInjectedController;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,7 +16,7 @@ import java.text.SimpleDateFormat;
 /**
  * Created by B06514A on 6/22/2017.
  */
-public class LogController {
+public class LogController extends GuiceInjectedController {
 
     public static final String DATE_FORMAT = "dd/MM/yy hh:mm";
 
@@ -56,7 +57,7 @@ public class LogController {
     }
 
     protected void setObservableList() {
-        cocktailLogObservableList = FXCollections.observableArrayList(DAO.getCocktailLog());
+        cocktailLogObservableList = FXCollections.observableArrayList(dao.getCocktailLog());
     }
 
 }

@@ -127,14 +127,14 @@ public class RefillController extends GuiceInjectedController {
         refill_button.addEventHandler(ActionEvent.ACTION, event -> {
             Dispenser dispenser = selectedProperty.getValue();
             dispenser.setMillilitresLeft(Integer.valueOf(bottleSizesGroup.getSelectedToggle().getUserData().toString()));
-            DAO.update(dispenser);
+            dao.update(dispenser);
             refreshDispenserList();
         });
     }
 
     private void refreshDispenserList() {
         dispenserObservableList.clear();
-        dispenserObservableList.addAll(DAO.getEnabledDispensers());
+        dispenserObservableList.addAll(dao.getEnabledDispensers());
         dispenser_table.refresh();
     }
 

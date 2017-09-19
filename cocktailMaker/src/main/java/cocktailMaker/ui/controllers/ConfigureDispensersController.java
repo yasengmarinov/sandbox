@@ -1,6 +1,7 @@
 package cocktailMaker.ui.controllers;
 
 import cocktailMaker.server.db.DAO;
+import cocktailMaker.ui.controllers.templates.GuiceInjectedController;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -23,7 +24,7 @@ import java.util.List;
 /**
  * Created by B06514A on 6/18/2017.
  */
-public class ConfigureDispensersController {
+public class ConfigureDispensersController extends GuiceInjectedController{
     private static final Logger logger = Logger.getLogger(ConfigureDispensersController.class);
 
     public static final int EMPTY = 0;
@@ -60,7 +61,7 @@ public class ConfigureDispensersController {
         setObjectsVisibility();
 
         selectedDispenser.bind(dispensers_table.getSelectionModel().selectedItemProperty());
-        dispensersObservableList.addAll(DAO.getAll(Dispenser.class));
+        dispensersObservableList.addAll(dao.getAll(Dispenser.class));
         dispensers_table.setItems(dispensersObservableList);
         dispensers_table.getSelectionModel().select(0);
 
@@ -89,7 +90,7 @@ public class ConfigureDispensersController {
                 dispenser.setIngredient(selectedDispenserIngredient_box.getValue());
                 dispenser.setMillilitresLeft(EMPTY);
 
-                DAO.update(dispenser);
+                dao.update(dispenser);
 
                 dispensersObservableList.set(dispensers_table.getFocusModel().getFocusedIndex(), dispenser);
                 FXCollections.sort(dispensersObservableList);
@@ -133,7 +134,7 @@ public class ConfigureDispensersController {
     }
 
     private void populateIngredientsDropdown() {
-        List<Ingredient> list = DAO.getAll(Ingredient.class);
+        List<Ingredient> list = dao.getAll(Ingredient.class);
         Collections.sort(list);
         selectedDispenserIngredient_box.setItems(FXCollections.observableArrayList(list));
     }
