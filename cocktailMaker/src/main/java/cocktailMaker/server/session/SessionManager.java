@@ -4,7 +4,6 @@ import cocktailMaker.server.db.DAO;
 import cocktailMaker.server.db.entities.User;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import org.omg.CORBA.PUBLIC_MEMBER;
 
 /**
  * Created by B06514A on 6/22/2017.

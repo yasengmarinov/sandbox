@@ -1,11 +1,11 @@
 package cocktailMaker.server.cocktail;
 
+import cocktailMaker.server.db.DAO;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import javafx.scene.control.Alert;
 import org.apache.log4j.Logger;
 import cocktailMaker.server.Utils;
-import cocktailMaker.server.db.DAO;
 import cocktailMaker.server.db.entities.Cocktail;
 import cocktailMaker.server.db.entities.CocktailIngredient;
 import cocktailMaker.server.db.entities.Dispenser;

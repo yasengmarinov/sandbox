@@ -46,7 +46,7 @@ public class MenuController extends GuiceInjectedController {
         configureNavigation(cocktail_item, PageNavigator.PAGE_CONFIGURE_COCKTAILS);
 
         logoff_item.addEventHandler(ActionEvent.ACTION, event -> {
-            SessionManager.sessionInvalidate();
+            sessionManager.sessionInvalidate();
             pageNavigator.navigateTo(PageNavigator.PAGE_LOGIN);
         });
 

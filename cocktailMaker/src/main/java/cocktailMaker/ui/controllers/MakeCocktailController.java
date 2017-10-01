@@ -1,6 +1,5 @@
 package cocktailMaker.ui.controllers;
 
-import cocktailMaker.server.db.DAO;
 import cocktailMaker.ui.controllers.templates.GuiceInjectedController;
 import cocktailMaker.ui.controls.CustomControlsFactory;
 import cocktailMaker.ui.controls.objects.CocktailButton;
@@ -21,7 +20,6 @@ import cocktailMaker.server.LogType;
 import cocktailMaker.server.PageNavigator;
 import cocktailMaker.server.cocktail.CocktailMaker;
 import cocktailMaker.server.db.entities.*;
-import cocktailMaker.server.session.SessionManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,14 +60,14 @@ public class MakeCocktailController extends GuiceInjectedController {
     private List<CocktailGroupButton> cocktailGroupButtons = new ArrayList<>();
     private List<CocktailButton> cocktailButtons = new ArrayList<>();
 
-    private Set<Ingredient> enabledIngredients = dao.getEnabledDispensers()
-            .stream()
-            .map(Dispenser::getIngredient)
-            .collect(Collectors.toSet());
+    private Set<Ingredient> enabledIngredients;
 
     public void initialize() {
-
-        welcome_label.setText("Welcome " + SessionManager.getSession().getUser().getFirstname());
+        welcome_label.setText("Welcome " + sessionManager.getSession().getUser().getFirstname());
+        enabledIngredients = dao.getEnabledDispensers()
+                .stream()
+                .map(Dispenser::getIngredient)
+                .collect(Collectors.toSet());
 
         addEventHandlers();
         setObjectsVisibility();
@@ -112,7 +110,7 @@ public class MakeCocktailController extends GuiceInjectedController {
         });
 
         logOff_button.addEventHandler(ActionEvent.ACTION, event -> {
-            SessionManager.sessionInvalidate();
+            sessionManager.sessionInvalidate();
             pageNavigator.navigateTo(PageNavigator.PAGE_LOGIN);
         });
 
@@ -150,7 +148,9 @@ public class MakeCocktailController extends GuiceInjectedController {
     }
 
     private void logInDB(Cocktail cocktail) {
-        dao.persist(new CocktailLog(LogType.TYPE_COCKTAIL, String.format("Cocktail %s made", cocktail.getName())));
+        dao.persist(new CocktailLog(LogType.TYPE_COCKTAIL,
+                String.format("Cocktail %s made", cocktail.getName()),
+                sessionManager.getSession().getUser().getUsername()));
 
         StringBuilder builder = new StringBuilder();
         for (CocktailIngredient cocktailIngredient : cocktail.getCocktailIngredients()) {
@@ -160,7 +160,9 @@ public class MakeCocktailController extends GuiceInjectedController {
             builder.append(";");
         }
 
-        dao.persist(new CocktailLog(LogType.TYPE_INGREDIENTS, builder.toString()));
+        dao.persist(new CocktailLog(LogType.TYPE_INGREDIENTS,
+                builder.toString(),
+                sessionManager.getSession().getUser().getUsername()));
     }
 
     private Dialog<Boolean> getMakingCocktailDialog() {

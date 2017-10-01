@@ -1,7 +1,5 @@
 package cocktailMaker.ui.controllers.templates;
 
-import cocktailMaker.server.db.DAO;
-import cocktailMaker.server.session.SessionManager;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.StringBinding;
@@ -116,7 +114,7 @@ public abstract class SimpleAddRemovePage<T extends NamedEntity & Comparable<T>>
             if (success) {
                 logger.info(String.format("New %s created: %s. By user %s", T.getSimpleName(),
                         newObjectName.getText(),
-                        SessionManager.getSession().getUser().getId()));
+                        sessionManager.getSession().getUser().getId()));
                 clearInputFields();
                 refreshObjectList();
                 editMode.set(false);

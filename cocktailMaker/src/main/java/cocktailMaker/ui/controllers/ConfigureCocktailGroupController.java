@@ -4,7 +4,6 @@ import cocktailMaker.ui.controllers.templates.SimpleAddRemovePage;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
-import cocktailMaker.server.db.DAO;
 import cocktailMaker.server.db.entities.CocktailGroup;
 
 

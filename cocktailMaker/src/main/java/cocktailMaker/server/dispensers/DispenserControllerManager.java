@@ -1,12 +1,14 @@
 package cocktailMaker.server.dispensers;
 
+import cocktailMaker.guice.annotations.ServerProperties;
 import cocktailMaker.server.db.DAO;
-import org.apache.log4j.Logger;
-import cocktailMaker.server.config.ServerConfigurator;
 import cocktailMaker.server.db.entities.Dispenser;
 import cocktailMaker.server.dispensers.controllers.MockPumpController;
 import cocktailMaker.server.dispensers.controllers.PumpController;
 import cocktailMaker.server.dispensers.interfaces.DispenserController;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import org.apache.log4j.Logger;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -14,10 +16,11 @@ import java.util.stream.Collectors;
 /**
  * Created by B06514A on 6/18/2017.
  */
+@Singleton
 public class DispenserControllerManager {
 
-    protected static DispenserControllerManager instance;
     protected final DAO dao;
+    protected final Properties properties;
 
     private static final Logger logger = Logger.getLogger(DispenserControllerManager.class.getName());
     private static final int DISPENSERS_MAX_COUNT = 10;
@@ -27,11 +30,13 @@ public class DispenserControllerManager {
 
     private static Map<Integer, DispenserController> dispenserControllerMap = new HashMap<>();
 
-    public DispenserControllerManager(DAO dao) {
+    @Inject
+    DispenserControllerManager(DAO dao, @ServerProperties Properties properties) {
         this.dao = dao;
+        this.properties = properties;
     }
 
-    public void init(Properties properties) {
+    public void init() {
 
 
         logger.info("Initializing Dispenser Controller Manager");
@@ -42,7 +47,7 @@ public class DispenserControllerManager {
 
         for (DispenserConfig config : dispenserMap.values()) {
             DispenserController controller;
-            if (isTestModeEnables(properties)) {
+            if (isTestModeEnabled(properties)) {
                 controller = new MockPumpController(config);
             } else {
                 controller = new PumpController(config);
@@ -51,7 +56,7 @@ public class DispenserControllerManager {
         }
     }
 
-    private boolean isTestModeEnables(Properties properties) {
+    private boolean isTestModeEnabled(Properties properties) {
         return properties.getProperty(TEST_MODE).equalsIgnoreCase("true");
     }
 
@@ -59,7 +64,7 @@ public class DispenserControllerManager {
         return dispenserControllerMap.get(dispenserId);
     }
 
-    protected static Map<Integer, DispenserConfig> initDispenserMap(Properties properties) {
+    protected Map<Integer, DispenserConfig> initDispenserMap(Properties properties) {
         logger.info("Begin building dispenser map");
         Map<Integer, DispenserConfig> dispenserMap = new HashMap<>();
 

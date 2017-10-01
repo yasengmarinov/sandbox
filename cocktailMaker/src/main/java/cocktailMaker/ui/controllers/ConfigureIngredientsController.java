@@ -1,7 +1,8 @@
 package cocktailMaker.ui.controllers;
 
-import cocktailMaker.server.db.DAO;
 import cocktailMaker.ui.controllers.templates.SimpleAddRemovePage;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.binding.StringBinding;
@@ -14,7 +15,6 @@ import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import org.apache.log4j.Logger;
-import cocktailMaker.server.LogType;
 import cocktailMaker.server.Utils;
 import cocktailMaker.server.db.entities.Ingredient;
 import cocktailMaker.server.dispensers.Calibrator;
@@ -25,13 +25,14 @@ import java.time.Instant;
 /**
  * Created by b06514a on 6/10/2017.
  */
-public class ConfigureIngredientsController extends SimpleAddRemovePage {
+public class ConfigureIngredientsController extends SimpleAddRemovePage<Ingredient> {
 
     public static final int CALIBRATION_INTERVAL_MS = 100;
     public static final int МS_IN_SECOND = 1000;
     public static final int MAX_ALLOWED_CALIBRATION_TIME_SEC = 60;
     public static final int DIVIDE_NANO_TO_GET_3_DIGITS = 1000000;
     private static final Logger logger = Logger.getLogger(ConfigureUsersController.class.getName());
+    protected Provider<Calibrator> calibratorProvider;
 
     @FXML
     public TableColumn<Ingredient, String> ingredient_column;
@@ -61,6 +62,11 @@ public class ConfigureIngredientsController extends SimpleAddRemovePage {
     protected Property<Boolean> calibrating = new SimpleBooleanProperty(false);
     protected Timeline timeline;
     protected Calibrator calibrator;
+
+    @Inject
+    public ConfigureIngredientsController(Provider<Calibrator> calibratorProvider) {
+        this.calibratorProvider = calibratorProvider;
+    }
 
     @Override
     protected void configureTableColumns() {
@@ -137,7 +143,7 @@ public class ConfigureIngredientsController extends SimpleAddRemovePage {
     private void calibrationStart() {
         calibrating.setValue(true);
 
-        calibrator = new Calibrator((Ingredient) selectedObject.getValue(), dao.getDispenserByIngredient((Ingredient) selectedObject.getValue()));
+        initCalibrator();
 
         timeline = new Timeline();
         timeline.setCycleCount(MAX_ALLOWED_CALIBRATION_TIME_SEC * МS_IN_SECOND / CALIBRATION_INTERVAL_MS);
@@ -150,6 +156,13 @@ public class ConfigureIngredientsController extends SimpleAddRemovePage {
 
         timeline.playFromStart();
         calibrator.start();
+    }
+
+    private void initCalibrator() {
+        calibrator = calibratorProvider.get();
+        calibrator.setIngredient(selectedObject.getValue());
+        calibrator.setDispenser(dao.getDispenserByIngredient(selectedObject.getValue()));
+        calibrator.init();
     }
 
     private void calibrationStop() {

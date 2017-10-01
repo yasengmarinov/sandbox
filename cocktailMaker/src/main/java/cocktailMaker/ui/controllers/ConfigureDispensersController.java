@@ -1,6 +1,5 @@
 package cocktailMaker.ui.controllers;
 
-import cocktailMaker.server.db.DAO;
 import cocktailMaker.ui.controllers.templates.GuiceInjectedController;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleBooleanProperty;

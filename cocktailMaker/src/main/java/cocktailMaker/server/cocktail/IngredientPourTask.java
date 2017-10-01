@@ -1,9 +1,8 @@
 package cocktailMaker.server.cocktail;
 
-import cocktailMaker.ui.controllers.templates.GuiceInjectedController;
+import cocktailMaker.server.db.DAO;
 import com.google.inject.Inject;
 import org.apache.log4j.Logger;
-import cocktailMaker.server.db.DAO;
 import cocktailMaker.server.db.entities.CocktailIngredient;
 import cocktailMaker.server.db.entities.Dispenser;
 import cocktailMaker.server.dispensers.DispenserControllerManager;
@@ -23,7 +22,7 @@ public class IngredientPourTask implements Callable<Boolean> {
     private CocktailIngredient cocktailIngredient;
 
     @Inject
-    public IngredientPourTask(DispenserControllerManager dispenserControllerManager, DAO dao) {
+    IngredientPourTask(DispenserControllerManager dispenserControllerManager, DAO dao) {
         this.dispenserControllerManager = dispenserControllerManager;
         this.dao = dao;
     }

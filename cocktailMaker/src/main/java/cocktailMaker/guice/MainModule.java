@@ -4,6 +4,8 @@ import cocktailMaker.guice.annotations.ServerProperties;
 import cocktailMaker.server.PageNavigator;
 import cocktailMaker.server.Utils;
 import cocktailMaker.server.config.ServerConfigurator;
+import cocktailMaker.server.db.DAO;
+import cocktailMaker.server.db.SqlDAO;
 import cocktailMaker.ui.controllers.LoginController;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
@@ -22,13 +24,7 @@ public class MainModule extends AbstractModule{
 
         bind(LoginController.class);
 
-//        try {
-//            bind(GuiceInjectedController.class).toConstructor(
-//                    GuiceInjectedController.class.getConstructor(Properties.class, PageNavigator.class)
-//            );
-//        } catch (NoSuchMethodException e) {
-//            logger.error(e);
-//        }
+        bind(DAO.class).to(SqlDAO.class);
     }
 
     @Provides @ServerProperties

@@ -1,6 +1,5 @@
 package cocktailMaker.ui.controllers;
 
-import cocktailMaker.server.db.DAO;
 import cocktailMaker.server.db.entities.Cocktail;
 import cocktailMaker.server.db.entities.CocktailGroup;
 import cocktailMaker.server.db.entities.CocktailIngredient;

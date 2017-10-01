@@ -4,10 +4,8 @@ import cocktailMaker.server.PageNavigator;
 import cocktailMaker.server.Utils;
 import cocktailMaker.server.card.CardSwipeDispatcher;
 import cocktailMaker.server.card.SwipeEventListener;
-import cocktailMaker.server.db.DAO;
 import cocktailMaker.server.db.entities.User;
 import cocktailMaker.server.session.Session;
-import cocktailMaker.server.session.SessionManager;
 import cocktailMaker.ui.controllers.templates.GuiceInjectedController;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
@@ -69,7 +67,7 @@ public class LoginController extends GuiceInjectedController implements SwipeEve
         });
 
         login_button.addEventHandler(ActionEvent.ACTION, event -> {
-            Session session = SessionManager.createSession(username_field.getText(), password_field.getText());
+            Session session = sessionManager.createSession(username_field.getText(), password_field.getText());
             if (session != null) {
                 logUser(session.getUser());
             } else {
@@ -106,7 +104,7 @@ public class LoginController extends GuiceInjectedController implements SwipeEve
                     Utils.Dialogs.TITLE_UNRECOGNIZED_CARD,
                     Utils.Dialogs.CONTENT_UNRECOGNIZED_CARD);
         } else {
-            SessionManager.createSession(user);
+            sessionManager.createSession(user);
             logUser(user);
         }
     }

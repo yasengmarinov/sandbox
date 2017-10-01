@@ -1,10 +1,8 @@
 package cocktailMaker.ui.controllers;
 
 import cocktailMaker.server.PageNavigator;
-import cocktailMaker.server.db.DAO;
 import cocktailMaker.server.db.entities.Dispenser;
 import cocktailMaker.server.db.entities.Ingredient;
-import cocktailMaker.server.session.SessionManager;
 import cocktailMaker.ui.controllers.templates.GuiceInjectedController;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.Property;
@@ -116,7 +114,7 @@ public class RefillController extends GuiceInjectedController {
 
     private void addEventHandlers() {
         logOff_button.addEventHandler(ActionEvent.ACTION, event -> {
-            SessionManager.sessionInvalidate();
+            sessionManager.sessionInvalidate();
             pageNavigator.navigateTo(PageNavigator.PAGE_LOGIN);
         });
 

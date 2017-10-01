@@ -1,5 +1,6 @@
 package cocktailMaker.server.dispensers;
 
+import com.google.inject.Inject;
 import org.apache.log4j.Logger;
 import cocktailMaker.server.db.entities.Dispenser;
 import cocktailMaker.server.db.entities.Ingredient;
@@ -20,17 +21,30 @@ public class Calibrator {
 
     protected Instant calibrationStart;
     protected DispenserController dispenserController;
+    protected DispenserControllerManager dispenserControllerManager;
 
-    public Calibrator(Ingredient ingredient, Dispenser dispenser) {
+    @Inject
+    Calibrator (DispenserControllerManager dispenserControllerManager) {
+        this.dispenserControllerManager = dispenserControllerManager;
+    }
+
+    public void init() {
         if (ingredient == null || dispenser == null) {
             logger.error("Calibrator could not be created");
+            return;
         }
-        this.ingredient = ingredient;
-        this.dispenser = dispenser;
-        dispenserController = DispenserControllerManager.getDispenserController(dispenser.getId());
+        dispenserController = dispenserControllerManager.getDispenserController(dispenser.getId());
         logger.info("Calibrator created:");
         logger.info("Ingredient: " + ingredient.getId());
         logger.info("Dispenser: " + dispenser.getId());
+    }
+
+    public void setIngredient(Ingredient ingredient) {
+        this.ingredient = ingredient;
+    }
+
+    public void setDispenser(Dispenser dispenser) {
+        this.dispenser = dispenser;
     }
 
     public Duration getDuration() {

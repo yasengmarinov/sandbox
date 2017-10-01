@@ -43,6 +43,10 @@ public class Ingredient implements NamedEntity, Comparable<Ingredient> {
         this.name = name;
     }
 
+    /**
+     * The time in ms needed to pour 100ml
+     * @return
+     */
     @Basic
     @Column(name = "VELOCITY")
     public Integer getVelocity() {

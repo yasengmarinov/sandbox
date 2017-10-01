@@ -2,7 +2,6 @@ package cocktailMaker.ui.controllers;
 
 import cocktailMaker.server.card.CardSwipeDispatcher;
 import cocktailMaker.server.card.SwipeEventListener;
-import cocktailMaker.server.db.DAO;
 import cocktailMaker.ui.controllers.templates.GuiceInjectedController;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;

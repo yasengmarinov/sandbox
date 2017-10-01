@@ -3,19 +3,15 @@ package cocktailMaker.server.config;
 import cocktailMaker.guice.annotations.ServerProperties;
 import cocktailMaker.server.card.CardSwipeDispatcher;
 import cocktailMaker.server.PageNavigator;
+import cocktailMaker.server.db.DAO;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
-import com.sun.security.ntlm.Server;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
-import cocktailMaker.server.db.DAO;
-import cocktailMaker.server.db.entities.Dispenser;
-import cocktailMaker.server.dispensers.DispenserConfig;
 import cocktailMaker.server.dispensers.DispenserControllerManager;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Created by B06514A on 6/15/2017.
@@ -30,20 +26,21 @@ public class ServerConfigurator {
     private Stage stage;
     private Injector injector;
     private DAO dao;
+    private DispenserControllerManager dispenserControllerManager;
 
     @Inject
-    public ServerConfigurator(@ServerProperties Properties properties, PageNavigator pageNavigator, DAO dao) {
+    public ServerConfigurator(@ServerProperties Properties properties, PageNavigator pageNavigator, DAO dao, DispenserControllerManager dispenserControllerManager) {
         this.properties = properties;
         this.pageNavigator = pageNavigator;
         this.dao = dao;
+        this.dispenserControllerManager = dispenserControllerManager;
     }
 
     public void configure() {
         logger.info("Initialize cocktailMaker.server configuration");
 
         dao.init();
-
-        DispenserControllerManager.getInstance().init(properties);
+        dispenserControllerManager.init();
         CardSwipeDispatcher.getInstance().init(stage, properties);
 
         initPageNavigator();

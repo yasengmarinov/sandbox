@@ -23,10 +23,10 @@ public class CocktailLog implements Comparable<CocktailLog> {
 
     }
 
-    public CocktailLog(Integer type, String message) {
+    public CocktailLog(Integer type, String message, String username) {
         this.type = type;
         this.message = message;
-        this.username = SessionManager.getSession().getUser().getUsername();
+        this.username = username;
         this.eventDate = new Timestamp(Calendar.getInstance().getTime().getTime());
     }
 
