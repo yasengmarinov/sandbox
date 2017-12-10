@@ -32,7 +32,7 @@ public class ConfigureIngredientsController extends SimpleAddRemovePage<Ingredie
     public static final int MAX_ALLOWED_CALIBRATION_TIME_SEC = 60;
     public static final int DIVIDE_NANO_TO_GET_3_DIGITS = 1000000;
     private static final Logger logger = Logger.getLogger(ConfigureUsersController.class.getName());
-    protected Provider<Calibrator> calibratorProvider;
+//    protected Provider<Calibrator> calibratorProvider;
 
     @FXML
     public TableColumn<Ingredient, String> ingredient_column;
@@ -43,15 +43,15 @@ public class ConfigureIngredientsController extends SimpleAddRemovePage<Ingredie
     @FXML
     public VBox addIngredient_box;
 
-    @FXML
+    /*@FXML
     public VBox calibrate_box;
 
     @FXML
     public Button calibrate_button;
 
     @FXML
-    public Label calibrateHeader_label;
-
+    public Label calibrateHeader_label;*/
+/*
     @FXML
     public Label timer_label;
 
@@ -61,21 +61,21 @@ public class ConfigureIngredientsController extends SimpleAddRemovePage<Ingredie
     protected Property<Boolean> calibrate_mode = new SimpleBooleanProperty(false);
     protected Property<Boolean> calibrating = new SimpleBooleanProperty(false);
     protected Timeline timeline;
-    protected Calibrator calibrator;
+    protected Calibrator calibrator;*/
 
-    @Inject
-    public ConfigureIngredientsController(Provider<Calibrator> calibratorProvider) {
-        this.calibratorProvider = calibratorProvider;
-    }
+//    @Inject
+//    public ConfigureIngredientsController(Provider<Calibrator> calibratorProvider) {
+//        this.calibratorProvider = calibratorProvider;
+//    }
 
     @Override
     protected void configureTableColumns() {
         ingredient_column.setCellValueFactory(new PropertyValueFactory<Ingredient, String>("name"));
-        calibrated_column.setCellValueFactory(param -> {
+        /*calibrated_column.setCellValueFactory(param -> {
             SimpleBooleanProperty simpleBooleanProperty = new SimpleBooleanProperty(param.getValue().getVelocity() != null);
             return simpleBooleanProperty;
         });
-        calibrated_column.setCellFactory(CheckBoxTableCell.forTableColumn(calibrated_column));
+        calibrated_column.setCellFactory(CheckBoxTableCell.forTableColumn(calibrated_column));*/
     }
 
     @Override
@@ -99,40 +99,40 @@ public class ConfigureIngredientsController extends SimpleAddRemovePage<Ingredie
     protected void setObjectsVisibility() {
         super.setObjectsVisibility();
 
-        calibrate_box.visibleProperty().bind(calibrate_mode);
-        object_table.disableProperty().bind(calibrate_mode);
-        addIngredient_box.disableProperty().bind(calibrate_mode);
-        calibrate_button.disableProperty().bind(isObjectSelected().not());
-        toggleTimer_button.textProperty().bind(new StringBinding() {
-            {
-                super.bind(calibrating);
-            }
+//        calibrate_box.visibleProperty().bind(calibrate_mode);
+//        object_table.disableProperty().bind(calibrate_mode);
+//        addIngredient_box.disableProperty().bind(calibrate_mode);
+//        calibrate_button.disableProperty().bind(isObjectSelected().not());
+//        toggleTimer_button.textProperty().bind(new StringBinding() {
+//            {
+//                super.bind(calibrating);
+//            }
 
-            @Override
-            protected String computeValue() {
-                return calibrating.getValue() ? "Stop" : "Start";
-            }
-        });
+//            @Override
+//            protected String computeValue() {
+//                return calibrating.getValue() ? "Stop" : "Start";
+//            }
+//        });
     }
 
     @Override
     protected void addEventHandlers() {
         super.addEventHandlers();
-        calibrate_button.addEventHandler(ActionEvent.ACTION, event -> {
+        /*calibrate_button.addEventHandler(ActionEvent.ACTION, event -> {
             if (dao.getDispenserByIngredient((Ingredient) selectedObject.getValue()) == null) {
                 Utils.Dialogs.openAlert(Alert.AlertType.INFORMATION, Utils.Dialogs.TITLE_INCONSISTENT_DATA, Utils.Dialogs.CONTENT_ADD_INGREDIENT_TO_DISPENSER);
             } else {
                 openCalibrationPane();
             }
-        });
+        });*/
 
-        toggleTimer_button.addEventHandler(ActionEvent.ACTION, event -> {
+       /* toggleTimer_button.addEventHandler(ActionEvent.ACTION, event -> {
             if (calibrating.getValue()) {
                 calibrationStop();
             } else {
                 calibrationStart();
             }
-        });
+        });*/
     }
 
     @Override
@@ -140,7 +140,7 @@ public class ConfigureIngredientsController extends SimpleAddRemovePage<Ingredie
         super.fillInputFields();
     }
 
-    private void calibrationStart() {
+    /*private void calibrationStart() {
         calibrating.setValue(true);
 
         initCalibrator();
@@ -156,9 +156,9 @@ public class ConfigureIngredientsController extends SimpleAddRemovePage<Ingredie
 
         timeline.playFromStart();
         calibrator.start();
-    }
+    }*/
 
-    private void initCalibrator() {
+   /* private void initCalibrator() {
         calibrator = calibratorProvider.get();
         calibrator.setIngredient(selectedObject.getValue());
         calibrator.setDispenser(dao.getDispenserByIngredient(selectedObject.getValue()));
@@ -174,7 +174,7 @@ public class ConfigureIngredientsController extends SimpleAddRemovePage<Ingredie
 
         if (isDurationValid(duration)) {
             Ingredient ingredient = (Ingredient) selectedObject.getValue();
-            ingredient.setVelocity((int) duration.getSeconds() * 1000 + duration.getNano() / DIVIDE_NANO_TO_GET_3_DIGITS);
+//            ingredient.setVelocity((int) duration.getSeconds() * 1000 + duration.getNano() / DIVIDE_NANO_TO_GET_3_DIGITS);
             dao.update(ingredient);
             logger.info(String.format("Velocity of Ingredient %s set", ingredient.getName()));
             Utils.Dialogs.openAlert(Alert.AlertType.INFORMATION, Utils.Dialogs.TITLE_CALIBRATION, Utils.Dialogs.CONTENT_CALIBRATION_SUCCESS);
@@ -193,8 +193,8 @@ public class ConfigureIngredientsController extends SimpleAddRemovePage<Ingredie
         Utils.Dialogs.openAlert(Alert.AlertType.INFORMATION, Utils.Dialogs.TITLE_CALIBRATE_INSTRUCTIONS, Utils.Dialogs.CONTENT_CALIBRATE_INSTRUCTIONS);
         calibrate_mode.setValue(true);
 
-        calibrateHeader_label.setText(String.format("Calibrating %s on Dispenser %d", selectedObject.getValue(),
-                dao.getDispenserByIngredient((Ingredient) selectedObject.getValue()).getId()));
+        *//*calibrateHeader_label.setText(String.format("Calibrating %s on Dispenser %d", selectedObject.getValue(),
+                dao.getDispenserByIngredient((Ingredient) selectedObject.getValue()).getId()));*//*
 
     }
 
@@ -207,6 +207,6 @@ public class ConfigureIngredientsController extends SimpleAddRemovePage<Ingredie
             isValid = false;
 
         return isValid;
-    }
+    }*/
 
 }

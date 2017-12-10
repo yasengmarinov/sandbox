@@ -36,6 +36,11 @@
                     <MenuItem fx:id="logoff_item" text="Log Off"/>
                 </items>
             </Menu>
+            <Menu text="Exit">
+                <items>
+                    <MenuItem fx:id="exit_item" text="Exit"/>
+                </items>
+            </Menu>
         </menus>
     </MenuBar>
 </AnchorPane>

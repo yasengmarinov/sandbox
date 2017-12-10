@@ -39,14 +39,14 @@ public class CocktailMaker {
     public boolean validate(Cocktail cocktail) {
         List<CocktailIngredient> cocktailIngredients = cocktail.getCocktailIngredients();
 
-        for (CocktailIngredient ingredient : cocktailIngredients) {
-            if (ingredient.getIngredient().getVelocity() == null) {
-                Utils.Dialogs.openAlert(Alert.AlertType.WARNING, Utils.Dialogs.TITLE_INGREDIENTS_UNAVAILABLE,
-                        String.format("%s is not calibrated",
-                                ingredient.getIngredient().getName()));
-            return false;
-            }
-        }
+//        for (CocktailIngredient ingredient : cocktailIngredients) {
+//            if (ingredient.getIngredient().getVelocity() == null) {
+//                Utils.Dialogs.openAlert(Alert.AlertType.WARNING, Utils.Dialogs.TITLE_INGREDIENTS_UNAVAILABLE,
+//                        String.format("%s is not calibrated",
+//                                ingredient.getIngredient().getName()));
+//            return false;
+//            }
+//        }
 
         Map<Ingredient, Integer> ingredientsAvailability = new HashMap<>();
         for (Dispenser dispenser : dao.getEnabledDispensers()) {

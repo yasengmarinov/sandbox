@@ -3,6 +3,7 @@ package cocktailMaker.ui.controllers.templates;
 import cocktailMaker.guice.annotations.ServerProperties;
 import cocktailMaker.server.PageNavigator;
 import cocktailMaker.server.db.DAO;
+import cocktailMaker.server.dispensers.DispenserControllerManager;
 import cocktailMaker.server.session.SessionManager;
 import com.google.inject.Inject;
 
@@ -14,6 +15,7 @@ public class GuiceInjectedController {
     @Inject protected PageNavigator pageNavigator;
     @Inject protected DAO dao;
     @Inject protected SessionManager sessionManager;
+    @Inject protected DispenserControllerManager dispenserControllerManager;
 
     public GuiceInjectedController() {
     }

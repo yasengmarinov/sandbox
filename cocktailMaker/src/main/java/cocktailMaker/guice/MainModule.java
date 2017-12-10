@@ -11,6 +11,9 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import org.apache.log4j.Logger;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Properties;
 
 public class MainModule extends AbstractModule{
@@ -29,7 +32,20 @@ public class MainModule extends AbstractModule{
 
     @Provides @ServerProperties
     Properties provideServerProperties() {
-        Properties serverProperties = Utils.loadPropertiesFile("config/server_config.properties");
+        Properties serverProperties;
+
+        if (System.getProperty("configFile") != null) {
+            serverProperties = new Properties();
+            try {
+                serverProperties.load(new FileInputStream(new File(System.getProperty("configFile"))));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            logger.info("Non default location for server config");
+        } else {
+            String propertiesLocation = "config/server_config.properties";
+            serverProperties = Utils.loadPropertiesFile(propertiesLocation);
+        }
         return serverProperties;
     }
 

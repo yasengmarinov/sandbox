@@ -35,6 +35,9 @@ public class MenuController extends GuiceInjectedController {
     @FXML
     public MenuItem cocktail_item;
 
+    @FXML
+    public MenuItem exit_item;
+
     public void initialize() {
 
         configureNavigation(dispensers_item, PageNavigator.PAGE_CONFIGURE_DISPENSERS);
@@ -48,6 +51,10 @@ public class MenuController extends GuiceInjectedController {
         logoff_item.addEventHandler(ActionEvent.ACTION, event -> {
             sessionManager.sessionInvalidate();
             pageNavigator.navigateTo(PageNavigator.PAGE_LOGIN);
+        });
+
+        exit_item.addEventHandler(ActionEvent.ACTION, event -> {
+            System.exit(0);
         });
 
     }

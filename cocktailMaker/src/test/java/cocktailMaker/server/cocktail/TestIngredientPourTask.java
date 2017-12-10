@@ -12,7 +12,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.Properties;
 
 import static org.mockito.Mockito.*;
 
@@ -40,9 +43,12 @@ public class TestIngredientPourTask extends TestCase {
     @Mock
     Dispenser dispenser;
 
+    @Mock
+    Properties properties;
+
     @Before
     public void setUp() {
-        ingredientPourTask = new IngredientPourTask(dispenserControllerManager, dao);
+        ingredientPourTask = new IngredientPourTask(dispenserControllerManager, dao, properties);
         ingredientPourTask.setCocktailIngredient(cocktailIngredient);
     }
 
@@ -52,9 +58,10 @@ public class TestIngredientPourTask extends TestCase {
         int millilitresToPour = 100;
 
         when(dao.getDispenserByCocktailIngredient(cocktailIngredient)).thenReturn(dispenser);
+        when(properties.getProperty(Mockito.anyString())).thenReturn("10");
         when(cocktailIngredient.getIngredient()).thenReturn(ingredient);
         when(cocktailIngredient.getMillilitres()).thenReturn(millilitresToPour);
-        when(ingredient.getVelocity()).thenReturn(10);
+//        when(ingredient.getVelocity()).thenReturn(10);
         when(dispenser.getId()).thenReturn(1);
         when(dispenser.getMillilitresLeft()).thenReturn(initialMillilitres);
         when(dispenserControllerManager.getDispenserController(1)).thenReturn(dispenserController);

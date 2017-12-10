@@ -1,10 +1,11 @@
 package cocktailMaker.ui.controllers;
 
+import cocktailMaker.server.dispensers.DispenserControllerManager;
+import cocktailMaker.server.dispensers.interfaces.DispenserController;
 import cocktailMaker.ui.controllers.templates.GuiceInjectedController;
-import javafx.beans.property.Property;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
+import com.google.inject.Inject;
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -51,6 +52,9 @@ public class ConfigureDispensersController extends GuiceInjectedController{
     @FXML
     public Button save_button;
 
+    @FXML
+    public Button run_button;
+
     private ObservableList<Dispenser> dispensersObservableList = FXCollections.observableArrayList();
     private Property<Dispenser> selectedDispenser = new SimpleObjectProperty<>();
 
@@ -73,7 +77,17 @@ public class ConfigureDispensersController extends GuiceInjectedController{
     }
 
     protected void setObjectsVisibility() {
-
+        run_button.disableProperty().bind(new BooleanBinding() {
+            {
+                super.bind(selectedDispenser);
+            }
+            @Override
+            protected boolean computeValue() {
+                if (selectedDispenser.getValue() == null)
+                    return true;
+                return !selectedDispenser.getValue().getEnabled();
+            }
+        });
     }
 
     protected void addEventHandlers() {
@@ -99,6 +113,19 @@ public class ConfigureDispensersController extends GuiceInjectedController{
                 dispensers_table.refresh();
                 dispensers_table.getFocusModel().focus(focusedPosition);
             }
+        });
+
+        run_button.addEventHandler(ActionEvent.ACTION, event -> {
+            DispenserController controller = dispenserControllerManager.getDispenserController(
+                    selectedDispenser.getValue().getId()
+            );
+            controller.run();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                logger.error(e);
+            }
+            controller.stop();
         });
     }
 
