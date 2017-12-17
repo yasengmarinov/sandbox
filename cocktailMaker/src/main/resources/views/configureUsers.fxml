@@ -53,9 +53,9 @@
                         <CheckBox fx:id="admin_checkbox" text="Admin" />
                         <PasswordField fx:id="password_field" prefWidth="140.0" promptText="Password" />
                         <PasswordField fx:id="confirmPassword_field" prefWidth="140.0" promptText="Confirm Password" />
-                        <Button fx:id="setCard_button" prefWidth="80.0" text="Set Card">
+                        <Button fx:id="setCard_button" prefWidth="100.0" text="Set Card">
                             <FlowPane.margin>
-                                <Insets left="50.0" />
+                                <Insets left="30.0" />
                             </FlowPane.margin>
                         </Button>
                         <Button fx:id="cancel_button" prefWidth="80.0" text="Cancel" />

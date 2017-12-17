@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
+import org.hibernate.FlushMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
@@ -41,6 +42,7 @@ public class SqlDAO implements DAO {
                 .build();
         sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
         session = sessionFactory.openSession();
+        session.setFlushMode(FlushMode.ALWAYS);
         prepopulateData();
     }
 
@@ -56,7 +58,7 @@ public class SqlDAO implements DAO {
     }
 
     @Override
-    public boolean persist(Object object) {
+    public synchronized boolean persist(Object object) {
         logger.info("Persisting object in the DB: \n" + object.toString());
         try {
             session.beginTransaction();
@@ -69,8 +71,15 @@ public class SqlDAO implements DAO {
         }
     }
 
+    public synchronized boolean persistCocktailIngredient(CocktailIngredient cocktailIngredient) {
+        boolean toReturn = persist(cocktailIngredient);
+        cocktailIngredient.getCocktail().getCocktailIngredients().add(cocktailIngredient);
+        session.persist(cocktailIngredient.getCocktail());
+        return toReturn;
+    }
+
     @Override
-    public boolean update(Object object) {
+    public synchronized boolean update(Object object) {
         logger.info("Updating object " + object);
         try {
             session.beginTransaction();
@@ -84,7 +93,7 @@ public class SqlDAO implements DAO {
     }
 
     @Override
-    public boolean delete(Object object) {
+    public synchronized boolean delete(Object object) {
         logger.info("Deleting object " + object);
         try {
             session.beginTransaction();

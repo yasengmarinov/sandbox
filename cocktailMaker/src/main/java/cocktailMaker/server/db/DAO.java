@@ -16,6 +16,7 @@ public interface DAO {
 
     boolean delete(Object object);
 
+    boolean persistCocktailIngredient(CocktailIngredient cocktailIngredient);
     User getUser(String username);
 
     User getUser(String username, String password);

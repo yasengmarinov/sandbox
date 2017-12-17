@@ -67,7 +67,7 @@ public class ConfigureCocktailController extends SimpleAddRemovePage<Cocktail> {
         addIngredient_button.addEventHandler(ActionEvent.ACTION, event -> {
             CocktailIngredient cocktail_ingredient = getCocktailIngredientByDialog();
             if (cocktail_ingredient != null) {
-                dao.persist(cocktail_ingredient);
+                dao.persistCocktailIngredient(cocktail_ingredient);
                 refreshIngredientsTable();
             }
         });
